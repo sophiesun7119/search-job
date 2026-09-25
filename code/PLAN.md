@@ -66,7 +66,16 @@ Read the diagram from top to bottom. Gray boxes are user inputs, blue boxes are 
 
 An **AI task** is a bounded Codex run that researches, changes code when necessary, and verifies its result. These are conditional handoffs, not four mandatory calls for every company. A queued work item is not completed AI work. Routine board scans and per-job classification do not use AI reasoning. No application preparation or submission occurs here.
 
-The project skills follow this boundary: [`search-job-run`](../.agents/skills/search-job-run/SKILL.md) coordinates an authorized run; [`company-discovery`](../.agents/skills/company-discovery/SKILL.md), [`ats-routing`](../.agents/skills/ats-routing/SKILL.md), [`ats-adapter`](../.agents/skills/ats-adapter/SKILL.md), and [`board-verification`](../.agents/skills/board-verification/SKILL.md) cover AI-1 through AI-4 respectively. [`job-search`](../.agents/skills/job-search/SKILL.md) guides verified-board scans and publication. [STAGE.md](STAGE.md) states which underlying scripts are available now.
+The project skills follow these boundaries:
+
+- **Run coordination:** [`search-job-run`](../.agents/skills/search-job-run/SKILL.md) selects the next step for an authorized, bounded run.
+- **Conditional AI tasks:**
+  - AI-1 [`company-discovery`](../.agents/skills/company-discovery/SKILL.md) finds new company candidates when requested.
+  - AI-2 [`ats-routing`](../.agents/skills/ats-routing/SKILL.md) investigates an unresolved official ATS route.
+  - AI-3 [`ats-adapter`](../.agents/skills/ats-adapter/SKILL.md) builds and tests a missing provider adapter.
+  - AI-4 [`board-verification`](../.agents/skills/board-verification/SKILL.md) resolves an uncertain company-to-board mapping.
+- **Script-driven scan and publication:** [`job-search`](../.agents/skills/job-search/SKILL.md) guides verified-board scans and output.
+- **Current availability:** [STAGE.md](STAGE.md) states which underlying scripts are available now.
 
 ## 1. Find company leads
 
