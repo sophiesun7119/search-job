@@ -79,11 +79,26 @@ class StageOneTest(unittest.TestCase):
             "Technical Program Manager, Platform": "other",
             "Solutions Architect - Cloud Infrastructure": "other",
             "Creative Producer - Short-Form Mobile Video": "other",
+            "PRODUCT MANAGER": "product-manager",
+            "Manager, Product": "product-manager",
+            "Engineering Manager": "engineering-manager",
+            "MANAGER of ENGINEERS": "engineering-manager",
+            "Manager, Software Engineering": "engineering-manager",
         }
         for title, expected in cases.items():
             self.assertEqual(classify(title)[0], expected, title)
         self.assertEqual(classify_level("Senior Software Engineer")[0], "level:senior")
         self.assertEqual(classify_level("Software Engineer")[0], "level:unspecified")
+
+    def test_manager_categories_can_overlap(self):
+        key = self.add(title="Manager, Product Engineering")
+        tags = {row[0] for row in self.db.execute(
+            "SELECT tag FROM opening_tags WHERE opening_key=?", (key,))}
+        self.assertIn("product-manager", tags)
+        self.assertIn("engineering-manager", tags)
+        md = render_markdown(self.db, self.as_of)
+        self.assertIn("## Product Manager", md)
+        self.assertIn("## Engineering Manager", md)
 
     def test_complete_scan_only_closes_after_two_misses(self):
         key = self.add()

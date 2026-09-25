@@ -7,7 +7,7 @@
 | Part | Executor | Current behavior |
 | --- | --- | --- |
 | Schema and identity | Script | SQLite keeps companies, pending board routes, postings, application/location variants, source dates, observations, tags, and scan outcomes. A provider + board + posting ID identifies an opening; canonical URL is fallback evidence. |
-| Category rules | Script | Title-first rules create explainable SDE/level, Frontend, Mobile, QA/Test, Analyst, Scientist/Researcher, or Other tags. No per-posting AI judgment or private profile is used. |
+| Category rules | Script | Title-first rules create explainable SDE/level, Product Manager, Engineering Manager, Frontend, Mobile, QA/Test, Analyst, Scientist/Researcher, or Other tags. Manager categories require both title words in either order and ignore case; a title matching both can have both tags. No per-posting AI judgment or private profile is used. |
 | Date and open state | Script | Earliest reliable publication time persists across same-ID updates; otherwise Age uses first discovery with a 🔎 marker. Only complete scans can count a missing posting toward closure. |
 | Output | Script | The root README has category links and Company, Role, Location, Application, Age tables. A versioned JSON export comes from the same DB. The renderer accepts an explicit `--as-of` timestamp for repeatable output. |
 | Historical preview | Private local helper | A read-only conversion of the old private cache built the current root README. All imported posting states are `unknown`; old personal filter decisions are never copied. The preview SQLite and JSON stay under ignored `var/`. |

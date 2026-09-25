@@ -9,12 +9,14 @@ from pathlib import Path
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 SCHEMA = Path(__file__).with_name("schema.sql")
-RULE_VERSION = "title-v1"
+RULE_VERSION = "title-v2"
 
 CATEGORY_ORDER = (
     ("sde", "Software Engineering — Senior and unspecified"),
     ("sde-entry", "Software Engineering — Junior and New Grad"),
     ("sde-staff", "Software Engineering — Staff and Principal"),
+    ("product-manager", "Product Manager"),
+    ("engineering-manager", "Engineering Manager"),
     ("frontend", "Frontend"),
     ("mobile", "Mobile"),
     ("qa-test", "QA and Test"),
@@ -69,8 +71,24 @@ def iso_max(a: str | None, b: str | None) -> str | None:
     return max(values).isoformat() if values else None
 
 
+def management_categories(title: str) -> list[tuple[str, str]]:
+    """Match manager roles by title words, regardless of case or word order."""
+    t = title.casefold()
+    if not re.search(r"\bmanagers?\b", t):
+        return []
+    matches = []
+    if re.search(r"\bproducts?\b", t):
+        matches.append(("product-manager", "title:product+manager"))
+    if re.search(r"\bengineer(?:s|ing)?\b", t):
+        matches.append(("engineering-manager", "title:engineer+manager"))
+    return matches
+
+
 def classify(title: str) -> tuple[str, str]:
     t = title.casefold()
+    management = management_categories(title)
+    if management:
+        return management[0]
     if re.search(r"\b(manager|director|head of|vice president|vp|chief|architect|sales|support|presales|account executive|consultant|recruiter)\b", t):
         return "other", "non-development-role"
     if re.search(r"\b(front[ -]?end|frontend|ui engineer|web designer)\b", t):
@@ -158,8 +176,9 @@ def upsert_opening(db: sqlite3.Connection, *, company_key: str, provider: str, b
         db.execute("INSERT OR IGNORE INTO opening_variants VALUES (?,?,?)",
                    (key, location, canonical_url(apply_url)))
     category, evidence = classify(title)
-    db.execute("DELETE FROM opening_tags WHERE opening_key=? AND (tag IN ('sde','sde-entry','sde-staff','frontend','mobile','qa-test','analyst','scientist','other') OR tag LIKE 'level:%')", (key,))
-    db.execute("INSERT INTO opening_tags VALUES (?,?,?,?)", (key, category, RULE_VERSION, evidence))
+    db.execute("DELETE FROM opening_tags WHERE opening_key=? AND (tag IN ('sde','sde-entry','sde-staff','frontend','mobile','qa-test','analyst','scientist','product-manager','engineering-manager','other') OR tag LIKE 'level:%')", (key,))
+    for tag, reason in management_categories(title) or [(category, evidence)]:
+        db.execute("INSERT INTO opening_tags VALUES (?,?,?,?)", (key, tag, RULE_VERSION, reason))
     level, level_evidence = classify_level(title)
     db.execute("INSERT INTO opening_tags VALUES (?,?,?,?)", (key, level, RULE_VERSION, level_evidence))
     return key

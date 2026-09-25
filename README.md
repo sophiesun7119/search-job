@@ -14,12 +14,14 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 - [Software Engineering — Senior and unspecified](#sde): 106 saved / unverified
 - [Software Engineering — Junior and New Grad](#sde-entry): 21 saved / unverified
 - [Software Engineering — Staff and Principal](#sde-staff): 24 saved / unverified
+- [Product Manager](#product-manager): 22 saved / unverified
+- [Engineering Manager](#engineering-manager): 9 saved / unverified
 - [Frontend](#frontend): 3 saved / unverified
 - [Mobile](#mobile): 1 saved / unverified
 - [QA and Test](#qa-test): 10 saved / unverified
 - [Analyst](#analyst): 26 saved / unverified
 - [Scientist and Researcher](#scientist): 5 saved / unverified
-- [Other and unclassified](#other): 601 saved / unverified
+- [Other and unclassified](#other): 570 saved / unverified
 
 <a id="sde"></a>
 ## Software Engineering — Senior and unspecified
@@ -196,6 +198,53 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [CACI](https://caci.com/) | Senior Principal Software Developer | — | [Apply](https://searchcareers.caci.com/careers/job/1443153641481?domain=caci.com&amp;hl=en) | 2d † |
 | [CACI](https://caci.com/) | Senior Principal Software Developer | — | [Apply](https://searchcareers.caci.com/careers/job/1443153641480?domain=caci.com&amp;hl=en) | 2d † |
 
+<a id="product-manager"></a>
+## Product Manager
+
+**Saved postings — current availability unverified**
+
+| Company | Role | Location | Application | Age |
+| --- | --- | --- | --- | --- |
+| [Twilio](https://twilio.com/) | Product Manager L2 (mid-level) | — | [Apply](https://job-boards.greenhouse.io/twilio/jobs/8136763) | 1d 🔎 |
+| [Twilio](https://twilio.com/) | Staff Product Manager | — | [Apply](https://job-boards.greenhouse.io/twilio/jobs/7904293) | 1d 🔎 |
+| [Scale AI](https://scale.com/) | Senior Product Design Manager | — | [Apply](https://job-boards.greenhouse.io/scaleai/jobs/4721008005) | 1d 🔎 |
+| [Scale AI](https://scale.com/) | Senior AI Product Manager | — | [Apply](https://job-boards.greenhouse.io/scaleai/jobs/4720501005) | 1d 🔎 |
+| [Scale AI](https://scale.com/) | Senior Product Design Manager, Enterprise | — | [Apply](https://job-boards.greenhouse.io/scaleai/jobs/4729620005) | 1d 🔎 |
+| [GitLab](https://gitlab.com/) | Senior Product Manager, Agentic Source Code | — | [Apply](https://job-boards.greenhouse.io/gitlab/jobs/8597805002) | 1d 🔎 |
+| [Databricks](https://databricks.com/) | Associate Product Manager, New Grad (2027 Start) | — | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=7586263002) | 1d 🔎 |
+| [Atoms](https://atoms.co/) | Senior Product Manager, In-Vehicle Experience | — | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8767012002) | 1d 🔎 |
+| [Atoms](https://atoms.co/) | Senior Product Manager, Fleet Management | — | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8766983002) | 1d 🔎 |
+| [Together AI](https://together.ai/) | Product Manager, AI Infrastructure | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5172169007) | 1d 🔎 |
+| [Together AI](https://together.ai/) | Senior Product Manager, Model APIs &amp; Developer Experience | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5210951007) | 1d 🔎 |
+| [Databricks](https://databricks.com/) | Staff Product Manager, US Public Sector | — | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=8831555002) | 1d |
+| [Dark Wolf Solutions](https://darkwolfsolutions.com/) | Principal Product Manager | — | [Apply](https://job-boards.greenhouse.io/darkwolfsolutions/jobs/8003572003) | 1d |
+| [Stripe](https://stripe.com/) | Staff Product Manager, Agentic Commerce | — | [Apply](https://stripe.com/jobs/search?gh_jid=8226893) | 1d |
+| [Cloudflare](https://cloudflare.com/) | Product Manager, Browser Extension | — | [Apply](https://boards.greenhouse.io/cloudflare/jobs/8173899?gh_jid=8173899) | 2d 🔎 |
+| [Stripe](https://stripe.com/) | Product Manager - Developer Experience, Bridge | — | [Apply](https://stripe.com/jobs/search?gh_jid=8204227) | 2d 🔎 |
+| [Stripe](https://stripe.com/) | Product Operations Manager | — | [Apply](https://stripe.com/jobs/search?gh_jid=8163532) | 2d 🔎 |
+| [Stripe](https://stripe.com/) | Product Manager - Issuance, Bridge | — | [Apply](https://stripe.com/jobs/search?gh_jid=8223723) | 2d |
+| [Crusoe](https://crusoeenergy.com/) | Senior Staff Technical Project Manager - Spark Product Development and NPI | — | [Apply](https://jobs.ashbyhq.com/Crusoe/cd54474a-b215-4600-80ab-89f66c9b1379) | 2d |
+| [Plaid](https://plaid.com/) | Product Manager, Plaid Account [Consumer] | — | [Apply](https://jobs.ashbyhq.com/plaid/039c0c35-7244-470c-9b49-5ecfcf150f40) | 2d |
+| [Plaid](https://plaid.com/) | Product Manager, Link Growth [Consumer] | — | [Apply](https://jobs.ashbyhq.com/plaid/34c110d6-61f0-4f51-bbd0-06eb74af00f7) | 2d |
+| [Plaid](https://plaid.com/) | Product Manager - Data Supply | — | [Apply](https://jobs.ashbyhq.com/plaid/7d2618d5-9777-487d-bf55-445e5eb198ec) | 2d |
+
+<a id="engineering-manager"></a>
+## Engineering Manager
+
+**Saved postings — current availability unverified**
+
+| Company | Role | Location | Application | Age |
+| --- | --- | --- | --- | --- |
+| [Cloudflare](https://cloudflare.com/) | Senior Engineering Manager - Fintech | — | [Apply](https://boards.greenhouse.io/cloudflare/jobs/8143511?gh_jid=8143511) | 1d 🔎 |
+| [Together AI](https://together.ai/) | Lead/Manager AI Infra Systems Engineering Team (Amsterdam)  | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5090473007) | 1d 🔎 |
+| [Crusoe](https://crusoeenergy.com/) | Engineering Manager, Deployment | — | [Apply](https://jobs.ashbyhq.com/Crusoe/241cf464-7e87-43a7-baaf-6472ee823b69) | 1d |
+| [Crusoe](https://crusoeenergy.com/) | Senior Manager, Engineering - AI Inference | — | [Apply](https://jobs.ashbyhq.com/Crusoe/15c35458-7da0-4d69-9269-344244093f89) | 1d |
+| [Anthropic](https://anthropic.com/) | [DH] Engineering Manager, AI Observability | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5429202008) | 2d |
+| [Anthropic](https://anthropic.com/) | Engineering Manager, Data Infrastructure | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5426135008) | 2d 🔎 |
+| [Anthropic](https://anthropic.com/) | Engineering Manager, Business Technology | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5418402008) | 2d 🔎 |
+| [Vercel](https://vercel.com/) | Engineering Manager, Dashboard | — | [Apply](https://job-boards.greenhouse.io/vercel/jobs/6115908004) | 2d 🔎 |
+| [Vercel](https://vercel.com/) | Engineering Manager - Next.js | — | [Apply](https://job-boards.greenhouse.io/vercel/jobs/6140055004) | 2d 🔎 |
+
 <a id="frontend"></a>
 ## Frontend
 
@@ -284,7 +333,7 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 <a id="other"></a>
 ## Other and unclassified
 
-<details><summary>Saved, unclassified postings (601)</summary>
+<details><summary>Saved, unclassified postings (570)</summary>
 
 | Company | Role | Location | Application | Age |
 | --- | --- | --- | --- | --- |
@@ -292,7 +341,6 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Anthropic](https://anthropic.com/) | Incident Response Manager - Privacy | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5432528008) | 1d |
 | [Twilio](https://twilio.com/) | Technical Support Engineer | — | [Apply](https://job-boards.greenhouse.io/twilio/jobs/8208126) | 1d 🔎 |
 | [Twilio](https://twilio.com/) | Account Executive 4 | — | [Apply](https://job-boards.greenhouse.io/twilio/jobs/8164465) | 1d 🔎 |
-| [Twilio](https://twilio.com/) | Product Manager L2 (mid-level) | — | [Apply](https://job-boards.greenhouse.io/twilio/jobs/8136763) | 1d 🔎 |
 | [Twilio](https://twilio.com/) | Technical Support Expert 2 | — | [Apply](https://job-boards.greenhouse.io/twilio/jobs/8206834) | 1d 🔎 |
 | [Twilio](https://twilio.com/) | Technical Account Manager 3 | — | [Apply](https://job-boards.greenhouse.io/twilio/jobs/8028956) | 1d 🔎 |
 | [Twilio](https://twilio.com/) | Senior Presales Engineer | — | [Apply](https://job-boards.greenhouse.io/twilio/jobs/8096642) | 1d 🔎 |
@@ -300,7 +348,6 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Twilio](https://twilio.com/) | Financial Manager | — | [Apply](https://job-boards.greenhouse.io/twilio/jobs/8196096) | 1d 🔎 |
 | [Twilio](https://twilio.com/) | Senior Counsel, Commercial | — | [Apply](https://job-boards.greenhouse.io/twilio/jobs/8084593) | 1d 🔎 |
 | [Twilio](https://twilio.com/) | Phone Numbers Operations Specialist 1 | — | [Apply](https://job-boards.greenhouse.io/twilio/jobs/8120421) | 1d 🔎 |
-| [Twilio](https://twilio.com/) | Staff Product Manager | — | [Apply](https://job-boards.greenhouse.io/twilio/jobs/7904293) | 1d 🔎 |
 | [Twilio](https://twilio.com/) | Technical Support Engineer 2 | — | [Apply](https://job-boards.greenhouse.io/twilio/jobs/8140436) | 1d 🔎 |
 | [Twilio](https://twilio.com/) | Strategic Account Executive | — | [Apply](https://job-boards.greenhouse.io/twilio/jobs/7972644) | 1d 🔎 |
 | [Twilio](https://twilio.com/) | Compensation Manager | — | [Apply](https://job-boards.greenhouse.io/twilio/jobs/7983662) | 1d 🔎 |
@@ -316,10 +363,7 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Stripe](https://stripe.com/) | Product Counsel - RevSuite/Startups | — | [Apply](https://stripe.com/jobs/search?gh_jid=8089069) | 1d 🔎 |
 | [Stripe](https://stripe.com/) | User Escalation Specialist  | — | [Apply](https://stripe.com/jobs/search?gh_jid=8180318) | 1d 🔎 |
 | [Stripe](https://stripe.com/) | Product Support Specialist | — | [Apply](https://stripe.com/jobs/search?gh_jid=8148497) | 1d 🔎 |
-| [Scale AI](https://scale.com/) | Senior Product Design Manager | — | [Apply](https://job-boards.greenhouse.io/scaleai/jobs/4721008005) | 1d 🔎 |
-| [Scale AI](https://scale.com/) | Senior AI Product Manager | — | [Apply](https://job-boards.greenhouse.io/scaleai/jobs/4720501005) | 1d 🔎 |
 | [Scale AI](https://scale.com/) | Staff Product Designer, Enterprise | — | [Apply](https://job-boards.greenhouse.io/scaleai/jobs/4718917005) | 1d 🔎 |
-| [Scale AI](https://scale.com/) | Senior Product Design Manager, Enterprise | — | [Apply](https://job-boards.greenhouse.io/scaleai/jobs/4729620005) | 1d 🔎 |
 | [NewsBreak](https://newsbreak.com/) | Nearby AI Internship Program - Marketing &amp; Operation Track | — | [Apply](https://job-boards.greenhouse.io/newsbreak/jobs/4712890006) | 1d 🔎 |
 | [NewsBreak](https://newsbreak.com/) | Nearby AI Internship Program - Engineering Track | — | [Apply](https://job-boards.greenhouse.io/newsbreak/jobs/4712896006) | 1d 🔎 |
 | [Monks](https://monks.com/) | Senior Account Manager, SEM (Remote) | — | [Apply](https://www.monks.com/careers/6188029004/job?gh_jid=6188029004) | 1d 🔎 |
@@ -334,9 +378,7 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [GitLab](https://gitlab.com/) | Business Development Representative, Turkish Speaking    | — | [Apply](https://job-boards.greenhouse.io/gitlab/jobs/8784553002) | 1d 🔎 |
 | [GitLab](https://gitlab.com/) | Sales Development Representative  | — | [Apply](https://job-boards.greenhouse.io/gitlab/jobs/8530337002) | 1d 🔎 |
 | [GitLab](https://gitlab.com/) | Business Development Representative  | — | [Apply](https://job-boards.greenhouse.io/gitlab/jobs/8532274002) | 1d 🔎 |
-| [GitLab](https://gitlab.com/) | Senior Product Manager, Agentic Source Code | — | [Apply](https://job-boards.greenhouse.io/gitlab/jobs/8597805002) | 1d 🔎 |
 | [DoorDash](https://doordash.com/) | Site Manager, DashMart | — | [Apply](https://job-boards.greenhouse.io/doordashusa/jobs/8209032) | 1d 🔎 |
-| [Databricks](https://databricks.com/) | Associate Product Manager, New Grad (2027 Start) | — | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=7586263002) | 1d 🔎 |
 | [Databricks](https://databricks.com/) | Specialist Solutions Architect - Cloud Infrastructure &amp; Azure Platform | — | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=8739507002) | 1d 🔎 |
 | [Databricks](https://databricks.com/) | Deployment Strategist | — | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=8463063002) | 1d 🔎 |
 | [Databricks](https://databricks.com/) | Specialist Solutions Architect - Data Engineering &amp; Warehousing (Financial Services)  | — | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=8692962002) | 1d 🔎 |
@@ -344,7 +386,6 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Databricks](https://databricks.com/) | Product Management Intern (Summer 2027) | — | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=6883068002) | 1d 🔎 |
 | [Databricks](https://databricks.com/) | Specialist Solutions Architect - Cloud Infrastructure &amp; AWS Platform | — | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=8739506002) | 1d 🔎 |
 | [Cloudflare](https://cloudflare.com/) | Forward Deployed Engineer (FDE) | — | [Apply](https://boards.greenhouse.io/cloudflare/jobs/7572075?gh_jid=7572075) | 1d 🔎 |
-| [Cloudflare](https://cloudflare.com/) | Senior Engineering Manager - Fintech | — | [Apply](https://boards.greenhouse.io/cloudflare/jobs/8143511?gh_jid=8143511) | 1d 🔎 |
 | [Cloudflare](https://cloudflare.com/) | Senior Customer Engineer, Majors - Toronto, CA | — | [Apply](https://boards.greenhouse.io/cloudflare/jobs/8121983?gh_jid=8121983) | 1d 🔎 |
 | [Cloudflare](https://cloudflare.com/) | Senior Named Account Executive, Northern Emirates | — | [Apply](https://boards.greenhouse.io/cloudflare/jobs/8179389?gh_jid=8179389) | 1d 🔎 |
 | [Anthropic](https://anthropic.com/) | Data Center Controls Engineer | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5107890008) | 1d 🔎 |
@@ -377,12 +418,10 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Atoms](https://atoms.co/) | Senior Program Manager, Vehicle Configuration | — | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8767714002) | 1d 🔎 |
 | [Atoms](https://atoms.co/) | Senior NPI Engineer | — | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8686163002) | 1d 🔎 |
 | [Atoms](https://atoms.co/) | Staff Systems Integration Engineer, Hardware-in-the-Loop (HIL) | — | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8767696002) | 1d 🔎 |
-| [Atoms](https://atoms.co/) | Senior Product Manager, In-Vehicle Experience | — | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8767012002) | 1d 🔎 |
 | [Atoms](https://atoms.co/) | Staff Engineering Technician, Vehicle Integration | — | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8767705002) | 1d 🔎 |
 | [Atoms](https://atoms.co/) | Technical Recruiter | — | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8834243002) | 1d 🔎 |
 | [Atoms](https://atoms.co/) | Senior Director, Mining Autonomous Platform (AV Platform Engineering) | — | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8766854002) | 1d 🔎 |
 | [Atoms](https://atoms.co/) | Head of Hardware Manufacturing | — | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8717647002) | 1d 🔎 |
-| [Atoms](https://atoms.co/) | Senior Product Manager, Fleet Management | — | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8766983002) | 1d 🔎 |
 | [Atoms](https://atoms.co/) | Director, Vehicle Integration (AV Platform Engineering) | — | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8766514002) | 1d 🔎 |
 | [Atoms](https://atoms.co/) | Senior Systems Integration Engineer | — | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8767582002) | 1d 🔎 |
 | [Atoms](https://atoms.co/) | Senior Vehicle Integration Engineer | — | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8756216002) | 1d 🔎 |
@@ -418,7 +457,6 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Together AI](https://together.ai/) | Data Center Operations Coordinator | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5160139007) | 1d 🔎 |
 | [Together AI](https://together.ai/) | Senior Product Engineer | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/4624894007) | 1d 🔎 |
 | [Together AI](https://together.ai/) | Technical Community Manager | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5238633007) | 1d 🔎 |
-| [Together AI](https://together.ai/) | Product Manager, AI Infrastructure | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5172169007) | 1d 🔎 |
 | [Together AI](https://together.ai/) | Research Intern, Frontier Agents (Summer 2027) | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5238468007) | 1d 🔎 |
 | [Together AI](https://together.ai/) | Technical Compute Qualification Manager | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5181912007) | 1d 🔎 |
 | [Together AI](https://together.ai/) | Senior Program Manager, Data Center Delivery | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5070981007) | 1d 🔎 |
@@ -426,7 +464,6 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Together AI](https://together.ai/) | Systems Research Engineer Intern - GPU Programming (Summer 2027) | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5238460007) | 1d 🔎 |
 | [Together AI](https://together.ai/) | Forward Deployed Engineer (Inference &amp; Post-Training) | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5131941007) | 1d 🔎 |
 | [Together AI](https://together.ai/) | AI Infrastructure System Engineer Bangalore  | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5180155007) | 1d 🔎 |
-| [Together AI](https://together.ai/) | Senior Product Manager, Model APIs &amp; Developer Experience | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5210951007) | 1d 🔎 |
 | [Together AI](https://together.ai/) | Research Engineer, Post-Training Inference | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5179372007) | 1d 🔎 |
 | [Together AI](https://together.ai/) | Technical Support Engineer (GPU Cluster), India  | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/4840844007) | 1d 🔎 |
 | [Together AI](https://together.ai/) | Senior Network Engineer | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5180977007) | 1d 🔎 |
@@ -463,7 +500,6 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Together AI](https://together.ai/) | Forward Deployed Engineer (Inference &amp; Post-Training) - Mandarin Speaking | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5199993007) | 1d 🔎 |
 | [Together AI](https://together.ai/) | Research Intern, Inference (Winter 2027) | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5238461007) | 1d 🔎 |
 | [Together AI](https://together.ai/) | Strategic Finance Senior Associate - Revenue | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5210933007) | 1d 🔎 |
-| [Together AI](https://together.ai/) | Lead/Manager AI Infra Systems Engineering Team (Amsterdam)  | — | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5090473007) | 1d 🔎 |
 | [SingleStore](https://singlestore.com/) | Senior Compliance Specialist | — | [Apply](https://job-boards.greenhouse.io/singlestore/jobs/8097261) | 1d 🔎 |
 | [SpaceX](https://spacex.com/) | Principal Mechanical Engineer (Starship)  | — | [Apply](https://boards.greenhouse.io/spacex/jobs/8841819002?gh_jid=8841819002) | 1d |
 | [Databricks](https://databricks.com/) | Solutions Architect - Financial Services &amp; Insurance | — | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=8771056002) | 1d |
@@ -477,7 +513,6 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [SpaceX](https://spacex.com/) | Sourcing Manager, PCB (Starlink) | — | [Apply](https://boards.greenhouse.io/spacex/jobs/8840602002?gh_jid=8840602002) | 1d |
 | [SpaceX](https://spacex.com/) | Sourcing Manager, PCB (Starlink) | — | [Apply](https://boards.greenhouse.io/spacex/jobs/8840572002?gh_jid=8840572002) | 1d |
 | [SpaceX](https://spacex.com/) | Sourcing Manager, PCB (Starlink) | — | [Apply](https://boards.greenhouse.io/spacex/jobs/8840543002?gh_jid=8840543002) | 1d |
-| [Databricks](https://databricks.com/) | Staff Product Manager, US Public Sector | — | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=8831555002) | 1d |
 | [DoorDash](https://doordash.com/) | Shift Lead - Downers Grove | — | [Apply](https://job-boards.greenhouse.io/doordashusa/jobs/8227582) | 1d |
 | [DoorDash](https://doordash.com/) | Strategic Customer Success Manager | — | [Apply](https://job-boards.greenhouse.io/doordashusa/jobs/8227575) | 1d |
 | [Lightfield](https://lightfield.app/) | Executive Assistant | — | [Apply](https://jobs.ashbyhq.com/Lightfield/c6ca2f4c-21ee-4ec1-ab6a-01a50eba08a8) | 1d |
@@ -496,7 +531,6 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Canva](https://canva.com/) | German Design Lead (12 month contract) | — | [Apply](https://jobs.smartrecruiters.com/Canva/6000000001432371-german-design-lead-12-month-contract-) | 1d |
 | [Affirm](https://affirm.com/) | Senior Director, Product Management (Financial Platforms) | — | [Apply](https://job-boards.greenhouse.io/affirm/jobs/7999793003) | 1d |
 | [Cloudflare](https://cloudflare.com/) | Forward Deployed Engineer, Professional Services | — | [Apply](https://boards.greenhouse.io/cloudflare/jobs/8043305?gh_jid=8043305) | 1d |
-| [Crusoe](https://crusoeenergy.com/) | Engineering Manager, Deployment | — | [Apply](https://jobs.ashbyhq.com/Crusoe/241cf464-7e87-43a7-baaf-6472ee823b69) | 1d |
 | [GitLab](https://gitlab.com/) | Strategic Account Executive - San Francisco | — | [Apply](https://job-boards.greenhouse.io/gitlab/jobs/8691382002) | 1d |
 | [Plaid](https://plaid.com/) | Account Executive - Payments | — | [Apply](https://jobs.ashbyhq.com/plaid/0dc976f0-a12d-4843-b78c-7d0e14409537) | 1d |
 | [Monks](https://monks.com/) | Temp Associate Creative Director (Art) | — | [Apply](https://www.monks.com/careers/6193588004/job?gh_jid=6193588004) | 1d |
@@ -509,12 +543,10 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Crusoe](https://crusoeenergy.com/) | Workplace Change Manager | — | [Apply](https://jobs.ashbyhq.com/Crusoe/eafe65e4-0e8a-4608-b565-ae1647e31090) | 1d |
 | [SpaceX](https://spacex.com/) | Sr. Electrical Design Engineer, Raptor 3D Printers  | — | [Apply](https://boards.greenhouse.io/spacex/jobs/8838413002?gh_jid=8838413002) | 1d |
 | [SpaceX](https://spacex.com/) | Project Controls Engineer, Starship Infrastructure | — | [Apply](https://boards.greenhouse.io/spacex/jobs/8838385002?gh_jid=8838385002) | 1d |
-| [Dark Wolf Solutions](https://darkwolfsolutions.com/) | Principal Product Manager | — | [Apply](https://job-boards.greenhouse.io/darkwolfsolutions/jobs/8003572003) | 1d |
 | [Horace Mann](https://horacemann.com/) | Counselor | — | [Apply](https://vizi.vizirecruiter.com/Horace-Mann-2058/417963/index.html) | 1d |
 | [Horace Mann](https://horacemann.com/) | Counselor Administrative Referral | — | [Apply](https://vizi.vizirecruiter.com/Horace-Mann-2058/417964/index.html) | 1d |
 | [General Dynamics UK](https://generaldynamics.uk.com/) | Material Handler (6-Month Temporary) | — | [Apply](https://jobs.smartrecruiters.com/GDMSI/744000151442220-material-handler-6-month-temporary-) | 1d |
 | [Stripe](https://stripe.com/) | University Recruiter | — | [Apply](https://stripe.com/jobs/search?gh_jid=8226211) | 1d |
-| [Crusoe](https://crusoeenergy.com/) | Senior Manager, Engineering - AI Inference | — | [Apply](https://jobs.ashbyhq.com/Crusoe/15c35458-7da0-4d69-9269-344244093f89) | 1d |
 | [Pariveda Solutions](https://parivedasolutions.com/) | Vice President, Consulting  | — | [Apply](https://jobs.ashbyhq.com/pariveda/f78e45f5-6a8d-4b9c-bbe8-d75a3f219fba) | 1d |
 | [Monks](https://monks.com/) | Creative Recruiter (3 month contract) | — | [Apply](https://www.monks.com/careers/6206653004/job?gh_jid=6206653004) | 1d |
 | [Monks](https://monks.com/) | Creative Recruiter (3 month contract) | — | [Apply](https://www.monks.com/careers/6206652004/job?gh_jid=6206652004) | 1d |
@@ -522,7 +554,6 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Monks](https://monks.com/) | AI Artist &amp; AV Lead  | — | [Apply](https://www.monks.com/careers/6180154004/job?gh_jid=6180154004) | 1d |
 | [Replit](https://replit.com/) | Support Engineer I (NYC, Weekend Shift) | — | [Apply](https://jobs.ashbyhq.com/replit/4e64e46f-f69d-4454-89b6-bd27302a464d) | 1d |
 | [Replit](https://replit.com/) | Support Engineer I (FC, Weekend Shift) | — | [Apply](https://jobs.ashbyhq.com/replit/951e0ebb-a957-45fa-8763-d56ba46750b4) | 1d |
-| [Stripe](https://stripe.com/) | Staff Product Manager, Agentic Commerce | — | [Apply](https://stripe.com/jobs/search?gh_jid=8226893) | 1d |
 | [Crusoe](https://crusoeenergy.com/) | Construction Manager - Spark | — | [Apply](https://jobs.ashbyhq.com/Crusoe/965a5959-cf86-4552-b513-5bb067515d7a) | 1d |
 | [Anthropic](https://anthropic.com/) | Applied AI Architect, Public Sector  | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5382518008) | 1d |
 | [DoorDash](https://doordash.com/) | Senior Associate, AI Solutions Architect, Marketing Technology | — | [Apply](https://job-boards.greenhouse.io/doordashusa/jobs/8226916) | 1d |
@@ -589,7 +620,6 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Cloudflare](https://cloudflare.com/) | Customer Experience Manager - French Speaking | — | [Apply](https://boards.greenhouse.io/cloudflare/jobs/8063946?gh_jid=8063946) | 2d 🔎 |
 | [Cloudflare](https://cloudflare.com/) | Senior Customer Engineer, Hong Kong (Pre-sales) | — | [Apply](https://boards.greenhouse.io/cloudflare/jobs/8097947?gh_jid=8097947) | 2d 🔎 |
 | [Cloudflare](https://cloudflare.com/) | Business Development Representative - Danish, Norwegian or Swedish Speaking | — | [Apply](https://boards.greenhouse.io/cloudflare/jobs/7657028?gh_jid=7657028) | 2d 🔎 |
-| [Cloudflare](https://cloudflare.com/) | Product Manager, Browser Extension | — | [Apply](https://boards.greenhouse.io/cloudflare/jobs/8173899?gh_jid=8173899) | 2d 🔎 |
 | [Cloudflare](https://cloudflare.com/) | Business Development Representative - Hebrew Speaking | — | [Apply](https://boards.greenhouse.io/cloudflare/jobs/7694407?gh_jid=7694407) | 2d 🔎 |
 | [Cloudflare](https://cloudflare.com/) | Director, Digital Native UKI  | — | [Apply](https://boards.greenhouse.io/cloudflare/jobs/7479271?gh_jid=7479271) | 2d 🔎 |
 | [Cloudflare](https://cloudflare.com/) | Senior Partner Engineer | — | [Apply](https://boards.greenhouse.io/cloudflare/jobs/8173956?gh_jid=8173956) | 2d 🔎 |
@@ -604,12 +634,10 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Stripe](https://stripe.com/) | Manager, Customer Success Platforms | — | [Apply](https://stripe.com/jobs/search?gh_jid=8181022) | 2d 🔎 |
 | [Stripe](https://stripe.com/) | Sales Manager, Commercial Grower (Healthcare) | — | [Apply](https://stripe.com/jobs/search?gh_jid=8191710) | 2d 🔎 |
 | [Stripe](https://stripe.com/) | Specialist Solutions Architect, Radar (Fraud/Risk) | — | [Apply](https://stripe.com/jobs/search?gh_jid=7365914) | 2d 🔎 |
-| [Stripe](https://stripe.com/) | Product Manager - Developer Experience, Bridge | — | [Apply](https://stripe.com/jobs/search?gh_jid=8204227) | 2d 🔎 |
 | [Stripe](https://stripe.com/) | Client Platform Security Engineer | — | [Apply](https://stripe.com/jobs/search?gh_jid=7982720) | 2d 🔎 |
 | [Stripe](https://stripe.com/) | Account Executive, Commercial (Grower) | — | [Apply](https://stripe.com/jobs/search?gh_jid=8123027) | 2d 🔎 |
 | [Stripe](https://stripe.com/) | Account Executive, SMB (Hunter) | — | [Apply](https://stripe.com/jobs/search?gh_jid=7277406) | 2d 🔎 |
 | [Stripe](https://stripe.com/) | Technical Program Manager, Extensibility  | — | [Apply](https://stripe.com/jobs/search?gh_jid=8114397) | 2d 🔎 |
-| [Stripe](https://stripe.com/) | Product Operations Manager | — | [Apply](https://stripe.com/jobs/search?gh_jid=8163532) | 2d 🔎 |
 | [Stripe](https://stripe.com/) | Partner Development Manager, Strategic Partnerships | — | [Apply](https://stripe.com/jobs/search?gh_jid=8094869) | 2d 🔎 |
 | [Stripe](https://stripe.com/) | Sales Manager, Commercial (Hunter) | — | [Apply](https://stripe.com/jobs/search?gh_jid=8191716) | 2d 🔎 |
 | [Stripe](https://stripe.com/) | Partner Development Manager, Global Money Management | — | [Apply](https://stripe.com/jobs/search?gh_jid=8143073) | 2d 🔎 |
@@ -678,7 +706,6 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Canva](https://canva.com/) | Senior Graphics and Illustration Specialist - 12 Month FTC | — | [Apply](https://jobs.smartrecruiters.com/Canva/6000000001431626-senior-graphics-and-illustration-specialist-12-month-ftc) | 2d |
 | [Canva](https://canva.com/) | Senior Graphics and Illustration Specialist - 12 Month FTC | — | [Apply](https://jobs.smartrecruiters.com/Canva/6000000001431597-senior-graphics-and-illustration-specialist-12-month-ftc) | 2d |
 | [SOCOTEC Global](https://socotec.com/) | Coordonnateur SPS H/F - Angoulême | — | [Apply](https://jobs.smartrecruiters.com/Socotec/744000151295529-coordonnateur-sps-h-f-angouleme) | 2d |
-| [Anthropic](https://anthropic.com/) | [DH] Engineering Manager, AI Observability | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5429202008) | 2d |
 | [Crusoe](https://crusoeenergy.com/) | Workplace Change Manager | — | [Apply](https://jobs.ashbyhq.com/Crusoe/5c70c64b-918c-4970-85a0-1d39f7f7c7ee) | 2d |
 | [MongoDB](https://mongodb.com/) | Cloud Operations Engineer | — | [Apply](https://www.mongodb.com/careers/job?gh_jid=8184637) | 2d |
 | [Scale AI](https://scale.com/) | Director of Product Management, Enterprise Core Platform | — | [Apply](https://job-boards.greenhouse.io/scaleai/jobs/4714727005) | 2d 🔎 |
@@ -696,10 +723,8 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Anthropic](https://anthropic.com/) | Manager, Applied AI Architect | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5430869008) | 2d 🔎 |
 | [Anthropic](https://anthropic.com/) | Commercial Legal Specialist, Technical AI Implementation | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5432000008) | 2d 🔎 |
 | [Anthropic](https://anthropic.com/) | Cyber Evaluations Engineer | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5406367008) | 2d 🔎 |
-| [Anthropic](https://anthropic.com/) | Engineering Manager, Data Infrastructure | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5426135008) | 2d 🔎 |
 | [Anthropic](https://anthropic.com/) | Research Engineer, Visual Knowledge Work | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5074217008) | 2d 🔎 |
 | [Anthropic](https://anthropic.com/) | Head of Accounting Policy | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5357945008) | 2d 🔎 |
-| [Anthropic](https://anthropic.com/) | Engineering Manager, Business Technology | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5418402008) | 2d 🔎 |
 | [Anthropic](https://anthropic.com/) | Head of Business Technology Engineering | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5431374008) | 2d 🔎 |
 | [Anthropic](https://anthropic.com/) | Partnership Manager, AI for Science | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5407938008) | 2d 🔎 |
 | [Anthropic](https://anthropic.com/) | VC Partnerships Lead | — | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5235692008) | 2d 🔎 |
@@ -781,13 +806,10 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [AlertMedia](https://alertmedia.com/) | Partnership Manager | — | [Apply](https://job-boards.greenhouse.io/alertmedia/jobs/8831397002) | 2d 🔎 |
 | [Vercel](https://vercel.com/) | Account Executive- Startups, Install Base | — | [Apply](https://job-boards.greenhouse.io/vercel/jobs/5789770004) | 2d 🔎 |
 | [Vercel](https://vercel.com/) | Senior Recruiter | — | [Apply](https://job-boards.greenhouse.io/vercel/jobs/6201403004) | 2d 🔎 |
-| [Vercel](https://vercel.com/) | Engineering Manager, Dashboard | — | [Apply](https://job-boards.greenhouse.io/vercel/jobs/6115908004) | 2d 🔎 |
-| [Vercel](https://vercel.com/) | Engineering Manager - Next.js | — | [Apply](https://job-boards.greenhouse.io/vercel/jobs/6140055004) | 2d 🔎 |
 | [Vercel](https://vercel.com/) | Senior Finance Manager, Sales | — | [Apply](https://job-boards.greenhouse.io/vercel/jobs/6148624004) | 2d 🔎 |
 | [Vercel](https://vercel.com/) | Security Engineer, Detection Response | — | [Apply](https://job-boards.greenhouse.io/vercel/jobs/6111332004) | 2d 🔎 |
 | [Vercel](https://vercel.com/) | Strategic Product Partnerships Lead | — | [Apply](https://job-boards.greenhouse.io/vercel/jobs/6188898004) | 2d 🔎 |
 | [Vercel](https://vercel.com/) | Partner Solutions Engineer | — | [Apply](https://job-boards.greenhouse.io/vercel/jobs/6201179004) | 2d 🔎 |
-| [Stripe](https://stripe.com/) | Product Manager - Issuance, Bridge | — | [Apply](https://stripe.com/jobs/search?gh_jid=8223723) | 2d |
 | [CACI](https://caci.com/) | Network ISE Engineer (SME) | — | [Apply](https://searchcareers.caci.com/careers/job/1443152943279?domain=caci.com&amp;hl=en) | 2d † |
 | [CACI](https://caci.com/) | Program Security / Administrative Assistant | — | [Apply](https://searchcareers.caci.com/careers/job/1443152398071?domain=caci.com&amp;hl=en) | 2d † |
 | [CACI](https://caci.com/) | Facility Security Officer (FSO) / Facility Coordinator | — | [Apply](https://searchcareers.caci.com/careers/job/1443153119305?domain=caci.com&amp;hl=en) | 2d † |
@@ -852,7 +874,6 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [CACI](https://caci.com/) | Technical Writer / Configuration Manager | — | [Apply](https://searchcareers.caci.com/careers/job/1443153372232?domain=caci.com&amp;hl=en) | 2d † |
 | [CACI](https://caci.com/) | Quality Control Lead | — | [Apply](https://searchcareers.caci.com/careers/job/1443152799563?domain=caci.com&amp;hl=en) | 2d † |
 | [CACI](https://caci.com/) | Strategic Capture Manager | — | [Apply](https://searchcareers.caci.com/careers/job/1443153638348?domain=caci.com&amp;hl=en) | 2d † |
-| [Crusoe](https://crusoeenergy.com/) | Senior Staff Technical Project Manager - Spark Product Development and NPI | — | [Apply](https://jobs.ashbyhq.com/Crusoe/cd54474a-b215-4600-80ab-89f66c9b1379) | 2d |
 | [Stripe](https://stripe.com/) | Editorial Director, Brand &amp; Creative Partnerships | — | [Apply](https://stripe.com/jobs/search?gh_jid=8203216) | 2d |
 | [Everlaw](https://everlaw.com/) | Senior Manager, User Experience Research | — | [Apply](https://job-boards.greenhouse.io/everlaw/jobs/4713575006) | 2d |
 | [Crusoe](https://crusoeenergy.com/) | Technical Accounting Manager | — | [Apply](https://jobs.ashbyhq.com/Crusoe/95848a9a-f759-4fb3-8372-562a5a8dc012) | 2d |
@@ -873,13 +894,10 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Stripe](https://stripe.com/) | Administrative Business Partner | — | [Apply](https://stripe.com/jobs/search?gh_jid=8209652) | 2d |
 | [Snowflake](https://snowflake.com/) | Senior Counsel 2, Strategic Product Partnerships | — | [Apply](https://jobs.ashbyhq.com/snowflake/266a5bdf-8a26-4c42-bc8f-2bdc5aad7675) | 2d |
 | [Cloudflare](https://cloudflare.com/) | Senior Solutions Architect, Cloudflare Developer Platform  | — | [Apply](https://boards.greenhouse.io/cloudflare/jobs/8201957?gh_jid=8201957) | 2d |
-| [Plaid](https://plaid.com/) | Product Manager, Plaid Account [Consumer] | — | [Apply](https://jobs.ashbyhq.com/plaid/039c0c35-7244-470c-9b49-5ecfcf150f40) | 2d |
-| [Plaid](https://plaid.com/) | Product Manager, Link Growth [Consumer] | — | [Apply](https://jobs.ashbyhq.com/plaid/34c110d6-61f0-4f51-bbd0-06eb74af00f7) | 2d |
 | [Stripe](https://stripe.com/) | Administrative Coordinator | — | [Apply](https://stripe.com/jobs/search?gh_jid=8223719) | 2d |
 | [Databricks](https://databricks.com/) | Sr Video Producer | — | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=8816442002) | 2d |
 | [Databricks](https://databricks.com/) | Staff Unified Communications Engineer | — | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=8816437002) | 2d |
 | [Cloudflare](https://cloudflare.com/) | Principal Partner Account Manager | — | [Apply](https://boards.greenhouse.io/cloudflare/jobs/8195510?gh_jid=8195510) | 2d |
-| [Plaid](https://plaid.com/) | Product Manager - Data Supply | — | [Apply](https://jobs.ashbyhq.com/plaid/7d2618d5-9777-487d-bf55-445e5eb198ec) | 2d |
 | [Stripe](https://stripe.com/) | Design Engineer, Expansion | — | [Apply](https://stripe.com/jobs/search?gh_jid=8212314) | 2d |
 | [MongoDB](https://mongodb.com/) | Marketing Manager | — | [Apply](https://www.mongodb.com/careers/job?gh_jid=8170634) | 2d |
 | [Snowflake](https://snowflake.com/) | Associate Solution Engineer | — | [Apply](https://jobs.ashbyhq.com/snowflake/ffa41b67-69ab-4086-b025-60dcb8bce489) | 3d |
