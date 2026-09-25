@@ -6,14 +6,15 @@ This document describes the **current target workflow and public classification 
 
 ```mermaid
 flowchart TD
-    A{"User choice<br/>Company source?"}
-    A -->|AI search| A1["AI-1<br/>Find companies"]
-    A -->|Links or list| A2["Script<br/>Read links / list"]
-    A1 -->|Found| B["Script<br/>Merge companies"]
+    U1["User provides<br/>job link"] --> S1["Script<br/>Read job link"]
+    U2["User names<br/>source list"] --> S2["Script<br/>Read list links"]
+    A1["AI-1<br/>Search companies"] -->|Found| B["Script<br/>Deduplicate"]
     A1 -->|No result| R0["Record<br/>Batch outcome"]
-    A2 --> B
+    S1 --> B
+    S2 --> B
+    B --> P["Company pool<br/>Unique companies"]
 
-    B --> C{"Script<br/>ATS found?"}
+    P --> C{"Script<br/>ATS found?"}
     C -->|No| C1["AI-2<br/>Investigate ATS"]
     C1 -->|Found| D["Script<br/>Identify provider"]
     C1 -->|Unresolved| R1["Review<br/>Route blocked"]
@@ -42,15 +43,19 @@ flowchart TD
     classDef ai fill:#f1eaff,stroke:#8060b0,color:#35204f
     classDef decision fill:#fff4d6,stroke:#ad8531,color:#4c3710
     classDef review fill:#fff0ed,stroke:#bc6857,color:#5e241b
-    class A,C,E,F,G0 decision
-    class A2,B,D,G,H,I,J,K,L script
+    classDef input fill:#f1f3f5,stroke:#697582,color:#26313b
+    classDef data fill:#e9f7ed,stroke:#4d8a61,color:#21432b
+    class C,E,F,G0 decision
+    class S1,S2,B,D,G,H,I,J,K,L script
     class A1,C1,E1,F1 ai
     class R0,R1,R2,R3,R4 review
+    class U1,U2 input
+    class P data
 ```
 
-Here, a **company lead** means a candidate company plus any careers or Application link and its source. It is a clue to investigate, not yet a verified ATS route. The user chooses an input: AI discovery, supplied links, or a named list. The script reads supplied links/lists, then cleans and merges duplicate companies from either path.
+The three entrances are a user-provided job or careers link, a user-named source list such as Simplify, and a requested AI search for new companies. Each yields a company name with any useful careers/Application link and its source. The script deduplicates those candidates into the **company pool**: one saved company list with links and source evidence. A place in the pool does not mean its ATS or board is verified. This pool and the intake scripts are part of the target workflow; [STAGE.md](STAGE.md) records when they become runnable.
 
-Read the diagram from top to bottom. Blue boxes are **Script**, purple boxes are bounded **AI tasks**, yellow diamonds are choices or checks, and red boxes record batch outcomes or blockers. A successful branch rejoins the script path; a failed or unresolved branch records its exact outcome. The four possible AI tasks have different missions:
+Read the diagram from top to bottom. Gray boxes are user inputs, blue boxes are **Script**, purple boxes are bounded **AI tasks**, green is the company pool, yellow diamonds are checks, and red boxes record batch outcomes or blockers. A successful branch rejoins the script path; a failed or unresolved branch records its exact outcome. The four possible AI tasks have different missions:
 
 | AI task | Trigger and input | Successful result | If unresolved |
 | --- | --- | --- | --- |
