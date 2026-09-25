@@ -10,6 +10,6 @@ This is a repository scaffold. It does not yet contain runnable discovery, routi
 | Official ATS and board routing | Script first; AI only for unresolved evidence | Verified company-to-board route |
 | New ATS adapter | AI task develops it; fixture and scripts verify it | Reusable collector or concrete failure |
 | Board scan, identity, dates, and open state | Scripts | Normalized opening index |
-| Public categories and Markdown/JSON export | Rules and scripts, with review for ambiguous tags | Root README, category lists, versioned JSON |
+| Public categories and Markdown/JSON export | Deterministic title-first rules and scripts | One categorized root README and versioned JSON |
 
 This table describes the intended design, not completed behavior. See [PLAN.md](PLAN.md) for implementation gates. The root [README](../README.md) is the public result page; this document describes the implementation.
