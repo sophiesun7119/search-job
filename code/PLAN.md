@@ -6,10 +6,10 @@ This document describes the **current target workflow and public classification 
 
 ```mermaid
 flowchart TD
-    A{"Script<br/>Lead source?"}
+    A{"User choice<br/>Company source?"}
     A -->|AI search| A1["AI-1<br/>Find companies"]
-    A -->|Links or list| A2["Script<br/>Parse leads"]
-    A1 -->|Found| B["Script<br/>Normalize leads"]
+    A -->|Links or list| A2["Script<br/>Read links / list"]
+    A1 -->|Found| B["Script<br/>Merge companies"]
     A1 -->|No result| R0["Record<br/>Batch outcome"]
     A2 --> B
 
@@ -48,7 +48,9 @@ flowchart TD
     class R0,R1,R2,R3,R4 review
 ```
 
-Read the diagram from top to bottom. Blue boxes are **Script**, purple boxes are bounded **AI tasks**, yellow diamonds are checks, and red boxes record batch outcomes or blockers. A successful branch rejoins the script path; a failed or unresolved branch records its exact outcome. The four possible AI tasks have different missions:
+Here, a **company lead** means a candidate company plus any careers or Application link and its source. It is a clue to investigate, not yet a verified ATS route. The user chooses an input: AI discovery, supplied links, or a named list. The script reads supplied links/lists, then cleans and merges duplicate companies from either path.
+
+Read the diagram from top to bottom. Blue boxes are **Script**, purple boxes are bounded **AI tasks**, yellow diamonds are choices or checks, and red boxes record batch outcomes or blockers. A successful branch rejoins the script path; a failed or unresolved branch records its exact outcome. The four possible AI tasks have different missions:
 
 | AI task | Trigger and input | Successful result | If unresolved |
 | --- | --- | --- | --- |
