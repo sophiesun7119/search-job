@@ -2,6 +2,8 @@
 
 Search Job finds public openings from official company job pages and organizes them into a category-based README and a reusable JSON export. Scripts handle repeatable indexing and title rules; bounded AI tasks handle requested company discovery and unresolved ATS, adapter or board work. [PLAN.md](PLAN.md) explains the full workflow and category rules. [STAGE.md](STAGE.md) shows what has been verified so far.
 
+[SCHEMA.md](SCHEMA.md) documents every current SQLite table, its columns and relationships.
+
 **Today:** local SQLite indexing, title categories, README/JSON rendering, route-seed import and live collectors for the seven providers in the current company pool work. The root [job list](../README.md) remains a labeled historical preview until a reviewed live export replaces it. A live export is generated under ignored `var/` during a local run.
 
 ## Run the code
