@@ -1,6 +1,6 @@
 # Search Job extraction plan
 
-**Status:** repository scaffold only. This document describes the target and implementation gates; no collector, database, public job list, JSON export, or schedule is running here yet. Development is reviewed on `dev` and pushed to `origin/dev`. `main` changes only after the user requests a merge.
+**Status:** stage 1 implemented and locally verified with synthetic fixtures plus a labeled historical cache preview. Live collectors, route rechecks, a current verified openings feed, Experiment 2 JSON handoff, and a schedule remain unimplemented. The saved-preview DB is separate from the empty production DB. Development is reviewed on `dev` and pushed to `origin/dev`. `main` changes only after the user requests a merge.
 
 ## Target contract
 
@@ -29,4 +29,4 @@ The root `README.md` is a **generated projection** of this database, not a secon
 | 4. Bounded end-to-end run | Recheck a small set of saved boards, scan them, update the Search Job DB, render the README/JSON, and import JSON idempotently into Experiment 2 at most 10 new private candidates per batch. | Verify official links, identity/date/category/open state, coverage/failures, and private-data boundary. Refresh and open Experiment 2's Application Dashboard after the real test; report candidate, confirmed/adapter-pending provider, scanned-board, survivor, blocked, and failure counts. |
 | 5. Local refresh and release | Document the actual CLI, AI/Script split, schema, extension process, and manual publishing procedure; add a local schedule only after bounded runs are stable. | A clean checkout passes fixture and export checks; reviewed README/JSON changes and Git history contain no private data. Push development to `origin/dev`; update `main` only on explicit merge instruction. No GitHub Actions or unattended AI task is assumed. |
 
-Stages can be implemented consecutively without a new design decision at every gate, but each has an independently reviewable commit and check. The first stage produces a representative README from synthetic data before live scanning. `code/README.md` records only the behavior actually completed; this plan remains the future-work contract until each gate passes.
+Stages can be implemented consecutively without a new design decision at every gate, but each has an independently reviewable commit and check. Stage 1 produced deterministic fixture checks and a historical preview without live scanning; stages 2–5 remain. `code/README.md` records only completed behavior.

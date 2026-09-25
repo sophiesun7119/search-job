@@ -1,6 +1,6 @@
 # Search Job project guidance
 
-This repository currently contains a scaffold. Do not claim that collectors, schedules, public listings, or JSON export are active until their code and a verified run exist.
+Stage 1 has a database model, renderer, JSON export, and a labeled historical preview. Do not claim that live collectors, schedules, current verified public listings, or Experiment 2 handoff are active until their code and a verified run exist.
 
 Keep Search Job independent of personal profiles, application data, private dashboards, and machine-specific paths. Official company and ATS evidence establish board routes. Scripts handle routine recognition and scanning; an actual AI task handles unresolved discovery or adapter development. A script-created work item does not mean AI has completed it.
 
