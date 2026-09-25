@@ -23,8 +23,9 @@ CREATE TABLE IF NOT EXISTS company_boards (
   company_key TEXT NOT NULL REFERENCES companies(company_key),
   board_key TEXT NOT NULL REFERENCES boards(board_key),
   evidence_url TEXT,
+  brand_filter TEXT,
   checked_at TEXT,
-  status TEXT NOT NULL CHECK (status IN ('pending_recheck','verified','failed')),
+  status TEXT NOT NULL CHECK (status IN ('pending_recheck','pending_identity','verified','failed')),
   PRIMARY KEY (company_key, board_key)
 );
 CREATE TABLE IF NOT EXISTS scan_runs (

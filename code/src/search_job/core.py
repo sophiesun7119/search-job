@@ -32,6 +32,24 @@ def connect(path: str | Path) -> sqlite3.Connection:
     db.row_factory = sqlite3.Row
     db.execute("PRAGMA foreign_keys = ON")
     db.executescript(SCHEMA.read_text())
+    columns = {row[1] for row in db.execute("PRAGMA table_info(company_boards)")}
+    if "brand_filter" not in columns:
+        # Upgrade databases created by the first local stage without dropping
+        # companies, board routes, or openings.
+        db.executescript("""BEGIN IMMEDIATE;
+          ALTER TABLE company_boards RENAME TO company_boards_v1;
+          CREATE TABLE company_boards (
+            company_key TEXT NOT NULL REFERENCES companies(company_key),
+            board_key TEXT NOT NULL REFERENCES boards(board_key),
+            evidence_url TEXT, brand_filter TEXT, checked_at TEXT,
+            status TEXT NOT NULL CHECK (status IN
+              ('pending_recheck','pending_identity','verified','failed')),
+            PRIMARY KEY (company_key,board_key));
+          INSERT INTO company_boards(company_key,board_key,evidence_url,checked_at,status)
+            SELECT company_key,board_key,evidence_url,checked_at,status
+            FROM company_boards_v1;
+          DROP TABLE company_boards_v1;
+          COMMIT;""")
     return db
 
 
