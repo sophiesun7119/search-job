@@ -100,6 +100,15 @@ class StageOneTest(unittest.TestCase):
         self.assertIn("## Product Manager", md)
         self.assertIn("## Engineering Manager", md)
 
+    def test_reader_intro_and_preview_status_survive_regeneration(self):
+        self.add()
+        md = render_markdown(self.db, self.as_of, historical_preview=True)
+        self.assertIn("Find roles by category", md)
+        self.assertIn("[architecture and filter rules](code/PLAN.md)", md)
+        self.assertIn("[stage record](code/STAGE.md)", md)
+        self.assertIn("Historical preview — open status not verified", md)
+        self.assertNotIn("{{SNAPSHOT_STATUS}}", md)
+
     def test_complete_scan_only_closes_after_two_misses(self):
         key = self.add()
         record_scan(self.db, "greenhouse:a", "x1", "2026-09-25T11:00:00Z", "2026-09-25T11:01:00Z", "failed", set())

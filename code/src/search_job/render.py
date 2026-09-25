@@ -9,6 +9,7 @@ from pathlib import Path
 from .core import CATEGORY_ORDER, parse_time
 
 SCHEMA_VERSION = 1
+INTRO_TEMPLATE = Path(__file__).resolve().parents[2] / "templates" / "README-intro.md"
 
 
 def _cell(value: str) -> str:
@@ -75,11 +76,15 @@ def render_markdown(db: sqlite3.Connection, as_of: datetime, *, historical_previ
     companies_with_rows = len({row["company_key"] for row in rows})
     categories = {key: [row for row in rows if any(tag["tag"] == key for tag in row["tags"])]
                   for key, _ in CATEGORY_ORDER}
-    lines = ["# Search Job", "",
-             "Public job listings projected from a local Search Job database. Company, title, and Apply links come from saved source records.", ""]
+    intro = INTRO_TEMPLATE.read_text()
+    if intro.count("{{SNAPSHOT_STATUS}}\n\n") != 1:
+        raise ValueError("README intro template needs exactly one snapshot status slot")
     if historical_preview:
-        lines += ["> **Historical preview — open status not verified.** These saved postings came from an earlier private experiment. Their links and availability have not been checked in this run. This page demonstrates the proposed layout; it is not a current openings feed.",
-                  f"> Saved scope: {companies_total} known companies; {companies_with_rows} have {len(rows)} cached ATS postings. Companies without saved postings are not evidence of no openings. Locations were not stored in the old cache and appear as —.", ""]
+        status = ("> **Historical preview — open status not verified.** These saved postings came from an earlier private experiment. Their links and availability have not been checked in this run. This page demonstrates the proposed layout; it is not a current openings feed.\n"
+                  f"> Saved scope: {companies_total} known companies; {companies_with_rows} have {len(rows)} cached ATS postings. Companies without saved postings are not evidence of no openings. Locations were not stored in the old cache and appear as —.")
+    else:
+        status = ""
+    lines = intro.replace("{{SNAPSHOT_STATUS}}\n\n", status + "\n\n" if status else "").rstrip().splitlines() + [""]
     lines += [f"Generated: {as_of.isoformat()}.", "",
               "Age is shown in days. 🔎 means age since **first discovery**, not ATS publication. † means the ATS supplied a date without an exact time. `0d` is within 24 hours only for exact timestamps; for date-only sources it means the same calendar date.",
               "", "## Categories", ""]
@@ -113,8 +118,6 @@ def render_markdown(db: sqlite3.Connection, as_of: datetime, *, historical_previ
                       _table(inactive, as_of, inactive=True), "", "</details>", ""]
     if not rows:
         lines += ["No openings have been indexed yet.", ""]
-    lines += ["## About this project", "",
-              "Search Job is being extracted from a private experiment. The [code guide](code/README.md) states what runs today; the [plan](code/PLAN.md) tracks the remaining work. Personal application filtering and submission live outside this repository.", ""]
     return "\n".join(lines)
 
 

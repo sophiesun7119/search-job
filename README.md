@@ -1,9 +1,15 @@
 # Search Job
 
-Public job listings projected from a local Search Job database. Company, title, and Apply links come from saved source records.
+Find roles by category, then go straight to the company's application page. Search Job aims to turn official company career sources into one transparent, regularly refreshable list so readers can spend less time repeating the same search.
 
 > **Historical preview — open status not verified.** These saved postings came from an earlier private experiment. Their links and availability have not been checked in this run. This page demonstrates the proposed layout; it is not a current openings feed.
 > Saved scope: 78 known companies; 50 have 797 cached ATS postings. Companies without saved postings are not evidence of no openings. Locations were not stored in the old cache and appear as —.
+
+- **Browse what matters to you:** start with the broad Software Engineering list or jump to Product Manager, Engineering Manager, Analyst and other categories below.
+- **See where a role came from:** each row links a company and a saved application page; Age distinguishes an ATS publication date from the time we first found a role.
+- **Understand and improve the rules:** the classification logic is public, so contributors can suggest better title matches with concrete examples.
+
+This project is developed with AI assistance. The intended live workflow uses scripts for repeatable company/board checks, collection and classification; bounded AI tasks investigate unresolved ATS routes or build missing adapters. The [code guide](code/README.md) explains how to use what exists now, the [architecture and filter rules](code/PLAN.md) explain the full workflow, and the [stage record](code/STAGE.md) shows what has actually been verified. A local scheduled refresh is planned after live collection is stable.
 
 Generated: 2026-09-25T15:30:00+00:00.
 
@@ -909,7 +915,3 @@ Age is shown in days. 🔎 means age since **first discovery**, not ATS publicat
 | [Snowflake](https://snowflake.com/) | Sales Development Representative  | — | [Apply](https://jobs.ashbyhq.com/snowflake/b1c29819-f084-4cdd-a4bb-e8adc57a8d1b) | 3d |
 
 </details>
-
-## About this project
-
-Search Job is being extracted from a private experiment. The [code guide](code/README.md) states what runs today; the [plan](code/PLAN.md) tracks the remaining work. Personal application filtering and submission live outside this repository.

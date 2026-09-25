@@ -1,32 +1,101 @@
-# Search Job extraction plan
+# Search Job architecture and rules
 
-**Status:** stage 1 implemented and locally verified with synthetic fixtures plus a labeled historical cache preview. Live collectors, route rechecks, a current verified openings feed, Experiment 2 JSON handoff, and a schedule remain unimplemented. The saved-preview DB is separate from the empty production DB. Development is reviewed on `dev` and pushed to `origin/dev`. `main` changes only after the user requests a merge.
+This document describes the **current target workflow and public classification rules**. It changes when the design changes. It does not imply that every step is running today: [STAGE.md](STAGE.md) tracks verified implementation, while [README.md](README.md) shows how to use what exists now. The repository root [README](../README.md) is the generated, reader-facing job list.
 
-## Target contract
+## End-to-end flow
 
-Search Job accepts company leads from three entrances: a bounded AI discovery task, a user-supplied company/job/application link, or a named third-party list such as Simplify. Scripts first verify the official company careers route, ATS host, board, and reusable provider adapter. An actual AI task investigates unresolved routes or builds and tests a new adapter; a queued work item alone is not a completed adapter. Nine previously developed collectors are extraction inputs, not work to reimplement.
+```mermaid
+flowchart TB
+    A["Company leads<br/>AI discovery · supplied link · named list"]
+    B["Script: normalize and deduplicate company leads"]
+    C{"Script: official company-to-ATS route found?"}
+    C1["AI task: investigate unresolved official route"]
+    D["Script: identify ATS provider"]
+    E{"Adapter available?"}
+    E1["AI task: develop adapter and verify fixtures"]
+    F["Script: confirm company ↔ board URL or token"]
+    F1["AI task: investigate unresolved board evidence"]
+    R["Recorded failure and review queue"]
+    G["Script: scan the complete board"]
+    H["Script: normalize identity, dates, locations and open state"]
+    I["Script: assign public title-based categories and evidence tags"]
+    J["Search Job SQLite: source of truth"]
+    K["Script: render category tables in root README"]
+    L["Script: export versioned JSON for downstream consumers"]
 
-Its own local SQLite database stores companies, sourced company-to-board evidence, board scan state, posting identity, location/application variants, timestamps, category/level tags, and open-state observations. Previously verified routes may enter as **pending recheck** seeds; jobs and title observations start empty. The database and private run data stay out of Git. A versioned JSON export is the boundary to Experiment 2, whose private filter and Dashboard remain independent.
+    A --> B --> C
+    C -- No --> C1
+    C1 -- Found --> D
+    C1 -- Unresolved --> R
+    C -- Yes --> D --> E
+    E -- No --> E1
+    E1 -- Tested adapter --> F
+    E1 -- Failed --> R
+    E -- Yes --> F
+    F -- Unverified --> F1
+    F1 -- Verified --> G
+    F1 -- Unresolved --> R
+    F -- Verified --> G --> H --> I --> J
+    J --> K
+    J --> L
+```
 
-The root `README.md` is a **generated projection** of this database, not a second data store. It starts with a short methodology, coverage and refresh context, then category quick links with counts. Each category has an active table and a collapsed inactive section. The preferred broad SDE mid-to-senior table comes first; other categories and SDE levels remain accessible on the same page. Separate `lists/` files are optional future archive/export pages, not required for the first version.
+**Script** means deterministic code. **AI task** means an actual bounded Codex task that researches an unresolved case, changes code when needed, and tests it. A script can create a work item, but cannot claim the AI task finished. Routine scans and per-job classification do not ask AI to reason about each posting. No application preparation or submission occurs here.
 
-### Public row and classification rules
+## 1. Find company leads
 
-- Columns: **Company** (official-site link), **Role** (source title and concise evidence-backed badges if any), **Location**, **Application** (`[Apply](official application URL)`), and **Age**. No Experience or Level column in the first release. All ages remain in days (`0d`, `1d`, `90d`), with newest active postings first. `0d` means less than 24 hours when a precise timestamp exists; date-only source precision is disclosed rather than presented as an exact 24-hour claim.
-- The reference time is the earliest reliable ATS **publication** time for the same posting; an ATS update never resets it. When publication time is unavailable, use stable `first_seen_at` and mark the displayed Age as **first discovered**, not published. A first import can therefore show `0d` with that explicit marker. Preserve raw date field/value, source, precision, first/last seen, and the renderer's as-of time. An update-only timestamp is stored separately and is not represented as publication time.
-- Posting identity uses provider + board + posting ID first, with canonical official application URL as supporting evidence. A distinct ATS ID is a distinct opening even if title and company match. One ID with multiple locations/Apply links stays one logical opening and keeps those variants; a URL or location change alone cannot reset its age or double-count it. Without an ID, require a canonical URL and evidence. Reopening the same ID requires explicit evidence or review.
-- Title-first deterministic rules assign versioned, explainable, possibly multiple tags. Broad SDE includes software/backend/full-stack/cloud/platform/infrastructure/SRE/DevOps/data engineering/ML/AI engineering. Explicit Senior and unspecified SDE enter the preferred table. Explicit Junior/New Grad and Staff/Principal remain in the database and their own SDE-level tables, not the preferred table. Product Manager and Engineering Manager each have a table when both title words appear in either order or case; a title matching both appears in both. Frontend/Mobile, QA/Test, any Analyst (including BI, Business, Finance), and Scientist/Researcher have separate tables. Use clear category precedence to keep specialist titles out of the broad SDE view unless both tags are genuinely justified. Ambiguous titles use available description or go to `Unclassified`; no per-posting AI judgment.
-- Prefer listing API fields. Reuse description if already returned. Fetch a separate detail only for an ambiguous category or selected optional enrichment, and cache it. Work authorization, sponsorship, citizenship, green-card, OPT/H-1B, or clearance badges appear only with explicit source evidence; absence means unknown and never excludes a public posting. Required experience years may be retained when available, but are neither a required fetch nor a README column.
-- An official closed signal or repeated absence from **complete, successful** board scans may mark a posting inactive. Failed/partial scans preserve its last known state and show the coverage limitation. Inactive roles stay in the database and a collapsed category section; an inactive row need not offer a broken Apply link.
+Three entrances produce the same compact lead: company name or domain, a useful careers/application URL when available, its source, and the evidence needed to revisit it.
 
-## Implementation stages and gates
+1. **Bounded AI discovery:** find company candidates when requested; it does not run silently inside a script schedule.
+2. **User-supplied link:** accept a company careers page or a specific job/application link.
+3. **Named third-party list:** parse a user-selected source such as Simplify, especially its Application links.
 
-| Stage | Deliverable | Gate before the next stage |
-| --- | --- | --- |
-| 1. Data and output contract | Schema/migration for route seeds, board scans, posting identity, variants, dates, categories, and open state; deterministic root README renderer and versioned JSON exporter using synthetic fixtures. | Fixtures prove same-ID update keeps age, distinct IDs survive, multiple variants count once, first-seen marker, `0d`/older day display, category quick links/tables, and inactive collapse. Repeating export with the same DB and as-of time yields identical files. No private data enters Git. |
-| 2. Collector extraction | Dependency-audited extraction of all nine existing ATS collectors, fixtures, one provider capability registry, common normalization, and listing-first/lazy-detail behavior. | Each collector's meaningful fixture passes from its new path. Full-board pagination and provider-specific date/ID semantics are checked; no private profile, Dashboard call, fixed personal path, or duplicate common filter logic is required. |
-| 3. Intake and route registry | Three lead entrances, official script-first route verification, unresolved/adapter work queue, and sourced pending-recheck company-board seeds. | A fresh DB starts with empty posting/title tables; seeds are not active until official company-to-board and board readability rechecks pass. Repeated leads and shared boards do not duplicate routes or scans. |
-| 4. Bounded end-to-end run | Recheck a small set of saved boards, scan them, update the Search Job DB, render the README/JSON, and import JSON idempotently into Experiment 2 at most 10 new private candidates per batch. | Verify official links, identity/date/category/open state, coverage/failures, and private-data boundary. Refresh and open Experiment 2's Application Dashboard after the real test; report candidate, confirmed/adapter-pending provider, scanned-board, survivor, blocked, and failure counts. |
-| 5. Local refresh and release | Document the actual CLI, AI/Script split, schema, extension process, and manual publishing procedure; add a local schedule only after bounded runs are stable. | A clean checkout passes fixture and export checks; reviewed README/JSON changes and Git history contain no private data. Push development to `origin/dev`; update `main` only on explicit merge instruction. No GitHub Actions or unattended AI task is assumed. |
+**Script:** normalize company names/domains and URLs, merge duplicate leads, and retain their source. An external Apply URL is a clue, not proof that a company owns the board. Already verified companies and boards are reused; an unchanged route does not need a fresh ATS search on every scan.
 
-Stages can be implemented consecutively without a new design decision at every gate, but each has an independently reviewable commit and check. Stage 1 produced deterministic fixture checks and a historical preview without live scanning; stages 2–5 remain. `code/README.md` records only completed behavior.
+## 2. Establish the official ATS route
+
+**Script:** visit the company's official careers page, extract its official job/application links, and recognize the ATS host or path. If the official route cannot be found or parsed, use one bounded `company + careers` web search and confirm the result against the official company domain. Record the company-to-provider evidence and last check. **AI:** investigate only unresolved cases. A company site with embedded jobs, a custom careers page, or an unrecognized provider stays pending until evidence is sufficient; it is not marked as a working ATS route merely because a third-party list has a link.
+
+## 3. Resolve provider, adapter and board
+
+A **provider capability registry** maps each supported ATS type and host to one reusable adapter. Company-specific board routes are separate data: `company_boards → boards → provider capability`. One company may have several boards; one board may serve several brands, so company attribution needs evidence and a shared board should be scanned once.
+
+**Script:** select the existing adapter from the provider type, find the board URL/token in official links, verify that this company's jobs belong to that board, and check that the adapter can read it. Previously verified routes can be imported as **pending recheck** seeds; official association and readability must pass before activation. **AI:** if the provider has no adapter, research its public listing method, implement the adapter, run fixtures and a bounded official-source test, then retry the affected board. AI also investigates company-to-board evidence the script cannot resolve. Only after a concrete retry fails does the workflow record the exact route/adapter/board failure for review and downstream dashboard reporting. Nine adapters developed in the private experiment are extraction inputs, not reasons to reimplement them.
+
+## 4. Scan boards and identify openings
+
+**Script:** traverse the full board, including pagination; prefer the listing response's posting ID, title, location, official Apply URL and source dates. Reuse a description already present in that response. Fetch and cache a separate detail only when a title is ambiguous or optional evidence needs it. Record incomplete/failed scans distinctly from complete scans.
+
+A posting's primary identity is **provider + board + ATS posting ID**. A canonical official Apply URL is supporting or fallback evidence. Different IDs remain different openings even with the same title; one ID with multiple locations or Apply links remains one logical opening with multiple variants. Without an ID, a canonical URL and source evidence are required; title alone is insufficient.
+
+Keep raw date field/value, precision, first and last observation, and any reliable publication and update timestamps separately. The earliest reliable **publication** time survives same-posting updates. If publication time is absent, use stable first discovery for Age and mark it `🔎`; an update-only field is not publication evidence. Reopening the same ID needs explicit official evidence or review. Only an official closed signal or repeated absence from **complete, successful** scans can mark a posting inactive; a failed or partial scan cannot close it.
+
+## 5. Assign public categories and optional evidence tags
+
+This is public **classification**, not a person's include/exclude filter. The opening stays in SQLite even when it does not enter the preferred SDE table. Title rules run first, case-insensitively, and save the rule version and reason. Categories may overlap when both rules genuinely match. A description already returned by the listing API may help with an ambiguous title; otherwise leave it `Other and unclassified` until evidence improves. There is no per-posting AI judgment.
+
+| Public table | Title rule for the first version |
+| --- | --- |
+| Software Engineering — Senior and unspecified | Software/developer/programmer, backend/full-stack, cloud/platform/infrastructure engineering, SRE/DevOps, data/ML/AI engineering; exclude explicit Junior/New Grad/Intern and Staff/Principal from this **preferred** table. Explicit Senior and unspecified levels both qualify. |
+| Software Engineering — Junior and New Grad | Same broad engineering family with explicit Junior, New Grad, Entry Level, Graduate or Intern wording. |
+| Software Engineering — Staff and Principal | Same broad engineering family with explicit Staff, Principal or Distinguished wording. |
+| Product Manager | Title contains **both** `product` and `manager`, in either order and any capitalization. The current word-based rule also catches related titles such as `Product Design Manager`; contributors can propose a narrower rule with examples. |
+| Engineering Manager | Title contains **both** `engineer`/`engineering` and `manager`, in either order and any capitalization. `Manager, Software Engineering` qualifies. |
+| Frontend / Mobile / QA and Test | Specialist title wording takes precedence over the broad SDE view. Mobile needs an engineering/developer/programmer role as well as the mobile platform term. |
+| Analyst | `Analyst` or `Analysts`, including Business, Finance and Business Intelligence variants. |
+| Scientist and Researcher | `Scientist` or `Researcher` wording. |
+| Other and unclassified | No category rule has enough title evidence; retain the opening for later rule review. |
+
+The exact executable patterns live in [`core.py`](src/search_job/core.py); this table states their intended behavior so a proposed rule change can be discussed and tested. If a title has both manager pairs, it can appear in both manager tables and still has one stable opening identity.
+
+Optional work authorization, sponsorship, citizenship, green-card, OPT/H-1B or clearance badges require explicit source evidence. An absent badge means **unknown** and never excludes a public opening. Required experience years may be stored if already available, but do not trigger mandatory detail requests or appear as a first-version README column. Personal preference filtering belongs to a downstream private consumer, not Search Job's public categories.
+
+## 6. Publish the result
+
+Search Job's **local SQLite is the source of truth**. Rendering queries it at a chosen as-of time and builds the root README deterministically. The page starts with a short reader-facing explanation, category links/counts, then category tables with **Company** (official site), **Role**, **Location**, **Application** (`Apply` linked to the official URL), and **Age**. Each category sorts newer roles first; inactive roles stay in a collapsed section. Age remains in days (`0d`, `1d`, `90d`): `🔎` marks first discovery rather than ATS publication, and `†` marks date-only source precision. For a precise timestamp, `0d` means less than 24 hours; a date-only source does not claim hour precision.
+
+The same DB produces a **versioned JSON export** with stable opening keys, variants, tags, date provenance and open state; a future handoff also exposes unresolved route/adapter/board failures. A downstream personal application tool may apply its own filter and import it idempotently, then show failures in its private Dashboard; Search Job does not read or modify that consumer's private database. Generated README rows are changed by updating rules/data and rerendering, not by hand-editing output. Private SQLite, credentials and run logs never enter Git. Development changes are reviewed and pushed to `origin/dev`; `main` changes only on explicit merge instruction. A local scheduled refresh is a later stage; GitHub Actions and unattended AI work are not assumed.
+
+## Contributing to the rules
+
+A useful proposal names example titles that should match, example titles that should not, the intended category or badge, and whether the change should affect existing saved postings. Add focused fixtures for the new boundary before regenerating the README. [STAGE.md](STAGE.md) identifies which parts of this target flow have been verified so far.

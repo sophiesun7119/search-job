@@ -6,7 +6,7 @@ Keep Search Job independent of personal profiles, application data, private dash
 
 Work in bounded batches. After a real bounded test, refresh and inspect the private Application Dashboard through its documented handoff and report candidate count, confirmed and adapter-pending providers, scanned boards, retained and blocked counts, and failures. Do not run searches or submissions during design discussion.
 
-Treat `code/README.md` as current behavior and `code/PLAN.md` as future work. The generated root README is the public category-table snapshot; `lists/` is reserved for optional archives or exports. Before publishing, inspect the exact tracked files and Git history for private data.
+Treat `code/README.md` as concise usage for verified code, `code/PLAN.md` as the latest target architecture and public rules, and `code/STAGE.md` as implementation progress. Edit the root README introduction in `code/templates/README-intro.md`, then regenerate it; the root README is a public category-table snapshot. `lists/` is reserved for optional archives or exports. Before publishing, inspect the exact tracked files and Git history for private data.
 
 ## Git branches
 
