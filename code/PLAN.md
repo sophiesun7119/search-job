@@ -6,19 +6,49 @@ This document describes the **current target workflow and public classification 
 
 ```mermaid
 flowchart TD
-    A["Company leads"] --> B["Normalize leads"]
-    B --> C["Verify ATS"]
-    C --> D["Resolve adapter"]
-    D --> E["Verify board"]
-    E --> F["Scan board"]
-    F --> G["Normalize jobs"]
-    G --> H["Classify jobs"]
-    H --> I["Save SQLite"]
-    I --> J["Build README"]
-    I --> K["Export JSON"]
+    A{"Script<br/>Lead source?"}
+    A -->|AI search| A1["AI-1<br/>Find companies"]
+    A -->|Links or list| A2["Script<br/>Parse leads"]
+    A1 -->|Found| B["Script<br/>Normalize leads"]
+    A1 -->|No result| R0["Record<br/>Batch outcome"]
+    A2 --> B
+
+    B --> C{"Script<br/>ATS found?"}
+    C -->|No| C1["AI-2<br/>Investigate ATS"]
+    C1 -->|Found| D["Script<br/>Identify provider"]
+    C1 -->|Unresolved| R1["Review<br/>Route blocked"]
+    C -->|Yes| D
+
+    D --> E{"Script<br/>Adapter ready?"}
+    E -->|No| E1["AI-3<br/>Build and test"]
+    E1 -->|Pass| F{"Script<br/>Board verified?"}
+    E1 -->|Fail| R2["Review<br/>Adapter failed"]
+    E -->|Yes| F
+
+    F -->|No| F1["AI-4<br/>Verify board"]
+    F1 -->|Pass| G["Script<br/>Scan full board"]
+    F1 -->|Unresolved| R3["Review<br/>Board blocked"]
+    F -->|Yes| G
+
+    G --> G0{"Script<br/>Scan complete?"}
+    G0 -->|No| R4["Review<br/>Scan incomplete"]
+    G0 -->|Yes| H["Script<br/>Normalize jobs"]
+    H --> I["Script<br/>Classify jobs"]
+    I --> J["Script<br/>Save SQLite"]
+    J --> K["Script<br/>Build README"]
+    J --> L["Script<br/>Export JSON"]
+
+    classDef script fill:#e9f3ff,stroke:#4779a8,color:#17324d
+    classDef ai fill:#f1eaff,stroke:#8060b0,color:#35204f
+    classDef decision fill:#fff4d6,stroke:#ad8531,color:#4c3710
+    classDef review fill:#fff0ed,stroke:#bc6857,color:#5e241b
+    class A,C,E,F,G0 decision
+    class A2,B,D,G,H,I,J,K,L script
+    class A1,C1,E1,F1 ai
+    class R0,R1,R2,R3,R4 review
 ```
 
-The main path is **script-run** after leads enter. The four possible AI tasks have different missions:
+Read the diagram from top to bottom. Blue boxes are **Script**, purple boxes are bounded **AI tasks**, yellow diamonds are checks, and red boxes record batch outcomes or blockers. A successful branch rejoins the script path; a failed or unresolved branch records its exact outcome. The four possible AI tasks have different missions:
 
 | AI task | Trigger and input | Successful result | If unresolved |
 | --- | --- | --- | --- |
