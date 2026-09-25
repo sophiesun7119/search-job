@@ -80,7 +80,7 @@ def render_markdown(db: sqlite3.Connection, as_of: datetime, *, historical_previ
     if intro.count("{{SNAPSHOT_STATUS}}\n\n") != 1:
         raise ValueError("README intro template needs exactly one snapshot status slot")
     if historical_preview:
-        status = ("> **Historical preview — open status not verified.** These saved postings came from an earlier private experiment. Their links and availability have not been checked in this run. This page demonstrates the proposed layout; it is not a current openings feed.\n"
+        status = ("> **Historical preview — open status not verified.** These saved postings came from an earlier cache. Their links and availability have not been checked in this run. This page demonstrates the proposed layout; it is not a current openings feed.\n"
                   f"> Saved scope: {companies_total} known companies; {companies_with_rows} have {len(rows)} cached ATS postings. Companies without saved postings are not evidence of no openings. Locations were not stored in the old cache and appear as —.")
     else:
         status = ""

@@ -103,8 +103,8 @@ class StageOneTest(unittest.TestCase):
     def test_reader_intro_and_preview_status_survive_regeneration(self):
         self.add()
         md = render_markdown(self.db, self.as_of, historical_preview=True)
-        self.assertIn("Find roles by category", md)
-        self.assertIn("[architecture and filter rules](code/PLAN.md)", md)
+        self.assertIn("Search Job finds public job openings", md)
+        self.assertIn("[architecture and category rules](code/PLAN.md)", md)
         self.assertIn("[stage record](code/STAGE.md)", md)
         self.assertIn("Historical preview — open status not verified", md)
         self.assertNotIn("{{SNAPSHOT_STATUS}}", md)

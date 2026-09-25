@@ -2,10 +2,12 @@
 <title>1. Build the company pool</title>
 <style>
   text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; fill: #243447; }
-  .title { font-size: 20px; font-weight: 700; }
+  .title { font-size: 20px; font-weight: 700; fill: #173650; }
 </style>
-<rect x="0" y="0" width="760" height="340" fill="#ffffff"/>
-<text class="title" x="20" y="29">1. Build the company pool</text>
+<rect x="0.5" y="0.5" width="759" height="339" rx="14" fill="#fbfcfe" stroke="#dfe6ef"/>
+<rect x="20" y="12" width="4" height="22" rx="2" fill="#557eab"/>
+<rect x="20" y="41" width="720" height="1" fill="#e4eaf1"/>
+<text class="title" x="34" y="29">1. Build the company pool</text>
 <rect x="20" y="52" width="220" height="54" rx="8" fill="#f2f4f7" stroke="#758394" stroke-width="1.5"/>
 <text x="130.0" y="69.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
 <tspan x="130.0" dy="0" font-weight="700">User provides</tspan>

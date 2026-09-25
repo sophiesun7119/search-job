@@ -1,11 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="760" height="370" viewBox="0 0 760 370" role="img" aria-label="3. Scan, classify and publish">
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="360" viewBox="0 0 760 360" role="img" aria-label="3. Scan, classify and publish">
 <title>3. Scan, classify and publish</title>
 <style>
   text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; fill: #243447; }
-  .title { font-size: 20px; font-weight: 700; }
+  .title { font-size: 20px; font-weight: 700; fill: #173650; }
 </style>
-<rect x="0" y="0" width="760" height="370" fill="#ffffff"/>
-<text class="title" x="20" y="29">3. Scan, classify and publish</text>
+<rect x="0.5" y="0.5" width="759" height="359" rx="14" fill="#fbfcfe" stroke="#dfe6ef"/>
+<rect x="20" y="12" width="4" height="22" rx="2" fill="#557eab"/>
+<rect x="20" y="41" width="720" height="1" fill="#e4eaf1"/>
+<text class="title" x="34" y="29">3. Scan, classify and publish</text>
 <rect x="20" y="52" width="170" height="52" rx="8" fill="#eaf7ed" stroke="#598d68" stroke-width="1.5"/>
 <text x="105.0" y="68.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
 <tspan x="105.0" dy="0" font-weight="700">Verified board</tspan>
@@ -74,5 +76,4 @@
 <polygon points="315.0,294.0 311.0,286.0 319.0,286.0" fill="#54677b"/>
 <rect x="524.0" y="279.0" width="2" height="15.0" fill="#54677b"/>
 <polygon points="525.0,294.0 521.0,286.0 529.0,286.0" fill="#54677b"/>
-<text x="20" y="362" text-anchor="start" fill="#536476" font-family="Arial, sans-serif" font-size="12">Public classification only; personal application filters belong downstream.</text>
 </svg>

@@ -4,11 +4,11 @@ This file tracks **verified progress and next gates**. The target workflow and p
 
 | Stage | State | Evidence and next gate |
 | --- | --- | --- |
-| 0. Public repository scaffold | Complete | Separate `search-job/` repository, private/public boundary, `dev` workflow and documented target. |
+| 0. Public repository scaffold | Complete | Separate `search-job/` repository, `dev` workflow and documented target. |
 | 1. Data and output contract | Complete for local fixtures and historical preview | SQLite schema, opening identity/variants, title categories, age/open-state rules, deterministic README/JSON renderer and focused tests exist. A read-only old-cache projection produced the labeled root README from 78 known companies: 50 have 797 saved ATS postings; one custom-careers row lacked a verified board and was excluded. All preview postings have **unknown** current open state. The independent production DB starts with an empty openings table. |
-| 2. Collector extraction | Next | Move and recheck the nine existing provider collectors and their fixtures without private profile or Dashboard dependencies. Confirm full pagination, provider-specific IDs/dates and listing-first detail use. |
+| 2. Collector extraction | Next | Move and recheck the nine existing provider collectors and their fixtures. Confirm full pagination, provider-specific IDs/dates and listing-first detail use. |
 | 3. Company intake and routes | Planned | Implement three lead entrances, official script-first ATS discovery, provider capability registry and company-to-board verification. Import old route mappings only as pending-recheck seeds. |
-| 4. Bounded live loop and private handoff | Planned | Recheck a small set of official boards, scan, classify, render, and export JSON; import at most 10 new private candidates per batch. After a real test, refresh and inspect the separate private Dashboard and report counts/failures. |
+| 4. Bounded live search loop | Planned | Recheck a small set of official boards, scan, classify, render the root README, and export JSON. Review source, category, board and failure counts after each bounded test. |
 | 5. Local refresh and release | Planned | Add a local periodic refresh after live runs are stable; review generated changes, tests, paths and public Git history before publication. No GitHub Actions or unattended AI task is assumed. |
 
-**Current limit:** the README is a historical layout preview. It is not a current-openings feed; no new company discovery, ATS scan, route recheck, adapter extraction, Experiment 2 JSON import or schedule has run in this repository. The agent skills describe the intended four conditional AI handoffs and do not make their planned scripts available. No personal filter state or private database is published.
+**Current limit:** the README is a historical layout preview. It is not a current-openings feed; no new company discovery, ATS scan, route recheck, adapter extraction or schedule has run in this repository. The agent skills describe the intended four conditional AI handoffs and do not make their planned scripts available.

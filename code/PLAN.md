@@ -21,7 +21,7 @@ Read the three diagrams in order. Gray boxes are user inputs, blue boxes are **S
 | **AI-3 Adapter development** | The ATS provider is confirmed, but no tested collector can read it. | One reusable adapter with fixtures and a bounded official-board test. | Mark `adapter_failed` only after the attempt; retain details. |
 | **AI-4 Board verification** | Provider and adapter are known, but the company-to-board URL/token or brand association remains uncertain or unreadable after script checks. | Verified company-to-board mapping and a readable board. | Record the exact board/association failure for review. |
 
-An **AI task** is a bounded Codex run that researches, changes code when necessary, and verifies its result. These are conditional handoffs, not four mandatory calls for every company. A queued work item is not completed AI work. Routine board scans and per-job classification do not use AI reasoning. No application preparation or submission occurs here.
+An **AI task** is a bounded Codex run that researches, changes code when necessary, and verifies its result. These are conditional handoffs, not four mandatory calls for every company. A queued work item is not completed AI work. Routine board scans and per-job classification do not use AI reasoning.
 
 The project skills follow these boundaries:
 
@@ -52,7 +52,7 @@ Three entrances produce the same compact lead: company name or domain, a useful 
 
 A **provider capability registry** maps each supported ATS type and host to one reusable adapter. Company-specific board routes are separate data: `company_boards → boards → provider capability`. One company may have several boards; one board may serve several brands, so company attribution needs evidence and a shared board should be scanned once.
 
-**Script:** select the existing adapter from the provider type, find the board URL/token in official links, verify that this company's jobs belong to that board, and check that the adapter can read it. Previously verified routes can be imported as **pending recheck** seeds; official association and readability must pass before activation. **AI-3:** if the provider has no adapter, research its public listing method, implement a reusable adapter, run fixtures and a bounded official-source test. **AI-4:** when the provider/adapter is ready but the company-to-board association or readability remains unresolved, investigate the official board evidence. Only after a concrete retry fails does the workflow record the exact adapter/board failure for review and downstream dashboard reporting. Nine adapters developed in the private experiment are extraction inputs, not reasons to reimplement them.
+**Script:** select the existing adapter from the provider type, find the board URL/token in official links, verify that this company's jobs belong to that board, and check that the adapter can read it. Previously verified routes can be imported as **pending recheck** seeds; official association and readability must pass before activation. **AI-3:** if the provider has no adapter, research its public listing method, implement a reusable adapter, run fixtures and a bounded official-source test. **AI-4:** when the provider/adapter is ready but the company-to-board association or readability remains unresolved, investigate the official board evidence. Only after a concrete retry fails does the workflow record the exact adapter/board failure for review. Nine existing adapter implementations are extraction inputs, not reasons to reimplement them.
 
 ## 4. Scan boards and identify openings
 
@@ -64,7 +64,7 @@ Keep raw date field/value, precision, first and last observation, and any reliab
 
 ## 5. Assign public categories and optional evidence tags
 
-This is public **classification**, not a person's include/exclude filter. The opening stays in SQLite even when it does not enter the preferred SDE table. Title rules run first, case-insensitively, and save the rule version and reason. Categories may overlap when both rules genuinely match. A description already returned by the listing API may help with an ambiguous title; otherwise leave it `Other and unclassified` until evidence improves. There is no per-posting AI judgment.
+Every discovered opening stays in SQLite even when it does not enter the preferred SDE table. Title rules run first, case-insensitively, and save the rule version and reason. Categories may overlap when both rules genuinely match. A description already returned by the listing API may help with an ambiguous title; otherwise leave it `Other and unclassified` until evidence improves. There is no per-posting AI judgment.
 
 | Public table | Title rule for the first version |
 | --- | --- |
@@ -80,13 +80,13 @@ This is public **classification**, not a person's include/exclude filter. The op
 
 The exact executable patterns live in [`core.py`](src/search_job/core.py); this table states their intended behavior so a proposed rule change can be discussed and tested. If a title has both manager pairs, it can appear in both manager tables and still has one stable opening identity.
 
-Optional work authorization, sponsorship, citizenship, green-card, OPT/H-1B or clearance badges require explicit source evidence. An absent badge means **unknown** and never excludes a public opening. Required experience years may be stored if already available, but do not trigger mandatory detail requests or appear as a first-version README column. Personal preference filtering belongs to a downstream private consumer, not Search Job's public categories.
+Optional work authorization, sponsorship, citizenship, green-card, OPT/H-1B or clearance badges require explicit source evidence. An absent badge means **unknown** and never excludes a public opening. Required experience years may be stored if already available, but do not trigger mandatory detail requests or appear as a first-version README column.
 
 ## 6. Publish the result
 
 Search Job's **local SQLite is the source of truth**. Rendering queries it at a chosen as-of time and builds the root README deterministically. The page starts with a short reader-facing explanation, category links/counts, then category tables with **Company** (official site), **Role**, **Location**, **Application** (`Apply` linked to the official URL), and **Age**. Each category sorts newer roles first; inactive roles stay in a collapsed section. Age remains in days (`0d`, `1d`, `90d`): `🔎` marks first discovery rather than ATS publication, and `†` marks date-only source precision. For a precise timestamp, `0d` means less than 24 hours; a date-only source does not claim hour precision.
 
-The same DB produces a **versioned JSON export** with stable opening keys, variants, tags, date provenance and open state; a future handoff also exposes unresolved route/adapter/board failures. A downstream personal application tool may apply its own filter and import it idempotently, then show failures in its private Dashboard; Search Job does not read or modify that consumer's private database. Generated README rows are changed by updating rules/data and rerendering, not by hand-editing output. Private SQLite, credentials and run logs never enter Git. Development changes are reviewed and pushed to `origin/dev`; `main` changes only on explicit merge instruction. A local scheduled refresh is a later stage; GitHub Actions and unattended AI work are not assumed.
+The same DB produces a **versioned JSON export** with stable opening keys, variants, tags, date provenance and open state. Unresolved route, adapter and board failures stay recorded for review. Generated README rows are changed by updating rules/data and rerendering, not by hand-editing output. Local SQLite, credentials and run logs never enter Git. Development changes are reviewed and pushed to `origin/dev`; `main` changes only on explicit merge instruction. A local scheduled refresh is a later stage; GitHub Actions and unattended AI work are not assumed.
 
 ## Contributing to the rules
 
