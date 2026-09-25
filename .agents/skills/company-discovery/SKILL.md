@@ -1,10 +1,12 @@
 ---
 name: company-discovery
-description: Gather a bounded set of public company leads for Search Job from AI discovery, user links, or a named list; do not collect or apply to jobs.
+description: Collect and normalize a bounded Search Job company-lead batch from requested AI discovery, user links, or a named third-party list; hand unresolved companies to ATS routing.
 ---
 
 # Company discovery
 
-Use the requested entry only: a bounded AI/web discovery batch, user-provided company or application links, or a user-named list. Record the company name, plausible official domain, direct application link when available, and source. A third-party link is a lead; verify company identity and ATS route before treating it as a board.
+Use this skill for **AI-1** only when new company discovery is requested, or to normalize a user-supplied/named-list lead batch without AI. Read [STAGE.md](../../../code/STAGE.md) before calling a workflow; planned intake scripts are not yet available merely because they appear in [PLAN.md](../../../code/PLAN.md).
 
-Skip a company-to-board route already verified and due for no recheck. Send new or uncertain routes to official ATS verification. Do not infer an adapter from a company name or perform personal job filtering or application work.
+Choose the entrance the user requested: bounded AI/web discovery, supplied company or job/application links, or a named list such as Simplify. Preserve its **Application** URL when present, along with company name, plausible official domain, source, and the cursor or source position needed to resume a large list. Process one bounded batch from the saved position; do not repeatedly restart a thousand-company source or expand the search scope on your own.
+
+Normalize and deduplicate with scripts where implemented. Skip a company whose verified route is still current, but keep a new application link as evidence if it may reveal a changed board. A third-party Apply URL is a lead, never proof of company-to-board ownership. Send genuinely new, stale or uncertain routes to [ATS routing](../ats-routing/SKILL.md), with the original link and source.

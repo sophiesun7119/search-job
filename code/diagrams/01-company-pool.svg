@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="340" viewBox="0 0 760 340" role="img" aria-label="1. Build the company pool">
+<title>1. Build the company pool</title>
+<style>
+  text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; fill: #243447; }
+  .title { font-size: 20px; font-weight: 700; fill: #173650; }
+</style>
+<rect x="0.5" y="0.5" width="759" height="339" rx="14" fill="#fbfcfe" stroke="#dfe6ef"/>
+<rect x="20" y="12" width="4" height="22" rx="2" fill="#557eab"/>
+<rect x="20" y="41" width="720" height="1" fill="#e4eaf1"/>
+<text class="title" x="34" y="29">1. Build the company pool</text>
+<rect x="20" y="52" width="220" height="54" rx="8" fill="#f2f4f7" stroke="#758394" stroke-width="1.5"/>
+<text x="130.0" y="69.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="130.0" dy="0" font-weight="700">User provides</tspan>
+<tspan x="130.0" dy="20">job / careers link</tspan>
+</text>
+<rect x="270" y="52" width="220" height="54" rx="8" fill="#f2f4f7" stroke="#758394" stroke-width="1.5"/>
+<text x="380.0" y="69.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="380.0" dy="0" font-weight="700">User names</tspan>
+<tspan x="380.0" dy="20">source list, e.g. Simplify</tspan>
+</text>
+<rect x="520" y="52" width="220" height="54" rx="8" fill="#f1eaff" stroke="#8364ae" stroke-width="1.5"/>
+<text x="630.0" y="69.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="630.0" dy="0" font-weight="700">AI-1</tspan>
+<tspan x="630.0" dy="20">Search new companies</tspan>
+</text>
+<rect x="20" y="131" width="220" height="50" rx="8" fill="#eaf3ff" stroke="#557eab" stroke-width="1.5"/>
+<text x="130.0" y="146.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="130.0" dy="0" font-weight="700">Script</tspan>
+<tspan x="130.0" dy="20">Read job link</tspan>
+</text>
+<rect x="270" y="131" width="220" height="50" rx="8" fill="#eaf3ff" stroke="#557eab" stroke-width="1.5"/>
+<text x="380.0" y="146.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="380.0" dy="0" font-weight="700">Script</tspan>
+<tspan x="380.0" dy="20">Read list / Apply links</tspan>
+</text>
+<rect x="270" y="219" width="220" height="50" rx="8" fill="#eaf3ff" stroke="#557eab" stroke-width="1.5"/>
+<text x="380.0" y="234.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="380.0" dy="0" font-weight="700">Script</tspan>
+<tspan x="380.0" dy="20">Normalize and deduplicate</tspan>
+</text>
+<rect x="270" y="289" width="220" height="46" rx="8" fill="#eaf7ed" stroke="#598d68" stroke-width="1.5"/>
+<text x="380.0" y="302.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="380.0" dy="0" font-weight="700">Company pool</tspan>
+<tspan x="380.0" dy="20">Unique company list</tspan>
+</text>
+<rect x="129.0" y="106.0" width="2" height="25.0" fill="#54677b"/>
+<polygon points="130.0,131.0 126.0,123.0 134.0,123.0" fill="#54677b"/>
+<rect x="379.0" y="106.0" width="2" height="25.0" fill="#54677b"/>
+<polygon points="380.0,131.0 376.0,123.0 384.0,123.0" fill="#54677b"/>
+<rect x="129.0" y="181.0" width="2" height="63.0" fill="#54677b"/>
+<rect x="130.0" y="243.0" width="140.0" height="2" fill="#54677b"/>
+<polygon points="270.0,244.0 262.0,240.0 262.0,248.0" fill="#54677b"/>
+<rect x="379.0" y="181.0" width="2" height="38.0" fill="#54677b"/>
+<polygon points="380.0,219.0 376.0,211.0 384.0,211.0" fill="#54677b"/>
+<rect x="629.0" y="106.0" width="2" height="138.0" fill="#54677b"/>
+<rect x="490.0" y="243.0" width="140.0" height="2" fill="#54677b"/>
+<polygon points="490.0,244.0 498.0,240.0 498.0,248.0" fill="#54677b"/>
+<rect x="379.0" y="269.0" width="2" height="20.0" fill="#54677b"/>
+<polygon points="380.0,289.0 376.0,281.0 384.0,281.0" fill="#54677b"/>
+</svg>
