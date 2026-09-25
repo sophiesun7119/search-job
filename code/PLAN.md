@@ -5,42 +5,31 @@ This document describes the **current target workflow and public classification 
 ## End-to-end flow
 
 ```mermaid
-flowchart TB
-    A["Company leads<br/>AI discovery · supplied link · named list"]
-    B["Script: normalize and deduplicate company leads"]
-    C{"Script: official company-to-ATS route found?"}
-    C1["AI task: investigate unresolved official route"]
-    D["Script: identify ATS provider"]
-    E{"Adapter available?"}
-    E1["AI task: develop adapter and verify fixtures"]
-    F["Script: confirm company ↔ board URL or token"]
-    F1["AI task: investigate unresolved board evidence"]
-    R["Recorded failure and review queue"]
-    G["Script: scan the complete board"]
-    H["Script: normalize identity, dates, locations and open state"]
-    I["Script: assign public title-based categories and evidence tags"]
-    J["Search Job SQLite: source of truth"]
-    K["Script: render category tables in root README"]
-    L["Script: export versioned JSON for downstream consumers"]
-
-    A --> B --> C
-    C -- No --> C1
-    C1 -- Found --> D
-    C1 -- Unresolved --> R
-    C -- Yes --> D --> E
-    E -- No --> E1
-    E1 -- Tested adapter --> F
-    E1 -- Failed --> R
-    E -- Yes --> F
-    F -- Unverified --> F1
-    F1 -- Verified --> G
-    F1 -- Unresolved --> R
-    F -- Verified --> G --> H --> I --> J
-    J --> K
-    J --> L
+flowchart TD
+    A["Company leads"] --> B["Normalize leads"]
+    B --> C["Verify ATS"]
+    C --> D["Resolve adapter"]
+    D --> E["Verify board"]
+    E --> F["Scan board"]
+    F --> G["Normalize jobs"]
+    G --> H["Classify jobs"]
+    H --> I["Save SQLite"]
+    I --> J["Build README"]
+    I --> K["Export JSON"]
 ```
 
-**Script** means deterministic code. **AI task** means an actual bounded Codex task that researches an unresolved case, changes code when needed, and tests it. A script can create a work item, but cannot claim the AI task finished. Routine scans and per-job classification do not ask AI to reason about each posting. No application preparation or submission occurs here.
+The main path is **script-run** after leads enter. The four possible AI tasks have different missions:
+
+| AI task | Trigger and input | Successful result | If unresolved |
+| --- | --- | --- | --- |
+| **AI-1 Company discovery** | A user requests a bounded search for new companies; existing companies and named lists are handled by scripts first. | Sourced company leads with useful careers/Application links. | Keep the discovery batch position and concrete failure. |
+| **AI-2 ATS investigation** | The official company careers route does not reveal a clear ATS host/path after script extraction and one bounded search. | Evidence-backed company-to-ATS provider route. | Record the unresolved route and evidence. |
+| **AI-3 Adapter development** | The ATS provider is confirmed, but no tested collector can read it. | One reusable adapter with fixtures and a bounded official-board test. | Mark `adapter_failed` only after the attempt; retain details. |
+| **AI-4 Board verification** | Provider and adapter are known, but the company-to-board URL/token or brand association remains uncertain or unreadable after script checks. | Verified company-to-board mapping and a readable board. | Record the exact board/association failure for review. |
+
+An **AI task** is a bounded Codex run that researches, changes code when necessary, and verifies its result. These are conditional handoffs, not four mandatory calls for every company. A queued work item is not completed AI work. Routine board scans and per-job classification do not use AI reasoning. No application preparation or submission occurs here.
+
+The project skills follow this boundary: [`search-job-run`](../.agents/skills/search-job-run/SKILL.md) coordinates an authorized run; [`company-discovery`](../.agents/skills/company-discovery/SKILL.md), [`ats-routing`](../.agents/skills/ats-routing/SKILL.md), [`ats-adapter`](../.agents/skills/ats-adapter/SKILL.md), and [`board-verification`](../.agents/skills/board-verification/SKILL.md) cover AI-1 through AI-4 respectively. [`job-search`](../.agents/skills/job-search/SKILL.md) guides verified-board scans and publication. [STAGE.md](STAGE.md) states which underlying scripts are available now.
 
 ## 1. Find company leads
 
@@ -60,7 +49,7 @@ Three entrances produce the same compact lead: company name or domain, a useful 
 
 A **provider capability registry** maps each supported ATS type and host to one reusable adapter. Company-specific board routes are separate data: `company_boards → boards → provider capability`. One company may have several boards; one board may serve several brands, so company attribution needs evidence and a shared board should be scanned once.
 
-**Script:** select the existing adapter from the provider type, find the board URL/token in official links, verify that this company's jobs belong to that board, and check that the adapter can read it. Previously verified routes can be imported as **pending recheck** seeds; official association and readability must pass before activation. **AI:** if the provider has no adapter, research its public listing method, implement the adapter, run fixtures and a bounded official-source test, then retry the affected board. AI also investigates company-to-board evidence the script cannot resolve. Only after a concrete retry fails does the workflow record the exact route/adapter/board failure for review and downstream dashboard reporting. Nine adapters developed in the private experiment are extraction inputs, not reasons to reimplement them.
+**Script:** select the existing adapter from the provider type, find the board URL/token in official links, verify that this company's jobs belong to that board, and check that the adapter can read it. Previously verified routes can be imported as **pending recheck** seeds; official association and readability must pass before activation. **AI-3:** if the provider has no adapter, research its public listing method, implement a reusable adapter, run fixtures and a bounded official-source test. **AI-4:** when the provider/adapter is ready but the company-to-board association or readability remains unresolved, investigate the official board evidence. Only after a concrete retry fails does the workflow record the exact adapter/board failure for review and downstream dashboard reporting. Nine adapters developed in the private experiment are extraction inputs, not reasons to reimplement them.
 
 ## 4. Scan boards and identify openings
 

@@ -29,3 +29,5 @@ python3 -m unittest discover -s code/tests -v
 ```
 
 The root README is for readers, this guide is for running the available code, [PLAN.md](PLAN.md) is the latest architecture, and [STAGE.md](STAGE.md) is the progress record. Personal application filters and submissions belong outside Search Job.
+
+For a future authorized local run, the [Search Job run skill](../.agents/skills/search-job-run/SKILL.md) coordinates the four distinct AI handoffs and script-run scan. It checks STAGE before using any planned command.
