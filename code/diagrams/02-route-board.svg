@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="495" viewBox="0 0 760 495" role="img" aria-label="2. Verify ATS, adapter and board">
+<title>2. Verify ATS, adapter and board</title>
+<style>
+  text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; fill: #243447; }
+  .title { font-size: 20px; font-weight: 700; }
+</style>
+<rect x="0" y="0" width="760" height="495" fill="#ffffff"/>
+<text class="title" x="20" y="29">2. Verify ATS, adapter and board</text>
+<rect x="20" y="49" width="205" height="44" rx="8" fill="#eaf7ed" stroke="#598d68" stroke-width="1.5"/>
+<text x="122.5" y="61.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="122.5" dy="0" font-weight="700">Company pool</tspan>
+<tspan x="122.5" dy="20">One company at a time</tspan>
+</text>
+<rect x="20" y="112" width="205" height="51" rx="8" fill="#eaf3ff" stroke="#557eab" stroke-width="1.5"/>
+<text x="122.5" y="127.5" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="122.5" dy="0" font-weight="700">Script check</tspan>
+<tspan x="122.5" dy="20">Official ATS known?</tspan>
+</text>
+<rect x="280" y="112" width="205" height="51" rx="8" fill="#f1eaff" stroke="#8364ae" stroke-width="1.5"/>
+<text x="382.5" y="127.5" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="382.5" dy="0" font-weight="700">AI-2</tspan>
+<tspan x="382.5" dy="20">Investigate ATS</tspan>
+</text>
+<rect x="540" y="112" width="200" height="51" rx="8" fill="#fff0ed" stroke="#b97869" stroke-width="1.5"/>
+<text x="640.0" y="127.5" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="640.0" dy="0" font-weight="700">Review</tspan>
+<tspan x="640.0" dy="20">ATS route unresolved</tspan>
+</text>
+<rect x="20" y="217" width="205" height="51" rx="8" fill="#eaf3ff" stroke="#557eab" stroke-width="1.5"/>
+<text x="122.5" y="232.5" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="122.5" dy="0" font-weight="700">Script check</tspan>
+<tspan x="122.5" dy="20">Adapter ready?</tspan>
+</text>
+<rect x="280" y="217" width="205" height="51" rx="8" fill="#f1eaff" stroke="#8364ae" stroke-width="1.5"/>
+<text x="382.5" y="232.5" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="382.5" dy="0" font-weight="700">AI-3</tspan>
+<tspan x="382.5" dy="20">Build and test adapter</tspan>
+</text>
+<rect x="540" y="217" width="200" height="51" rx="8" fill="#fff0ed" stroke="#b97869" stroke-width="1.5"/>
+<text x="640.0" y="232.5" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="640.0" dy="0" font-weight="700">Review</tspan>
+<tspan x="640.0" dy="20">Adapter failed</tspan>
+</text>
+<rect x="20" y="322" width="205" height="51" rx="8" fill="#eaf3ff" stroke="#557eab" stroke-width="1.5"/>
+<text x="122.5" y="337.5" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="122.5" dy="0" font-weight="700">Script check</tspan>
+<tspan x="122.5" dy="20">Company board verified?</tspan>
+</text>
+<rect x="280" y="322" width="205" height="51" rx="8" fill="#f1eaff" stroke="#8364ae" stroke-width="1.5"/>
+<text x="382.5" y="337.5" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="382.5" dy="0" font-weight="700">AI-4</tspan>
+<tspan x="382.5" dy="20">Verify board mapping</tspan>
+</text>
+<rect x="540" y="322" width="200" height="51" rx="8" fill="#fff0ed" stroke="#b97869" stroke-width="1.5"/>
+<text x="640.0" y="337.5" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="640.0" dy="0" font-weight="700">Review</tspan>
+<tspan x="640.0" dy="20">Board unresolved</tspan>
+</text>
+<rect x="20" y="427" width="205" height="51" rx="8" fill="#eaf7ed" stroke="#598d68" stroke-width="1.5"/>
+<text x="122.5" y="442.5" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="122.5" dy="0" font-weight="700">Verified board</tspan>
+<tspan x="122.5" dy="20">Ready to scan</tspan>
+</text>
+<rect x="121.0" y="93.0" width="2" height="19.0" fill="#54677b"/>
+<polygon points="122.0,112.0 118.0,104.0 126.0,104.0" fill="#54677b"/>
+<rect x="225.0" y="136.0" width="55.0" height="2" fill="#54677b"/>
+<polygon points="280.0,137.0 272.0,133.0 272.0,141.0" fill="#54677b"/>
+<rect x="485.0" y="136.0" width="55.0" height="2" fill="#54677b"/>
+<polygon points="540.0,137.0 532.0,133.0 532.0,141.0" fill="#54677b"/>
+<rect x="121.0" y="163.0" width="2" height="54.0" fill="#54677b"/>
+<polygon points="122.0,217.0 118.0,209.0 126.0,209.0" fill="#54677b"/>
+<rect x="381.0" y="163.0" width="2" height="27.0" fill="#54677b"/>
+<rect x="122.0" y="189.0" width="260.0" height="2" fill="#54677b"/>
+<polygon points="122.0,190.0 130.0,186.0 130.0,194.0" fill="#54677b"/>
+<text x="236" y="130" text-anchor="start" fill="#536476" font-family="Arial, sans-serif" font-size="12">No</text>
+<text x="492" y="130" text-anchor="start" fill="#536476" font-family="Arial, sans-serif" font-size="12">Unresolved</text>
+<text x="78" y="196" text-anchor="start" fill="#536476" font-family="Arial, sans-serif" font-size="12">Yes</text>
+<text x="275" y="185" text-anchor="start" fill="#536476" font-family="Arial, sans-serif" font-size="12">Resolved / pass</text>
+<rect x="225.0" y="241.0" width="55.0" height="2" fill="#54677b"/>
+<polygon points="280.0,242.0 272.0,238.0 272.0,246.0" fill="#54677b"/>
+<rect x="485.0" y="241.0" width="55.0" height="2" fill="#54677b"/>
+<polygon points="540.0,242.0 532.0,238.0 532.0,246.0" fill="#54677b"/>
+<rect x="121.0" y="268.0" width="2" height="54.0" fill="#54677b"/>
+<polygon points="122.0,322.0 118.0,314.0 126.0,314.0" fill="#54677b"/>
+<rect x="381.0" y="268.0" width="2" height="27.0" fill="#54677b"/>
+<rect x="122.0" y="294.0" width="260.0" height="2" fill="#54677b"/>
+<polygon points="122.0,295.0 130.0,291.0 130.0,299.0" fill="#54677b"/>
+<text x="236" y="235" text-anchor="start" fill="#536476" font-family="Arial, sans-serif" font-size="12">No</text>
+<text x="492" y="235" text-anchor="start" fill="#536476" font-family="Arial, sans-serif" font-size="12">Unresolved</text>
+<text x="78" y="301" text-anchor="start" fill="#536476" font-family="Arial, sans-serif" font-size="12">Yes</text>
+<text x="275" y="290" text-anchor="start" fill="#536476" font-family="Arial, sans-serif" font-size="12">Resolved / pass</text>
+<rect x="225.0" y="346.0" width="55.0" height="2" fill="#54677b"/>
+<polygon points="280.0,347.0 272.0,343.0 272.0,351.0" fill="#54677b"/>
+<rect x="485.0" y="346.0" width="55.0" height="2" fill="#54677b"/>
+<polygon points="540.0,347.0 532.0,343.0 532.0,351.0" fill="#54677b"/>
+<rect x="121.0" y="373.0" width="2" height="54.0" fill="#54677b"/>
+<polygon points="122.0,427.0 118.0,419.0 126.0,419.0" fill="#54677b"/>
+<rect x="381.0" y="373.0" width="2" height="27.0" fill="#54677b"/>
+<rect x="122.0" y="399.0" width="260.0" height="2" fill="#54677b"/>
+<polygon points="122.0,400.0 130.0,396.0 130.0,404.0" fill="#54677b"/>
+<text x="236" y="340" text-anchor="start" fill="#536476" font-family="Arial, sans-serif" font-size="12">No</text>
+<text x="492" y="340" text-anchor="start" fill="#536476" font-family="Arial, sans-serif" font-size="12">Unresolved</text>
+<text x="78" y="406" text-anchor="start" fill="#536476" font-family="Arial, sans-serif" font-size="12">Yes</text>
+<text x="275" y="395" text-anchor="start" fill="#536476" font-family="Arial, sans-serif" font-size="12">Resolved / pass</text>
+</svg>

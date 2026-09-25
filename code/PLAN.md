@@ -4,58 +4,15 @@ This document describes the **current target workflow and public classification 
 
 ## End-to-end flow
 
-```mermaid
-flowchart TD
-    U1["User provides<br/>job link"] --> S1["Script<br/>Read job link"]
-    U2["User names<br/>source list"] --> S2["Script<br/>Read list links"]
-    A1["AI-1<br/>Search companies"] -->|Found| B["Script<br/>Deduplicate"]
-    A1 -->|No result| R0["Record<br/>Batch outcome"]
-    S1 --> B
-    S2 --> B
-    B --> P["Company pool<br/>Unique companies"]
+![Build the company pool: user links, named lists and AI discovery converge on a deduplicated company list.](diagrams/01-company-pool.svg)
 
-    P --> C{"Script<br/>ATS found?"}
-    C -->|No| C1["AI-2<br/>Investigate ATS"]
-    C1 -->|Found| D["Script<br/>Identify provider"]
-    C1 -->|Unresolved| R1["Review<br/>Route blocked"]
-    C -->|Yes| D
+![Verify each company: scripts check ATS, adapter and board; AI handles unresolved cases and records failures.](diagrams/02-route-board.svg)
 
-    D --> E{"Script<br/>Adapter ready?"}
-    E -->|No| E1["AI-3<br/>Build and test"]
-    E1 -->|Pass| F{"Script<br/>Board verified?"}
-    E1 -->|Fail| R2["Review<br/>Adapter failed"]
-    E -->|Yes| F
-
-    F -->|No| F1["AI-4<br/>Verify board"]
-    F1 -->|Pass| G["Script<br/>Scan full board"]
-    F1 -->|Unresolved| R3["Review<br/>Board blocked"]
-    F -->|Yes| G
-
-    G --> G0{"Script<br/>Scan complete?"}
-    G0 -->|No| R4["Review<br/>Scan incomplete"]
-    G0 -->|Yes| H["Script<br/>Normalize jobs"]
-    H --> I["Script<br/>Classify jobs"]
-    I --> J["Script<br/>Save SQLite"]
-    J --> K["Script<br/>Build README"]
-    J --> L["Script<br/>Export JSON"]
-
-    classDef script fill:#e9f3ff,stroke:#4779a8,color:#17324d
-    classDef ai fill:#f1eaff,stroke:#8060b0,color:#35204f
-    classDef decision fill:#fff4d6,stroke:#ad8531,color:#4c3710
-    classDef review fill:#fff0ed,stroke:#bc6857,color:#5e241b
-    classDef input fill:#f1f3f5,stroke:#697582,color:#26313b
-    classDef data fill:#e9f7ed,stroke:#4d8a61,color:#21432b
-    class C,E,F,G0 decision
-    class S1,S2,B,D,G,H,I,J,K,L script
-    class A1,C1,E1,F1 ai
-    class R0,R1,R2,R3,R4 review
-    class U1,U2 input
-    class P data
-```
+![Scan and publish: complete boards become normalized, classified jobs in SQLite, then the root README and JSON export.](diagrams/03-scan-publish.svg)
 
 The three entrances are a user-provided job or careers link, a user-named source list such as Simplify, and a requested AI search for new companies. Each yields a company name with any useful careers/Application link and its source. The script deduplicates those candidates into the **company pool**: one saved company list with links and source evidence. A place in the pool does not mean its ATS or board is verified. This pool and the intake scripts are part of the target workflow; [STAGE.md](STAGE.md) records when they become runnable.
 
-Read the diagram from top to bottom. Gray boxes are user inputs, blue boxes are **Script**, purple boxes are bounded **AI tasks**, green is the company pool, yellow diamonds are checks, and red boxes record batch outcomes or blockers. A successful branch rejoins the script path; a failed or unresolved branch records its exact outcome. The four possible AI tasks have different missions:
+Read the three diagrams in order. Gray boxes are user inputs, blue boxes are **Script**, purple boxes are bounded **AI tasks**, green boxes are saved data or verified routes, and red boxes record batch outcomes or blockers. Rectangles and right-angle arrows have fixed positions in the checked-in SVGs, so local Markdown previews and GitHub use the same diagram layout. The four possible AI tasks have different missions:
 
 | AI task | Trigger and input | Successful result | If unresolved |
 | --- | --- | --- | --- |

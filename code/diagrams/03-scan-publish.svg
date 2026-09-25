@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="370" viewBox="0 0 760 370" role="img" aria-label="3. Scan, classify and publish">
+<title>3. Scan, classify and publish</title>
+<style>
+  text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; fill: #243447; }
+  .title { font-size: 20px; font-weight: 700; }
+</style>
+<rect x="0" y="0" width="760" height="370" fill="#ffffff"/>
+<text class="title" x="20" y="29">3. Scan, classify and publish</text>
+<rect x="20" y="52" width="170" height="52" rx="8" fill="#eaf7ed" stroke="#598d68" stroke-width="1.5"/>
+<text x="105.0" y="68.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="105.0" dy="0" font-weight="700">Verified board</tspan>
+<tspan x="105.0" dy="20">Official route</tspan>
+</text>
+<rect x="230" y="52" width="170" height="52" rx="8" fill="#eaf3ff" stroke="#557eab" stroke-width="1.5"/>
+<text x="315.0" y="68.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="315.0" dy="0" font-weight="700">Script</tspan>
+<tspan x="315.0" dy="20">Scan full board</tspan>
+</text>
+<rect x="440" y="52" width="170" height="52" rx="8" fill="#eaf3ff" stroke="#557eab" stroke-width="1.5"/>
+<text x="525.0" y="68.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="525.0" dy="0" font-weight="700">Script check</tspan>
+<tspan x="525.0" dy="20">Scan complete?</tspan>
+</text>
+<rect x="440" y="143" width="270" height="50" rx="8" fill="#fff0ed" stroke="#b97869" stroke-width="1.5"/>
+<text x="575.0" y="158.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="575.0" dy="0" font-weight="700">Record incomplete scan</tspan>
+<tspan x="575.0" dy="20">Keep prior open states</tspan>
+</text>
+<rect x="20" y="211" width="170" height="52" rx="8" fill="#eaf3ff" stroke="#557eab" stroke-width="1.5"/>
+<text x="105.0" y="227.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="105.0" dy="0" font-weight="700">Script</tspan>
+<tspan x="105.0" dy="20">Normalize jobs / dates</tspan>
+</text>
+<rect x="230" y="211" width="170" height="52" rx="8" fill="#eaf3ff" stroke="#557eab" stroke-width="1.5"/>
+<text x="315.0" y="227.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="315.0" dy="0" font-weight="700">Script</tspan>
+<tspan x="315.0" dy="20">Classify public jobs</tspan>
+</text>
+<rect x="440" y="211" width="170" height="52" rx="8" fill="#eaf7ed" stroke="#598d68" stroke-width="1.5"/>
+<text x="525.0" y="227.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="525.0" dy="0" font-weight="700">SQLite</tspan>
+<tspan x="525.0" dy="20">Source of truth</tspan>
+</text>
+<rect x="230" y="294" width="170" height="52" rx="8" fill="#eaf3ff" stroke="#557eab" stroke-width="1.5"/>
+<text x="315.0" y="310.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="315.0" dy="0" font-weight="700">Script</tspan>
+<tspan x="315.0" dy="20">Build root README</tspan>
+</text>
+<rect x="440" y="294" width="170" height="52" rx="8" fill="#eaf3ff" stroke="#557eab" stroke-width="1.5"/>
+<text x="525.0" y="310.0" text-anchor="middle" dominant-baseline="middle" fill="#243447" font-family="Arial, sans-serif" font-size="16">
+<tspan x="525.0" dy="0" font-weight="700">Script</tspan>
+<tspan x="525.0" dy="20">Export JSON</tspan>
+</text>
+<rect x="190.0" y="77.0" width="40.0" height="2" fill="#54677b"/>
+<polygon points="230.0,78.0 222.0,74.0 222.0,82.0" fill="#54677b"/>
+<rect x="400.0" y="77.0" width="40.0" height="2" fill="#54677b"/>
+<polygon points="440.0,78.0 432.0,74.0 432.0,82.0" fill="#54677b"/>
+<rect x="610.0" y="77.0" width="70.0" height="2" fill="#54677b"/>
+<rect x="679.0" y="78.0" width="2" height="65.0" fill="#54677b"/>
+<polygon points="680.0,143.0 676.0,135.0 684.0,135.0" fill="#54677b"/>
+<text x="620" y="68" text-anchor="start" fill="#536476" font-family="Arial, sans-serif" font-size="12">No</text>
+<rect x="499.0" y="104.0" width="2" height="22.0" fill="#54677b"/>
+<rect x="105.0" y="125.0" width="395.0" height="2" fill="#54677b"/>
+<rect x="104.0" y="126.0" width="2" height="85.0" fill="#54677b"/>
+<polygon points="105.0,211.0 101.0,203.0 109.0,203.0" fill="#54677b"/>
+<text x="335" y="120" text-anchor="start" fill="#536476" font-family="Arial, sans-serif" font-size="12">Yes</text>
+<rect x="190.0" y="236.0" width="40.0" height="2" fill="#54677b"/>
+<polygon points="230.0,237.0 222.0,233.0 222.0,241.0" fill="#54677b"/>
+<rect x="400.0" y="236.0" width="40.0" height="2" fill="#54677b"/>
+<polygon points="440.0,237.0 432.0,233.0 432.0,241.0" fill="#54677b"/>
+<rect x="524.0" y="263.0" width="2" height="16.0" fill="#54677b"/>
+<rect x="315.0" y="278.0" width="210.0" height="2" fill="#54677b"/>
+<rect x="314.0" y="279.0" width="2" height="15.0" fill="#54677b"/>
+<polygon points="315.0,294.0 311.0,286.0 319.0,286.0" fill="#54677b"/>
+<rect x="524.0" y="279.0" width="2" height="15.0" fill="#54677b"/>
+<polygon points="525.0,294.0 521.0,286.0 529.0,286.0" fill="#54677b"/>
+<text x="20" y="362" text-anchor="start" fill="#536476" font-family="Arial, sans-serif" font-size="12">Public classification only; personal application filters belong downstream.</text>
+</svg>
