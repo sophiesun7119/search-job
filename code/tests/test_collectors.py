@@ -122,6 +122,8 @@ class CollectorTest(unittest.TestCase):
                 self.assertEqual(db.execute("SELECT COUNT(*) FROM source_leads").fetchone()[0], 3)
                 self.assertEqual(import_simplify_catalog(db, catalog, limit=2)["selected"], 0)
         self.assertEqual(recognize_apply_url("https://jobs.lever.co/acme/123"), ("lever", "acme"))
+        self.assertEqual(recognize_apply_url("https://app.careerpuck.com/job-board/color-health/job/123"),
+                         ("careerpuck", "color-health"))
 
     def test_seed_and_scan_idempotent_and_failed_scan_is_inert(self):
         with tempfile.TemporaryDirectory() as directory:

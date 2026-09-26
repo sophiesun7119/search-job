@@ -1,6 +1,6 @@
 # Search Job
 
-Find recently posted US-located jobs from company career pages, grouped by role. Search Job currently tracks **111** companies in its company pool; the listings below come from boards that have completed a scan. Follow a category and apply through the original job link while the role is fresh.
+Find recently posted US-located jobs from company career pages, grouped by role. Search Job currently tracks **112** companies in its company pool; the listings below come from boards that have completed a scan. Follow a category and apply through the original job link while the role is fresh.
 
 Scripts collect and sort openings; AI agents assist with development and requested investigations of new company routes. **Updates are manually triggered today.** An automatic refresh about every six hours is planned.
 
@@ -16,7 +16,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 </details>
 
 <a id="categories"></a>
-## Browse 592 openings by category
+## Browse 595 openings by category
 
 - [Software Engineering — Senior and unspecified](#sde) (75)
 - [Software Engineering — Junior and New Grad](#sde-entry) (10)
@@ -27,7 +27,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 - [QA and Test](#qa-test) (11)
 - [Analyst](#analyst) (40)
 - [Scientist and Researcher](#scientist) (11)
-- [Other and unclassified](#other) (411)
+- [Other and unclassified](#other) (414)
 
 <a id="sde"></a>
 ## Software Engineering — Senior and unspecified
@@ -146,7 +146,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [Atoms](https://atoms.co/) | Staff Machine Learning Engineer - World Models City | San Francisco, CA | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8842781002) | 1d |
 | [Atoms](https://atoms.co/) | Staff Machine Learning Engineer - Action Models | San Francisco, CA | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8842768002) | 1d |
 | [Databricks](https://databricks.com/) | Staff Software Engineer, Agent Quality | New York City, New York | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=8842963002) | 1d |
-| [Anthropic](https://anthropic.com/) | Staff+ Software Engineer, Access Programs | San Francisco, CA &#124; New York City, NY &#124; Seattle, WA | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5433814008) | 1d |
+| [Anthropic](https://anthropic.com/) | Staff+ Software Engineer, Access Programs | San Francisco, CA &#124; New York City, NY &#124; Seattle, WA | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5433814008) | 2d |
 | [Anthropic](https://anthropic.com/) | Staff+ Software Engineer, Account Creation | San Francisco, CA &#124; New York City, NY &#124; Seattle, WA | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5433813008) | 2d |
 | [CACI](https://caci.com/) | Staff AI/ML Engineer | King of Prussia, PA, US | [Apply](https://searchcareers.caci.com/careers/job/1443150932886?domain=caci.com&amp;hl=en) | 2d † |
 | [Sierra Nevada Corporation](https://sncorp.com/) | Principal Systems Engineer - SIL | Dayton, OH; United States of America | [Apply](https://snc.wd1.myworkdayjobs.com/SNC_External_Career_Site/job/Dayton-OH/Principal-Systems-Engineer---SIL_R0030692) | 2d † |
@@ -466,11 +466,13 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [Stripe](https://stripe.com/) | Partner Marketing Manager, Online &amp; Regional Events | Seattle or San Francisco or Chicago or New York City or US-Remote | [Apply](https://stripe.com/jobs/search?gh_jid=8175661) | 1d |
 | [Together AI](https://together.ai/) | Senior Recruiter, GTM &amp; Business | San Francisco | [Apply](https://job-boards.greenhouse.io/togetherai/jobs/5247117007) | 1d |
 | [Atoms](https://atoms.co/) | Installation Project Manager | New York, NY | [Apply](https://job-boards.greenhouse.io/cssmerge/jobs/8843481002) | 1d |
+| [Cerebras](https://www.cerebras.ai/open-positions) | Senior ASIC RTL Design Engineer, AI Hardware | Sunnyvale, CA | [Apply](https://jobs.ashbyhq.com/cerebras/4a7be83c-5d32-46b7-9d30-cf6759922237) | 1d |
 | [Perplexity](https://perplexity.ai/) | Global Mobility Lead | San Francisco | [Apply](https://jobs.ashbyhq.com/perplexity/441daa65-5fd9-499d-91ac-acecdc1952d2) | 1d |
 | [SpaceX](https://spacex.com/) | Sr. Environmental Health &amp; Safety Engineer, Contractor Management | Hawthorne, CA | [Apply](https://boards.greenhouse.io/spacex/jobs/8838219002?gh_jid=8838219002) | 1d |
 | [SpaceX](https://spacex.com/) | Sr. Environmental Health &amp; Safety Engineer, Contractor Management | Starbase, TX | [Apply](https://boards.greenhouse.io/spacex/jobs/8838213002?gh_jid=8838213002) | 1d |
 | [SpaceX](https://spacex.com/) | Sr. Environmental Health &amp; Safety Engineer, Contractor Management | Bastrop, TX | [Apply](https://boards.greenhouse.io/spacex/jobs/8838211002?gh_jid=8838211002) | 1d |
 | [SpaceX](https://spacex.com/) | Sr. Environmental Health &amp; Safety Engineer, Contractor Management | McGregor, TX | [Apply](https://boards.greenhouse.io/spacex/jobs/8838092002?gh_jid=8838092002) | 1d |
+| [Cerebras](https://www.cerebras.ai/open-positions) | ERP Engineer - Business Systems | Sunnyvale, CA | [Apply](https://jobs.ashbyhq.com/cerebras/61cb76d6-0e5f-43d1-ad2e-a282a84e0d21) | 1d |
 | [SpaceX](https://spacex.com/) | Environmental Health &amp; Safety Engineer, Contractor Management | Starbase, TX | [Apply](https://boards.greenhouse.io/spacex/jobs/8838083002?gh_jid=8838083002) | 1d |
 | [SpaceX](https://spacex.com/) | Environmental Health &amp; Safety Engineer, Contractor Management | Bastrop, TX | [Apply](https://boards.greenhouse.io/spacex/jobs/8838078002?gh_jid=8838078002) | 1d |
 | [SpaceX](https://spacex.com/) | Environmental Health &amp; Safety Engineer, Contractor Management | Hawthorne, CA | [Apply](https://boards.greenhouse.io/spacex/jobs/8838073002?gh_jid=8838073002) | 1d |
@@ -628,6 +630,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [Databricks](https://databricks.com/) | Delivery Solutions Architect - Public Sector (DOJ) | Alabama | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=8790621002) | 2d |
 | [Crusoe](https://crusoeenergy.com/) | Staff Network Production Engineer, Deployment | San Francisco, CA - US | [Apply](https://jobs.ashbyhq.com/Crusoe/2b5d8063-e09b-4c21-95b1-89ca70f63011) | 2d |
 | [DoorDash](https://doordash.com/) | Director, New Restaurant Models- Strategy &amp; Operations | New York City, NY; San Francisco, CA; Seattle, WA; Los Angeles, CA | [Apply](https://job-boards.greenhouse.io/doordashusa/jobs/8209572) | 2d |
+| [Cerebras](https://www.cerebras.ai/open-positions) | Manufacturing Automation Engineer | Sunnyvale, CA | [Apply](https://jobs.ashbyhq.com/cerebras/20010f8f-5ede-469a-b432-c38dc223e11c) | 2d |
 | [Crusoe](https://crusoeenergy.com/) | Senior Manager, Utility Contracts | San Francisco, CA - US | [Apply](https://jobs.ashbyhq.com/Crusoe/7360f5f7-1ca0-4ff6-a504-d45792376725) | 2d |
 | [Pylon](https://usepylon.com/) | Customer Success Manager | New York | [Apply](https://jobs.ashbyhq.com/pylon-labs/04dc90b1-874d-46e1-a9b0-b5892025d7b3) | 2d |
 | [Stripe](https://stripe.com/) | Credit Operations Manager | Chicago, Atlanta, US-Remote | [Apply](https://stripe.com/jobs/search?gh_jid=8213951) | 2d |

@@ -51,6 +51,8 @@ def recognize_apply_url(url: str) -> tuple[str, str | None]:
         return "workday", f"{host}|{path[1]}|{path[2]}" if len(path) > 2 and path[0] == "recruiting" else None
     if host == "apply.workable.com":
         return "workable", path[0] if path else None
+    if host == "app.careerpuck.com" and len(path) >= 2 and path[0] == "job-board":
+        return "careerpuck", path[1]
     if host.endswith(".applytojob.com"):
         return "jazzhr", host
     if host.endswith(".icims.com"):

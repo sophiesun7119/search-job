@@ -22,7 +22,7 @@ except ImportError:  # system trust store remains usable
 ACTIVE_COLLECTORS = frozenset({"greenhouse", "ashby", "smartrecruiters", "gem",
                                "rippling", "vizirecruiter", "eightfold", "lever",
                                "workday", "workable", "jazzhr"})
-PLANNED_COLLECTORS = frozenset({"oracle", "icims"})
+PLANNED_COLLECTORS = frozenset({"oracle", "icims", "careerpuck"})
 
 
 class JobList(list):

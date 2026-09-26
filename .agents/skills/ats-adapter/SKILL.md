@@ -5,7 +5,7 @@ description: Research, implement, and verify one reusable Search Job ATS collect
 
 # ATS adapter
 
-Use for **AI-3** only after [ATS routing](../ats-routing/SKILL.md) confirms a provider and an official sample board that existing capabilities cannot read. The sample board does not by itself prove a particular company's route. Check [STAGE.md](../../../code/STAGE.md) and `code/src/search_job/collectors.py` first: the original seven providers plus Lever and Workday have local readers. Do not create a duplicate adapter for a company whose provider is already supported.
+Use for **AI-3** only after [ATS routing](../ats-routing/SKILL.md) confirms a provider and an official sample board that existing capabilities cannot read. The sample board does not by itself prove a particular company's route. Check [STAGE.md](../../../code/STAGE.md) and `code/src/search_job/collectors.py` first: eleven providers have local readers; Oracle, iCIMS and CareerPuck still need adapters. Do not create a duplicate adapter for a company whose provider is already supported.
 
 On one provider at a time, inspect the official careers/board surface and its public listing mechanism. Build a **provider-reusable** collector, preserving provider posting ID, official Apply URL, location variants, source date field/value/precision, and pagination or completeness status. Prefer listing response fields and defer extra job detail reads until needed. Keep shared identity, category and open-state policy outside provider-specific parsing.
 
