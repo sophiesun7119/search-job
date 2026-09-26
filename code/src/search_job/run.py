@@ -20,7 +20,8 @@ def main() -> None:
     parser.add_argument("--provider", help="Limit scan to one provider")
     parser.add_argument("--company", help="Limit scan to one saved company domain")
     parser.add_argument("--limit", type=int, help="Maximum company routes in this run")
-    parser.add_argument("--lookback-days", type=int, default=3, help="Recent count window; all listed jobs still enter DB")
+    parser.add_argument("--lookback-days", type=int, default=3, help="Recent count window for --full-recheck (default 3)")
+    parser.add_argument("--full-recheck", action="store_true", help="Reindex full listings; successful new companies become old")
     parser.add_argument("--markdown", type=Path)
     parser.add_argument("--json", type=Path)
     args = parser.parse_args()
@@ -31,7 +32,8 @@ def main() -> None:
             print(json.dumps({"import": import_seed(db, args.seed)}, ensure_ascii=False))
         if args.scan:
             print(json.dumps({"scan": scan_registered(db, provider=args.provider, company_key=args.company,
-                limit=args.limit, lookback_days=args.lookback_days)}, ensure_ascii=False))
+                limit=args.limit, lookback_days=args.lookback_days,
+                full_recheck=args.full_recheck)}, ensure_ascii=False))
         if args.markdown:
             args.markdown.parent.mkdir(parents=True, exist_ok=True)
             args.json.parent.mkdir(parents=True, exist_ok=True)

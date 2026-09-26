@@ -56,7 +56,7 @@ A **provider capability registry** maps each supported ATS type and host to one 
 
 ## 4. Scan boards and identify openings
 
-**Script:** traverse the full board, including pagination; prefer the listing response's posting ID, title, location, official Apply URL and source dates. Reuse a description already present in that response. Fetch and cache a separate detail only when a title is ambiguous or optional evidence needs it. Record incomplete/failed scans distinctly from complete scans.
+**Script:** traverse the full board, including pagination; prefer the listing response's posting ID, title, location, official Apply URL and source dates. Reuse a description already present in that response. Fetch and cache a separate detail only when a title is ambiguous or optional evidence needs it. Record incomplete/failed scans distinctly from complete scans. A company begins `new`: admit postings published in the past 72 hours, then promote it to `old` after a complete successful read. Later normal runs admit new postings from the past 24 hours and refresh already saved postings still visible in the 72-hour README; an explicit full recheck refreshes every listed posting. Some ATS APIs have no server-side date filter, so a complete listing may still be fetched to determine absence and closure.
 
 A posting's primary identity is **provider + board + ATS posting ID**. A canonical official Apply URL is supporting or fallback evidence. Different IDs remain different openings even with the same title; one ID with multiple locations or Apply links remains one logical opening with multiple variants. Without an ID, a canonical URL and source evidence are required; title alone is insufficient.
 
@@ -64,14 +64,14 @@ Keep raw date field/value, precision, first and last observation, and any reliab
 
 ## 5. Assign public categories and optional evidence tags
 
-Every discovered opening stays in SQLite even when it does not enter the preferred SDE table. Title rules run first, case-insensitively, and save the rule version and reason. Categories may overlap when both rules genuinely match. A description already returned by the listing API may help with an ambiguous title; otherwise leave it `Other and unclassified` until evidence improves. There is no per-posting AI judgment.
+Every processed opening stays in SQLite even when it does not enter the preferred SDE table. Title rules run first, case-insensitively, and save the rule version and reason. Categories may overlap when both rules genuinely match. A description already returned by the listing API may help with an ambiguous title; otherwise leave it `Other and unclassified` until evidence improves. There is no per-posting AI judgment.
 
 | Public table | Title rule for the first version |
 | --- | --- |
 | Software Engineering — Senior and unspecified | Software/developer/programmer, backend/full-stack, cloud/platform/infrastructure engineering, SRE/DevOps, data/ML/AI engineering; exclude explicit Junior/New Grad/Intern and Staff/Principal from this **preferred** table. Explicit Senior and unspecified levels both qualify. |
 | Software Engineering — Junior and New Grad | Same broad engineering family with explicit Junior, New Grad, Entry Level, Graduate or Intern wording. |
 | Software Engineering — Staff and Principal | Same broad engineering family with explicit Staff, Principal or Distinguished wording. |
-| Product Manager | Title contains **both** `product` and `manager`, in either order and any capitalization. The current word-based rule also catches related titles such as `Product Design Manager`; contributors can propose a narrower rule with examples. |
+| Product Manager | Title has a `Product Manager` phrase or `Manager, Product` role wording. Product Marketing Manager and Manager, Talent Products do not enter this table. |
 | Engineering Manager | Title contains **both** `engineer`/`engineering` and `manager`, in either order and any capitalization. `Manager, Software Engineering` qualifies. |
 | Frontend / Mobile / QA and Test | Specialist title wording takes precedence over the broad SDE view. Mobile needs an engineering/developer/programmer role as well as the mobile platform term. |
 | Analyst | `Analyst` or `Analysts`, including Business, Finance and Business Intelligence variants. |
@@ -84,11 +84,11 @@ Optional work authorization, sponsorship, citizenship, green-card, OPT/H-1B or c
 
 ## 6. Publish the result
 
-Search Job's **local SQLite is the source of truth**. Rendering queries it at a chosen as-of time and builds the root README deterministically. The page starts with a short reader-facing explanation, category links/counts, then category tables with **Company** (official site), **Role**, **Location**, **Application** (`Apply` linked to the official URL), and **Age**. Each category sorts newer roles first; inactive roles stay in a collapsed section. Age remains in days (`0d`, `1d`, `90d`): `🔎` marks first discovery rather than ATS publication, and `†` marks date-only source precision. For a precise timestamp, `0d` means less than 24 hours; a date-only source does not claim hour precision.
+Search Job's **local SQLite is the source of truth**. Rendering queries it at a chosen as-of time and builds the root README deterministically. The page starts with a short reader-facing explanation, category links/counts, then category tables with **Company** (official site), **Role**, **Location**, **Application** (`Apply` linked to the official URL), and **Age**. Each category sorts newer roles first. Only open postings seen in the latest complete board scan, with an ATS publication date in the past 72 hours and a confirmed US location, appear. A posting missing from one complete scan is hidden immediately, while two complete misses mark it inactive in SQLite. Date-unknown, older, inactive, non-US and uncertain-route postings remain in SQLite and the full JSON export. Age remains in days; `†` marks date-only source precision. For a precise timestamp, `0d` means less than 24 hours; a date-only source does not claim hour precision.
 
 The same DB produces a **versioned JSON export** with stable opening keys, variants, tags, date provenance and open state. Unresolved route, adapter and board failures stay recorded for review. Generated README rows are changed by updating rules/data and rerendering, not by hand-editing output. Local SQLite, credentials and run logs never enter Git. Development changes are reviewed and pushed to `origin/dev`; `main` changes only on explicit merge instruction. A local scheduled refresh is a later stage; GitHub Actions and unattended AI work are not assumed.
 
-The public README shows only jobs whose ATS location clearly includes the United States. Non-US and unclear locations remain in SQLite and the full JSON export. This location rule concerns where the role may be worked; it does not assert citizenship, visa sponsorship or work authorization.
+The location rule concerns where the role may be worked; it does not assert citizenship, visa sponsorship or work authorization.
 
 ## Contributing to the rules
 

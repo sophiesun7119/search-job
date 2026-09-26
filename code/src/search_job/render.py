@@ -4,7 +4,7 @@ from __future__ import annotations
 import html
 import json
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from .core import CATEGORY_ORDER, parse_time
 from .location import is_us_location
@@ -21,11 +21,25 @@ def _url(value: str) -> str:
     return html.escape(value, quote=True).replace("(", "%28").replace(")", "%29")
 
 
-def _rows(db: sqlite3.Connection, *, us_only: bool = False) -> list[dict]:
+def _rows(db: sqlite3.Connection, *, us_only: bool = False,
+          recent_as_of: datetime | None = None) -> list[dict]:
     result = []
     for row in db.execute("""SELECT o.*, c.name AS company_name, c.official_url
                                FROM openings o JOIN companies c ON c.company_key=o.company_key"""):
         item = dict(row)
+        if recent_as_of is not None:
+            published = parse_time(item["published_at"])
+            if (item["open_state"] != "open" or item["missing_complete_scans"] != 0 or
+                    published is None or not recent_as_of - timedelta(days=3) <= published <= recent_as_of):
+                continue
+            if item["board_key"] is None or not db.execute("""SELECT 1 FROM company_boards cb
+              WHERE cb.company_key=? AND cb.board_key=? AND cb.status='verified'""",
+              (item["company_key"], item["board_key"])).fetchone():
+                continue
+            latest = db.execute("""SELECT outcome FROM scan_runs WHERE board_key=?
+              ORDER BY started_at DESC LIMIT 1""", (item["board_key"],)).fetchone()
+            if latest is None or latest[0] != "complete":
+                continue
         item["variants"] = [dict(v) for v in db.execute(
             "SELECT location, apply_url FROM opening_variants WHERE opening_key=? ORDER BY location,apply_url",
             (row["opening_key"],))]
@@ -76,7 +90,8 @@ def _table(rows: list[dict], as_of: datetime, *, inactive: bool = False) -> str:
 
 
 def render_markdown(db: sqlite3.Connection, as_of: datetime, *, historical_preview: bool = False) -> str:
-    rows = _rows(db, us_only=not historical_preview)
+    rows = _rows(db, us_only=not historical_preview,
+                 recent_as_of=None if historical_preview else as_of)
     companies_total = db.execute("SELECT COUNT(*) FROM companies").fetchone()[0]
     companies_with_rows = len({row["company_key"] for row in rows})
     categories = {key: [row for row in rows if any(tag["tag"] == key for tag in row["tags"])]
@@ -92,8 +107,10 @@ def render_markdown(db: sqlite3.Connection, as_of: datetime, *, historical_previ
     lines = intro.replace("{{SNAPSHOT_STATUS}}\n\n", status + "\n\n" if status else "").rstrip().splitlines() + [""]
     lines += [f"Generated: {as_of.isoformat()}.", ""]
     if not historical_preview:
-        lines += ["Only postings with a confirmed US location are shown here. Jobs with non-US or unclear locations remain in the database and JSON export.", ""]
-    lines += ["Age is shown in days. 🔎 means age since **first discovery**, not ATS publication. † means the ATS supplied a date without an exact time. `0d` is within 24 hours only for exact timestamps; for date-only sources it means the same calendar date.",
+        lines += ["Only currently open postings seen in the latest complete board scan, with an ATS publication timestamp within the past 72 hours and a confirmed US location, are shown here. Older, closed, non-US, and uncertain postings remain in the database and full JSON export.", ""]
+    age_explanation = ("Age is shown in days. 🔎 means age since **first discovery**, not ATS publication. "
+                       if historical_preview else "Age is shown in days from the ATS publication date. ")
+    lines += [age_explanation + "† means the ATS supplied a date without an exact time. `0d` is within 24 hours only for exact timestamps; for date-only sources it means the same calendar date.",
               "", "## Categories", ""]
     for key, label in CATEGORY_ORDER:
         active = sum(row["open_state"] == "open" for row in categories[key])

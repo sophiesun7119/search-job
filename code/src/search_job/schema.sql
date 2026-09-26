@@ -3,7 +3,9 @@ CREATE TABLE IF NOT EXISTS companies (
   company_key TEXT PRIMARY KEY,
   name TEXT NOT NULL,
   official_url TEXT NOT NULL,
-  source TEXT NOT NULL
+  source TEXT NOT NULL,
+  scan_cohort TEXT NOT NULL DEFAULT 'new' CHECK (scan_cohort IN ('new','old')),
+  validated_at TEXT
 );
 CREATE TABLE IF NOT EXISTS provider_capabilities (
   provider TEXT PRIMARY KEY,
