@@ -48,6 +48,11 @@ def connect(path: str | Path) -> sqlite3.Connection:
     lead_columns = {row[1] for row in db.execute("PRAGMA table_info(source_leads)")}
     if "official_board_url" not in lead_columns:
         db.execute("ALTER TABLE source_leads ADD COLUMN official_board_url TEXT")
+    for name, kind in (("sample_probe_url", "TEXT"), ("sample_probe_status", "INTEGER"),
+                       ("sample_probe_error", "TEXT"), ("sample_probe_at", "TEXT"),
+                       ("route_resolution_method", "TEXT CHECK (route_resolution_method IN ('script_official_page','ai_official_page','user_official_page'))")):
+        if name not in lead_columns:
+            db.execute(f"ALTER TABLE source_leads ADD COLUMN {name} {kind}")
     columns = {row[1] for row in db.execute("PRAGMA table_info(company_boards)")}
     if "brand_filter" not in columns:
         # Upgrade databases created by the first local stage without dropping

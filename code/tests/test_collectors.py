@@ -11,7 +11,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from search_job.collectors import collect
 from search_job.core import SCHEMA, connect
 from search_job.intake import import_seed
-from search_job.leads import import_simplify_catalog, recognize_apply_url
+from search_job.leads import (confirm_official_route, import_simplify_catalog,
+                              probe_saved_samples, recognize_apply_url)
 from search_job.scan import scan_registered
 
 
@@ -124,6 +125,42 @@ class CollectorTest(unittest.TestCase):
         self.assertEqual(recognize_apply_url("https://jobs.lever.co/acme/123"), ("lever", "acme"))
         self.assertEqual(recognize_apply_url("https://app.careerpuck.com/job-board/color-health/job/123"),
                          ("careerpuck", "color-health"))
+        self.assertEqual(recognize_apply_url("https://boards-api.greenhouse.io/v1/boards/ixllearning/jobs/123"),
+                         ("greenhouse", "ixllearning"))
+
+    def test_agent_reviewed_route_requires_official_evidence_domain(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with connect(Path(directory) / "jobs.sqlite3") as db:
+                db.execute("""INSERT INTO source_leads(lead_key,source_name,source_id,name,source_year,
+                  official_url,stage) VALUES ('simplify:1','simplify','1','Acme',2026,
+                  'https://acme.com/','route_pending')""")
+                with self.assertRaisesRegex(ValueError, "official company domain"):
+                    confirm_official_route(db, "simplify:1", evidence_url="https://other.com/careers",
+                                           board_url="https://jobs.ashbyhq.com/acme")
+                result = confirm_official_route(db, "simplify:1",
+                    evidence_url="https://careers.acme.com/jobs",
+                    board_url="https://jobs.ashbyhq.com/acme")
+                self.assertEqual(result["stage"], "scan_pending")
+                self.assertEqual(result["route_resolution_method"], "ai_official_page")
+                self.assertEqual(db.execute("SELECT stage FROM source_leads").fetchone()[0], "scan_pending")
+                self.assertEqual(db.execute("SELECT route_resolution_method FROM source_leads").fetchone()[0],
+                                 "ai_official_page")
+                self.assertEqual(db.execute("SELECT status FROM company_boards").fetchone()[0],
+                                 "pending_recheck")
+
+    def test_sample_probe_does_not_replace_official_provider(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with connect(Path(directory) / "jobs.sqlite3") as db:
+                db.execute("""INSERT INTO source_leads(lead_key,source_name,source_id,name,
+                  sample_apply_url,provider_hint,board_hint,route_evidence_url,stage)
+                  VALUES ('simplify:1','simplify','1','Acme',
+                  'https://jobs.ashbyhq.com/old/123','careerpuck','new',
+                  'https://acme.com/careers','adapter_pending')""")
+                with patch("search_job.leads._probe_sample", return_value=(
+                        "https://jobs.ashbyhq.com/old/123", 200, None)):
+                    probe_saved_samples(db)
+                row = db.execute("SELECT provider_hint,board_hint FROM source_leads").fetchone()
+                self.assertEqual(tuple(row), ("careerpuck", "new"))
 
     def test_seed_and_scan_idempotent_and_failed_scan_is_inert(self):
         with tempfile.TemporaryDirectory() as directory:

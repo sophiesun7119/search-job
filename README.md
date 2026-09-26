@@ -1,6 +1,6 @@
 # Search Job
 
-Find recently posted US-located jobs from company career pages, grouped by role. Search Job currently tracks **112** companies in its company pool; the listings below come from boards that have completed a scan. Follow a category and apply through the original job link while the role is fresh.
+Find recently posted US-located jobs from company career pages, grouped by role. Search Job currently tracks **116** companies in its company pool; the listings below come from boards that have completed a scan. Follow a category and apply through the original job link while the role is fresh.
 
 Scripts collect and sort openings; AI agents assist with development and requested investigations of new company routes. **Updates are manually triggered today.** An automatic refresh about every six hours is planned.
 
@@ -16,18 +16,18 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 </details>
 
 <a id="categories"></a>
-## Browse 595 openings by category
+## Browse 633 openings by category
 
-- [Software Engineering — Senior and unspecified](#sde) (75)
+- [Software Engineering — Senior and unspecified](#sde) (76)
 - [Software Engineering — Junior and New Grad](#sde-entry) (10)
-- [Software Engineering — Staff and Principal](#sde-staff) (19)
-- [Product Manager](#product-manager) (8)
+- [Software Engineering — Staff and Principal](#sde-staff) (18)
+- [Product Manager](#product-manager) (9)
 - [Engineering Manager](#engineering-manager) (6)
 - [Mobile](#mobile) (1)
-- [QA and Test](#qa-test) (11)
-- [Analyst](#analyst) (40)
+- [QA and Test](#qa-test) (12)
+- [Analyst](#analyst) (44)
 - [Scientist and Researcher](#scientist) (11)
-- [Other and unclassified](#other) (414)
+- [Other and unclassified](#other) (446)
 
 <a id="sde"></a>
 ## Software Engineering — Senior and unspecified
@@ -43,7 +43,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [Applied Intuition](https://appliedintuition.com/) | Software Engineer - Onboard Maps and State Estimation | Sunnyvale | [Apply](https://jobs.ashbyhq.com/applied/6b7aacaa-32e3-4d58-93e6-7d7068f44617) | 0d |
 | [SpaceX](https://spacex.com/) | Sr. Software Engineer, Additive Manufacturing (Raptor) | Hawthorne, CA | [Apply](https://boards.greenhouse.io/spacex/jobs/8843293002?gh_jid=8843293002) | 0d |
 | [SpaceX](https://spacex.com/) | Software Engineer, Backend (Python/C++) | Hawthorne, CA | [Apply](https://boards.greenhouse.io/spacex/jobs/8845089002?gh_jid=8845089002) | 0d |
-| [Palantir](https://palantir.com/) | Software Engineer – Query Engines | New York, NY | [Apply](https://jobs.lever.co/palantir/a576c5ef-2a51-4522-9c98-bca5ac2abbb3) | 0d |
+| [Palantir](https://palantir.com/) | Software Engineer – Query Engines | New York, NY | [Apply](https://jobs.lever.co/palantir/a576c5ef-2a51-4522-9c98-bca5ac2abbb3) | 1d |
 | [SpaceX](https://spacex.com/) | Site Reliability Engineer, Kubernetes Platform (Top Secret Clearance) | Hawthorne, CA | [Apply](https://boards.greenhouse.io/spacex/jobs/8843951002?gh_jid=8843951002) | 1d |
 | [SpaceX](https://spacex.com/) | Software Engineer (AI Data Engineering) | Hawthorne, CA | [Apply](https://boards.greenhouse.io/spacex/jobs/8843640002?gh_jid=8843640002) | 1d |
 | [CACI](https://caci.com/) | UI/UX Web Developer | Bethesda, MD, US | [Apply](https://searchcareers.caci.com/careers/job/1443153643083?domain=caci.com&amp;hl=en) | 1d † |
@@ -57,6 +57,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [CACI](https://caci.com/) | Senior Full Stack Developer | Washington, DC, US | [Apply](https://searchcareers.caci.com/careers/job/1443153679451?domain=caci.com&amp;hl=en) | 1d † |
 | [CACI](https://caci.com/) | Systems Engineer- Radar Warning Receivers | Aberdeen Proving Ground, MD, US | [Apply](https://searchcareers.caci.com/careers/job/1443153676570?domain=caci.com&amp;hl=en) | 1d † |
 | [CACI](https://caci.com/) | Appian Developer | Remote (Any State) | [Apply](https://searchcareers.caci.com/careers/job/1443153675877?domain=caci.com&amp;hl=en) | 1d † |
+| [Toyota](https://toyota.com/) | Cloud Engineer | Plano, Texas; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Plano-Texas/Cloud-Engineer_10320494) | 1d † |
 | [CACI](https://caci.com/) | Senior ABAP Developer | Remote (Any State) | [Apply](https://searchcareers.caci.com/careers/job/1443153454044?domain=caci.com&amp;hl=en) | 1d † |
 | [Yext](https://yext.com/) | Software Engineer | Washington, D.C. | [Apply](https://job-boards.greenhouse.io/yext/jobs/8224109) | 1d |
 | [Sierra](https://sierra.ai/) | Software Engineer, Horizon | San Francisco, CA | [Apply](https://jobs.ashbyhq.com/Sierra/87f2a303-c2a1-484e-9e4b-efdcaafa440e) | 1d |
@@ -155,7 +156,6 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [Snowflake](https://snowflake.com/) | Principal Software Engineer - Agentic Pipelines | US-WA-Bellevue | [Apply](https://jobs.ashbyhq.com/snowflake/dd0b29a3-6bc8-4d6c-8fa6-79da445c70bd) | 2d |
 | [SpaceX](https://spacex.com/) | Principal Software Engineer, Power Optimization (Starlink) | Redmond, WA | [Apply](https://boards.greenhouse.io/spacex/jobs/8832619002?gh_jid=8832619002) | 2d |
 | [GitLab](https://gitlab.com/) | Principal Site Reliability Engineer, Platform Engineering: Dedicated | Remote, Canada; Remote, United Kingdom; Remote, United States | [Apply](https://job-boards.greenhouse.io/gitlab/jobs/8623592002) | 2d |
-| [Anthropic](https://anthropic.com/) | Staff Software Engineer: Compute | San Francisco, CA &#124; New York City, NY | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5432558008) | 2d |
 
 <a id="product-manager"></a>
 ## Product Manager
@@ -167,6 +167,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [PROS Holdings, Inc.](https://pros.com/) | Senior Product Manager | USA TX Houston Office; United States of America | [Apply](https://pros.wd5.myworkdayjobs.com/PROS_Careers/job/USA-TX-Houston-Office/Senior-Product-Manager_R3599) | 1d † |
 | [Vercel](https://vercel.com/) | Product Manager, Dashboard | Remote - United States | [Apply](https://job-boards.greenhouse.io/vercel/jobs/6205772004) | 1d |
 | [Retool](https://retool.com/) | Product Manager, AI Monetization &amp; Expansion | San Francisco, United States | [Apply](https://jobs.gem.com/retool/am9icG9zdDo4mSj3l3_zL_LFKiKqx1rV) | 1d |
+| [Toyota](https://toyota.com/) | Product Manager | Plano, Texas; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Plano-Texas/Product-Manager_10332602) | 2d † |
 | [State Street](https://statestreet.com/) | Markets Product Manager, Assistant Vice President | Boston, Massachusetts; United States of America | [Apply](https://statestreet.wd1.myworkdayjobs.com/Global/job/Boston-Massachusetts/Markets-Product-Manager--Assistant-Vice-President_R-792783) | 2d † |
 | [Visa](https://usa.visa.com/) | Sr Manager, Visa Accept Product Manager | US - San Francisco, CA; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---San-Francisco-CA/Sr-Manager--Visa-Accept-Product-Manager_REF087387W) | 2d † |
 | [Databricks](https://databricks.com/) | Staff Product Manager, US Public Sector | Remote - California; Remote - Virginia; Remote - Washington D.C. | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=8831555002) | 2d |
@@ -203,6 +204,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 
 | Company | Role | Location | Application | Age |
 | --- | --- | --- | --- | --- |
+| [IXL Learning](https://www.ixl.com/company/careers?gh_jid=8765715002) | Math Content Tester (Freelance) | United States | [Apply](https://www.ixl.com/company/jobs?gh_jid=8847095002) | 0d |
 | [SpaceX](https://spacex.com/) | Integration &amp; Test Engineer (Falcon &amp; Dragon) | Hawthorne, CA | [Apply](https://boards.greenhouse.io/spacex/jobs/8843919002?gh_jid=8843919002) | 1d |
 | [CACI](https://caci.com/) | Electrical Test Technician | Denver, CO, US | [Apply](https://searchcareers.caci.com/careers/job/1443151457769?domain=caci.com&amp;hl=en) | 1d † |
 | [CACI](https://caci.com/) | Systems Test Engineer | Belgrade, MT, US | [Apply](https://searchcareers.caci.com/careers/job/1443153658655?domain=caci.com&amp;hl=en) | 1d † |
@@ -228,11 +230,15 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [CACI](https://caci.com/) | SIGINT Analyst (Digital Network Exploitation Analyst-DNEA) | Fort Bragg, NC, US | [Apply](https://searchcareers.caci.com/careers/job/1443151052224?domain=caci.com&amp;hl=en) | 1d † |
 | [Motorola](https://motorolasolutions.com/) | SOC Analyst I (Night Shift) | Schaumburg, IL; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Schaumburg-IL/SOC-Analyst-I--Night-Shift-_R66933) | 1d † |
 | [CACI](https://caci.com/) | IT Asset Management Analyst | Fort Belvoir, VA, US; Washington, DC, US | [Apply](https://searchcareers.caci.com/careers/job/1443153676712?domain=caci.com&amp;hl=en) | 1d † |
+| [Toyota](https://toyota.com/) | Analyst, Analytics | Plano, Texas; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Plano-Texas/Analyst--Analytics_10323356) | 1d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | IT Service Desk Analyst | Green Bay, WI; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Green-Bay-WI/IT-Service-Desk-Analyst_R022920) | 1d † |
+| [Toyota](https://toyota.com/) | IT Accounting Analyst | Plano, Texas; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Plano-Texas/IT-Accounting-Analyst_10336274) | 1d † |
 | [Sierra Nevada Corporation](https://sncorp.com/) | Program Financial Analyst II | Lone Tree, CO; United States of America | [Apply](https://snc.wd1.myworkdayjobs.com/SNC_External_Career_Site/job/Lone-Tree-CO/Program-Financial-Analyst-II_R0030282) | 1d † |
 | [CACI](https://caci.com/) | IT Asset Management Analyst | Fort Belvoir, VA, US; Washington, DC, US | [Apply](https://searchcareers.caci.com/careers/job/1443153676691?domain=caci.com&amp;hl=en) | 1d † |
 | [CACI](https://caci.com/) | COOP Officer/C5ISR Analyst | Washington, DC, US | [Apply](https://searchcareers.caci.com/careers/job/1443153681549?domain=caci.com&amp;hl=en) | 1d † |
 | [Visa](https://usa.visa.com/) | Coordinator, Commercial and Money Movement Operating Management (Analyst) | US - San Francisco, CA; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---San-Francisco-CA/Analyst--Commercial-and-Money-Movement-Operating-Management_REF083210W-1) | 1d † |
 | [CACI](https://caci.com/) | Program Finance Analyst | Annapolis Junction, MD, US | [Apply](https://searchcareers.caci.com/careers/job/1443153676335?domain=caci.com&amp;hl=en) | 1d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | Business Analyst | Spokane, WA; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Spokane-WA/Business-Analyst_R022878) | 1d † |
 | [CACI](https://caci.com/) | Scrum Master &amp; Requirements Analyst | Washington, DC, US | [Apply](https://searchcareers.caci.com/careers/job/1443153679445?domain=caci.com&amp;hl=en) | 1d † |
 | [CACI](https://caci.com/) | SATCOM Strategic Analyst | Washington, DC, US; Fort Belvoir, VA, US | [Apply](https://searchcareers.caci.com/careers/job/1443153677436?domain=caci.com&amp;hl=en) | 1d † |
 | [CACI](https://caci.com/) | Appian Configuration Analyst - Developer | Remote (Any State) | [Apply](https://searchcareers.caci.com/careers/job/1443153674869?domain=caci.com&amp;hl=en) | 1d † |
@@ -319,6 +325,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [Crusoe](https://crusoeenergy.com/) | Manager, R&amp;D | Denver, CO - US | [Apply](https://jobs.ashbyhq.com/Crusoe/14e5f5a1-cb56-4b3e-ac4c-a31152b6fcbf) | 0d |
 | [DoorDash](https://doordash.com/) | Technical Specialist, MXO Merchant Onboarding &amp; Activations | Tempe, AZ | [Apply](https://job-boards.greenhouse.io/doordashusa/jobs/8233217) | 0d |
 | [Snowflake](https://snowflake.com/) | Technical Program Manager - Security | US-CA-Menlo Park | [Apply](https://jobs.ashbyhq.com/snowflake/21bfc3fe-827c-46e9-bc56-d0a676a6d9d0) | 0d |
+| [IXL Learning](https://www.ixl.com/company/careers?gh_jid=8765715002) | Educational Sales Consultant, Inside Sales - Team Lead | San Mateo, CA | [Apply](https://www.ixl.com/company/jobs?gh_jid=8845907002) | 0d |
 | [SpaceX](https://spacex.com/) | Security Engineer (Vulnerability Management) | Starbase, TX | [Apply](https://boards.greenhouse.io/spacex/jobs/8843974002?gh_jid=8843974002) | 0d |
 | [SpaceX](https://spacex.com/) | Sr. IT Network Engineer | Bastrop, TX | [Apply](https://boards.greenhouse.io/spacex/jobs/8843968002?gh_jid=8843968002) | 0d |
 | [SpaceX](https://spacex.com/) | Sr. IT Wireless Network Engineer | Bastrop, TX | [Apply](https://boards.greenhouse.io/spacex/jobs/8843966002?gh_jid=8843966002) | 0d |
@@ -338,9 +345,9 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [SOCOTEC Global](https://socotec.com/) | Proposal Writer (Architectural/ Engineering/ Construction Industry) | Boston, MA, United States | [Apply](https://jobs.smartrecruiters.com/Socotec/744000151865839) | 0d |
 | [SOCOTEC Global](https://socotec.com/) | Proposal Writer (Architectural/ Engineering/ Construction Industry) | New York, NY, United States | [Apply](https://jobs.smartrecruiters.com/Socotec/744000151865659) | 0d |
 | [GitLab](https://gitlab.com/) | Staff Product Security Architect  | Remote, Canada; Remote, Israel; Remote, Poland; Remote, United Kingdom; Remote, United States | [Apply](https://job-boards.greenhouse.io/gitlab/jobs/8815140002) | 0d |
-| [Stripe](https://stripe.com/) | Enterprise Account Executive, Privy | New York | [Apply](https://stripe.com/jobs/search?gh_jid=8232743) | 0d |
-| [Stripe](https://stripe.com/) | Enterprise Account Executive, Privy | New York | [Apply](https://stripe.com/jobs/search?gh_jid=8232741) | 0d |
-| [Stripe](https://stripe.com/) | Partner Solutions Engineer, Ecosystem | US-NYC; US-SF; US-Chicago; US-Atlanta; US-Seattle; US-Remote | [Apply](https://stripe.com/jobs/search?gh_jid=8227563) | 0d |
+| [Stripe](https://stripe.com/) | Enterprise Account Executive, Privy | New York | [Apply](https://stripe.com/jobs/search?gh_jid=8232743) | 1d |
+| [Stripe](https://stripe.com/) | Enterprise Account Executive, Privy | New York | [Apply](https://stripe.com/jobs/search?gh_jid=8232741) | 1d |
+| [Stripe](https://stripe.com/) | Partner Solutions Engineer, Ecosystem | US-NYC; US-SF; US-Chicago; US-Atlanta; US-Seattle; US-Remote | [Apply](https://stripe.com/jobs/search?gh_jid=8227563) | 1d |
 | [SpaceX](https://spacex.com/) | Global Supply Manager, Satellites (Starmind) | Bastrop, TX | [Apply](https://boards.greenhouse.io/spacex/jobs/8843963002?gh_jid=8843963002) | 1d |
 | [Crusoe](https://crusoeenergy.com/) | Senior Staff Network Engineer, Deployment | San Francisco, CA - US | [Apply](https://jobs.ashbyhq.com/Crusoe/9b41f10a-54e8-4c4c-a59b-df93447b356f) | 1d |
 | [Stripe](https://stripe.com/) | GTM Sourcer (Fixed Term Contract) | Chicago, Atlanta, US-Remote, Toronto | [Apply](https://stripe.com/jobs/search?gh_jid=8230564) | 1d |
@@ -354,6 +361,8 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [Motorola](https://motorolasolutions.com/) | Presales Solutions Engineer | Florida Remote Work; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Florida-Remote-Work/Presales-Solutions-Engineer_R67968) | 1d † |
 | [LexisNexis Risk Solutions](https://risk.lexisnexis.com/) | Director, Communications &amp; Employer Brand | Alpharetta, GA; United States of America | [Apply](https://relx.wd3.myworkdayjobs.com/RiskSolutions/job/Alpharetta-GA/Director--Communications---Employer-Brand_R117545) | 1d † |
 | [CACI](https://caci.com/) | Case Support Analyst | Remote (Any State) | [Apply](https://searchcareers.caci.com/careers/job/1443153498857?domain=caci.com&amp;hl=en) | 1d † |
+| [Toyota](https://toyota.com/) | Toyota and Lexus Residual Value Manager | Plano, Texas; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Plano-Texas/Manager---TFS-Residual-Value-Setting_10329388) | 1d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | Project Director - Industrial Design Build Projects | Fort Worth, TX; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Fort-Worth-TX/Project-Director---AEC-Design_R019416) | 1d † |
 | [Visa](https://usa.visa.com/) | Director, Payment Platform Strategy | US - Foster City, CA; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---Foster-City-CA/Director--Payment-Platform-Strategy_REF088676W-1) | 1d † |
 | [Motorola](https://motorolasolutions.com/) | Sales Development Manager | Allen, TX (TX139); United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Allen-TX-TX139/Sales-Development-Manager_R68489) | 1d † |
 | [CACI](https://caci.com/) | Paralegal (USAO) | Washington, DC, US | [Apply](https://searchcareers.caci.com/careers/job/1443151038255?domain=caci.com&amp;hl=en) | 1d † |
@@ -374,6 +383,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [CACI](https://caci.com/) | Program Integrator (Multiple Levels) | Fort Meade, MD, US | [Apply](https://searchcareers.caci.com/careers/job/1443148809387?domain=caci.com&amp;hl=en) | 1d † |
 | [State Street](https://statestreet.com/) | Cybersecurity Strategy, Resource &amp; Financial Management | Boston, Massachusetts; United States of America | [Apply](https://statestreet.wd1.myworkdayjobs.com/Global/job/Boston-Massachusetts/Cybersecurity-Strategy--Resource---Financial-Management_R-795576) | 1d † |
 | [F5](https://f5.com/) | Head of Business Operations - Tech Ops | Seattle; United States of America | [Apply](https://ffive.wd5.myworkdayjobs.com/f5jobs/job/Seattle/Head-of-Strategy---Operations_RP1037447) | 1d † |
+| [Toyota](https://toyota.com/) | Paint  Engineer | Georgetown, Kentucky; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Georgetown-Kentucky/Paint--Engineer_10334146) | 1d † |
 | [Sierra Nevada Corporation](https://sncorp.com/) | Mechanical Engineer I | Lone Tree, CO; United States of America | [Apply](https://snc.wd1.myworkdayjobs.com/SNC_External_Career_Site/job/Lone-Tree-CO/Mechanical-Engineer-I_R0030931-1) | 1d † |
 | [Sierra Nevada Corporation](https://sncorp.com/) | Avionics Technician IV - Deploy Only | Shalimar, FL; United States of America | [Apply](https://snc.wd1.myworkdayjobs.com/SNC_External_Career_Site/job/Shalimar-FL/Avionics-Technician-IV---Deploy-Only_R0030917) | 1d † |
 | [CACI](https://caci.com/) | Senior Data and AI Integrator | Tampa, FL, US | [Apply](https://searchcareers.caci.com/careers/job/1443153681836?domain=caci.com&amp;hl=en) | 1d † |
@@ -385,30 +395,39 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [CACI](https://caci.com/) | Systems Engineer - DevOps Kubernetes Support | Hanover, MD, US | [Apply](https://searchcareers.caci.com/careers/job/1443153675093?domain=caci.com&amp;hl=en) | 1d † |
 | [Sierra Nevada Corporation](https://sncorp.com/) | Safety Manager I - Industrial Hygiene | Centennial, CO; United States of America | [Apply](https://snc.wd1.myworkdayjobs.com/SNC_External_Career_Site/job/Centennial-CO/Industrial-Hygiene-Program-Manager_R0030500-1) | 1d † |
 | [Capital Health](https://capitalhealth.org/) | NP/PA Practice - FT - Day - OB/GYN | CH OB/GYN Bordentown; United States of America | [Apply](https://capitalhealth.wd1.myworkdayjobs.com/CapitalHealthCareers/job/CH-OBGYN-Bordentown/NP-PA-Practice---FT---Day---OB-GYN_JR111453) | 1d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | Manufacturing Engineer | Phillips, WI; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Phillips-WI/Manufacturing-Engineer_R022332) | 1d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | Chief People Officer | St. Louis, MO; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/St-Louis-MO/Chief-People-Officer_R022910) | 1d † |
 | [LexisNexis Risk Solutions](https://risk.lexisnexis.com/) | Vertical Account Manager - Life Insurance | Remote - USA - Nationwide; United States of America | [Apply](https://relx.wd3.myworkdayjobs.com/RiskSolutions/job/Remote---USA---Nationwide/Vertical-Account-Manager---Life-Insurance_R114734) | 1d † |
 | [Motorola](https://motorolasolutions.com/) | Professional Services Specialist - Dedicated Account - Dallas, TX | Dallas, TX; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Dallas-TX/Professional-Services-Specialist---Dedicated-Account---Dallas--TX_R69211) | 1d † |
 | [Sierra Nevada Corporation](https://sncorp.com/) | Military Fellowship Program: Contracts Administrator | Lone Tree, CO; United States of America | [Apply](https://snc.wd1.myworkdayjobs.com/SNC_External_Career_Site/job/Lone-Tree-CO/Military-Fellowship-Program--Contracts-Administrator_R0030938) | 1d † |
 | [Sierra Nevada Corporation](https://sncorp.com/) | Sr Mechanical Engineer | Lone Tree, CO; United States of America | [Apply](https://snc.wd1.myworkdayjobs.com/SNC_External_Career_Site/job/Lone-Tree-CO/Sr-Mechanical-Engineer_R0030932) | 1d † |
 | [NCR Voyix](https://ncrvoyix.com/) | IT Procurement Manager – Infrastructure &amp; Cloud | ATLANTA, GA, USA; United States of America | [Apply](https://ncr.wd1.myworkdayjobs.com/ext_us/job/ATLANTA-GA-USA/IT-Procurement-Manager---Infrastructure---Cloud_R0158656) | 1d † |
+| [Toyota](https://toyota.com/) | Technician, Engine Build | Costa Mesa, California; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Costa-Mesa-California/Technician--Engine-Build_10336600) | 1d † |
 | [State Street](https://statestreet.com/) | Fund Accounting &amp; Administration-Officer | Quincy, Massachusetts; United States of America | [Apply](https://statestreet.wd1.myworkdayjobs.com/Global/job/Quincy-Massachusetts/Fund-Accounting---Administration-Officer_R-798545) | 1d † |
 | [State Street](https://statestreet.com/) | Defensive Engineering Product Ops Specialist | Boston, Massachusetts; United States of America | [Apply](https://statestreet.wd1.myworkdayjobs.com/Global/job/Boston-Massachusetts/Defensive-Engineering-Product-Ops-Specialist_R-797791) | 1d † |
 | [Motorola](https://motorolasolutions.com/) | System Technologist - Orlando, FL | Orlando, FL; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Orlando-FL/System-Technologist---Orlando--FL_R69099) | 1d † |
+| [Toyota](https://toyota.com/) | Sr. Technician, Engine Build | Costa Mesa, California; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Costa-Mesa-California/Sr-Technician--Engine-Build_10336589) | 1d † |
 | [CACI](https://caci.com/) | Engineering Technician – TIGS Field Engineering &amp; Sustainment | Colorado Springs, CO, US | [Apply](https://searchcareers.caci.com/careers/job/1443153248490?domain=caci.com&amp;hl=en) | 1d † |
 | [State Street](https://statestreet.com/) | Operations Client Service, Officer | Kansas City, Missouri; United States of America | [Apply](https://statestreet.wd1.myworkdayjobs.com/Global/job/Kansas-City-Missouri/Operations-Client-Service--Officer_R-796524) | 1d † |
 | [LexisNexis Legal &amp; Professional](https://lexisnexis.com/) | Go-to-Market Strategy Manager- Legal AI(JD Preferred) | Dayton, OH; United States of America | [Apply](https://relx.wd3.myworkdayjobs.com/LexisNexisLegal/job/Dayton-OH/Go-to-Market-Manager--Legal-Technology--JD-Preferred-_R118629) | 1d † |
 | [Visa](https://usa.visa.com/) | Senior Manager, U.S. Merchant Business Development | US - San Francisco, CA; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---San-Francisco-CA/Senior-Manager--US-Merchant-Business-Development_REF088881W) | 1d † |
 | [LexisNexis Legal &amp; Professional](https://lexisnexis.com/) | Desktop Support Co-Op | USA - Raleigh, NC (RDU); United States of America | [Apply](https://relx.wd3.myworkdayjobs.com/LexisNexisLegal/job/USA---Raleigh-NC-RDU/Desktop-Support-Co-Op_R118885) | 1d † |
 | [CACI](https://caci.com/) | Senior Cyber Security Engineer | Ashburn, VA, US | [Apply](https://searchcareers.caci.com/careers/job/1443153670716?domain=caci.com&amp;hl=en) | 1d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | Material Handler | Phillips, WI; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Phillips-WI/Material-Handler_R022932-1) | 1d † |
 | [CACI](https://caci.com/) | Information System Security Officer (ISSO) | Remote (Any State) | [Apply](https://searchcareers.caci.com/careers/job/1443153681550?domain=caci.com&amp;hl=en) | 1d † |
 | [State Street](https://statestreet.com/) | Corporate Strategy, Managing Director | BOSTON; United States of America | [Apply](https://statestreet.wd1.myworkdayjobs.com/Global/job/BOSTON/Corporate-Strategy--Managing-Director_R-798557) | 1d † |
 | [NCR Voyix](https://ncrvoyix.com/) | Field HR Americas | ATLANTA, GA, USA; United States of America | [Apply](https://ncr.wd1.myworkdayjobs.com/ext_us/job/ATLANTA-GA-USA/Field-HR-Americas_R0158712-3) | 1d † |
+| [Toyota](https://toyota.com/) | Manufacturing Engineer | Long Beach, California; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Long-Beach-California/Manufacturing-Engineer_10336719) | 1d † |
 | [CACI](https://caci.com/) | Material Coordinator | Colorado Springs, CO, US | [Apply](https://searchcareers.caci.com/careers/job/1443153676661?domain=caci.com&amp;hl=en) | 1d † |
 | [CACI](https://caci.com/) | Sr. Systems (Database) Administrator | Hampton, VA, US | [Apply](https://searchcareers.caci.com/careers/job/1443153676713?domain=caci.com&amp;hl=en) | 1d † |
+| [Toyota](https://toyota.com/) | Controls Engineer | Liberty, North Carolina; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Liberty-North-Carolina/Controls-Engineer_10333813-1) | 1d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | Electrical Engineer, PE | Pasadena, CA; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Pasadena-CA/Electrical-Engineer--PE_R022375) | 1d † |
 | [Motorola](https://motorolasolutions.com/) | Channel Sales Executive (Central Texas) | Austin, TX (TX146); United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Austin-TX-TX146/Channel-Sales-Executive--Central-Texas-_R68738) | 1d † |
 | [Visa](https://usa.visa.com/) | Data Engineer - Sr. Consultant level | US - Foster City, CA; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---Foster-City-CA/Data-Engineer---Sr-Consultant-level_REF088760W) | 1d † |
 | [Motorola](https://motorolasolutions.com/) | Creative Operations Traffic Manager | Chicago, IL; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Chicago-IL/Creative-Operations-Traffic-Manager_R68813) | 1d † |
 | [CACI](https://caci.com/) | Technical Administrative Assistant | Remote (Any State) | [Apply](https://searchcareers.caci.com/careers/job/1443148808633?domain=caci.com&amp;hl=en) | 1d † |
 | [CACI](https://caci.com/) | User Engagement Specialist | Washington, DC, US | [Apply](https://searchcareers.caci.com/careers/job/1443153671232?domain=caci.com&amp;hl=en) | 1d † |
+| [Toyota](https://toyota.com/) | Principal AI Governance &amp; Security Engineer | Plano, Texas; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Plano-Texas/Principal-AI-Governance---Security-Engineer_10336560) | 1d † |
 | [CACI](https://caci.com/) | Research Specialist | Chantilly, VA, US | [Apply](https://searchcareers.caci.com/careers/job/1443153681831?domain=caci.com&amp;hl=en) | 1d † |
 | [NCR Voyix](https://ncrvoyix.com/) | Field Service Technician - Albany, NY | ALBANY, NY, USA; United States of America | [Apply](https://ncr.wd1.myworkdayjobs.com/ext_us/job/ALBANY-NY-USA/Field-Service-Technician_JR2604208-3) | 1d † |
 | [Motorola](https://motorolasolutions.com/) | Senior Sales Operations Analyst | Illinois Remote Work; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Illinois-Remote-Work/Senior-Sales-Operations-Analyst_R69141) | 1d † |
@@ -422,6 +441,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [Motorola](https://motorolasolutions.com/) | Sales Engineer - Video Security &amp; Access Control (FAST) | Texas, US Offsite; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Texas-US-Offsite/Sales-Engineer---Video-Security---Access-Control--FAST-_R67553) | 1d † |
 | [CACI](https://caci.com/) | Cisco Identity Services Engineer (ISE) Lead | Washington, DC, US | [Apply](https://searchcareers.caci.com/careers/job/1443153642080?domain=caci.com&amp;hl=en) | 1d † |
 | [CACI](https://caci.com/) | Proposal Solution Architect (Electronic Warfare) | Sterling, VA, US; Chantilly, VA, US; Annapolis Junction, MD, US | [Apply](https://searchcareers.caci.com/careers/job/1443153254488?domain=caci.com&amp;hl=en) | 1d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | Designer, Instrumentation &amp; Controls | Portland, OR; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Portland-OR/I-C-Designer_R021566-1) | 1d † |
 | [Capital Health](https://capitalhealth.org/) | Med Office Coordinator - FT - Day - CMG Central Resource Office Lawrenceville NJ | 3131 Princeton Pike; United States of America | [Apply](https://capitalhealth.wd1.myworkdayjobs.com/CapitalHealthCareers/job/3131-Princeton-Pike/Med-Office-Coordinator---FT---Day---CMG-Central-Resource-Office-Lawrenceville-NJ_JR111435) | 1d † |
 | [CACI](https://caci.com/) | Intel Ops Controller, Space Mission | Herndon, VA, US | [Apply](https://searchcareers.caci.com/careers/job/1443153671943?domain=caci.com&amp;hl=en) | 1d † |
 | [Visa](https://usa.visa.com/) | Director, Account Executive | US - Washington, DC; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---Washington-DC/Director--Account-Executive_REF088630W) | 1d † |
@@ -445,6 +465,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [CACI](https://caci.com/) | Sr Wireless Network Engineer | High Point, NC, US; Washington, DC, US; Reston, VA, US; Baltimore, MD, US; Chantilly, VA, US | [Apply](https://searchcareers.caci.com/careers/job/1443153673900?domain=caci.com&amp;hl=en) | 1d † |
 | [NCR Voyix](https://ncrvoyix.com/) | Field Service Technician - Mobile, AL | MOBILE, AL, USA; United States of America | [Apply](https://ncr.wd1.myworkdayjobs.com/ext_us/job/MOBILE-AL-USA/Field-Service-Technician---Mobile--AL_JR2604206-3) | 1d † |
 | [CACI](https://caci.com/) | Engineering Technician – TIGS Field Engineering &amp; Sustainment | Colorado Springs, CO, US | [Apply](https://searchcareers.caci.com/careers/job/1443152939912?domain=caci.com&amp;hl=en) | 1d † |
+| [Toyota](https://toyota.com/) | Engine Build Techician, Cylinder Heads | Costa Mesa, California; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Costa-Mesa-California/Engine-Build-Techician--Cylinder-Heads_10336595) | 1d † |
 | [Sierra Nevada Corporation](https://sncorp.com/) | Aerospace Engineer III | Lone Tree, CO; United States of America | [Apply](https://snc.wd1.myworkdayjobs.com/SNC_External_Career_Site/job/Lone-Tree-CO/Aerospace-Engineer-III_R0030902) | 1d † |
 | [Capital Health](https://capitalhealth.org/) | Certified Nurse Midwife OR NP Practice I - FT - Day - OB/GYN | Medical Office Building; United States of America | [Apply](https://capitalhealth.wd1.myworkdayjobs.com/CapitalHealthCareers/job/Medical-Office-Building/Certified-Nurse-Midwife-OR-NP-Practice-I---FT---Day---OB-GYN_JR111452) | 1d † |
 | [Visa](https://usa.visa.com/) | Director, Account Executive  | US - New York, NY; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---New-York-NY/Director--Account-Executive-_REF088632W) | 1d † |
@@ -525,7 +546,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [Snowflake](https://snowflake.com/) | Account Executive, Enterprise Acquisition | US-NY-New York | [Apply](https://jobs.ashbyhq.com/snowflake/58aeb127-c600-4dc7-861f-6924f4125dce) | 1d |
 | [Databricks](https://databricks.com/) | Named Hunter Enterprise Account Executive, Healthcare | Northeast - United States; Southeast - United States | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=8829296002) | 1d |
 | [Databricks](https://databricks.com/) | Strategic Enterprise Account Executive, Healthcare | Remote - California | [Apply](https://databricks.com/company/careers/open-positions/job?gh_jid=8829996002) | 1d |
-| [Freedom Technology Solutions Group](https://goftsg.com/) | Network Engineer 779 | McLean, VA | [Apply](https://job-boards.greenhouse.io/freedomconsulting/jobs/5248012007) | 1d |
+| [Freedom Technology Solutions Group](https://goftsg.com/) | Network Engineer 779 | McLean, VA | [Apply](https://job-boards.greenhouse.io/freedomconsulting/jobs/5248012007) | 2d |
 | [Monks](https://monks.com/) | Temp Account Director | United States | [Apply](https://www.monks.com/careers/6203618004/job?gh_jid=6203618004) | 2d |
 | [SpaceX](https://spacex.com/) | Supervisor, Materials Management (Thermal Hardware Production) | Cape Canaveral, FL | [Apply](https://boards.greenhouse.io/spacex/jobs/8842080002?gh_jid=8842080002) | 2d |
 | [Anthropic](https://anthropic.com/) | Incident Response Manager - Privacy | San Francisco, CA &#124; New York City, NY | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5432528008) | 2d |
@@ -539,15 +560,19 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [Crusoe](https://crusoeenergy.com/) | Senior Manager, Revenue Accounting | San Francisco, CA - US | [Apply](https://jobs.ashbyhq.com/Crusoe/52d134b6-039d-4c3c-b157-2cf7f700f77a) | 2d |
 | [Anthropic](https://anthropic.com/) | Strategy &amp; Operations, Office of the CCO | San Francisco, CA &#124; New York City, NY | [Apply](https://job-boards.greenhouse.io/anthropic/jobs/5432995008) | 2d |
 | [DoorDash](https://doordash.com/) | Machine Learning Intern (Masters) - Summer 2027 | San Francisco, CA;  Sunnyvale, CA ; New York City, NY; Seattle, WA | [Apply](https://job-boards.greenhouse.io/doordashusa/jobs/8204111) | 2d |
+| [Toyota](https://toyota.com/) | Digital Sculptor (Alias) | CALTY Ann Arbor Design Studio; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/CALTY-Ann-Arbor-Design-Studio/Digital-Sculptor--Alias-_10336486) | 2d † |
 | [CACI](https://caci.com/) | Cybersecurity Engineer | Remote (Any State) | [Apply](https://searchcareers.caci.com/careers/job/1443153658946?domain=caci.com&amp;hl=en) | 2d † |
 | [Capital Health](https://capitalhealth.org/) | CHMG RN Clinical Education Specialist - FT - Day - Capital Health Medical Group NJ | 3131 Princeton Pike; United States of America | [Apply](https://capitalhealth.wd1.myworkdayjobs.com/CapitalHealthCareers/job/3131-Princeton-Pike/CHMG-RN-Clinical-Education-Specialist---FT---Day---Capital-Health-Medical-Group-NJ_JR111450) | 2d † |
 | [Capital Health](https://capitalhealth.org/) | Central Ster Proc Tech - PATIENT SVCES CENTRAL STERILE (HPW) - Full-time - Day | Pennington, NJ; United States of America | [Apply](https://capitalhealth.wd1.myworkdayjobs.com/CapitalHealthCareers/job/Pennington-NJ/Central-Ster-Proc-Tech---PATIENT-SVCES-CENTRAL-STERILE--HPW----Full-time---Day_JR111402) | 2d † |
+| [Toyota](https://toyota.com/) | Internal Audit Consultant | Plano, Texas; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Plano-Texas/Internal-Audit-Consultant_10336310) | 2d † |
 | [Sierra Nevada Corporation](https://sncorp.com/) | Sr Mechanical Engineer | Plano, TX; United States of America | [Apply](https://snc.wd1.myworkdayjobs.com/SNC_External_Career_Site/job/Plano-TX/Sr-Mechanical-Engineer_R0030886) | 2d † |
 | [Motorola](https://motorolasolutions.com/) | Systems Integration Engineering Intern (Summer 2027) | Greater Chicago Area; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Greater-Chicago-Area/Systems-Integration-Engineering-Intern--Summer-2027-_R68894) | 2d † |
 | [Capital Health](https://capitalhealth.org/) | Patient Reception Rep - FT - Day - OB/GYN Lawrenceville NJ | Lawrence OB Lawrencville; United States of America | [Apply](https://capitalhealth.wd1.myworkdayjobs.com/CapitalHealthCareers/job/Lawrence-OB-Lawrencville/Patient-Reception-Rep---FT---Day---OB-GYN-Lawrenceville-NJ_JR111454) | 2d † |
 | [Motorola](https://motorolasolutions.com/) | Channel Sales Executive (Wisconsin) | Wisconsin Remote Work; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Wisconsin-Remote-Work/Channel-Sales-Executive--Wisconsin-_R68902) | 2d † |
+| [Toyota](https://toyota.com/) | Center Of Excellence Group Leader | Liberty, North Carolina; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Liberty-North-Carolina/Center-Of-Excellence-Group-Leader_10336302) | 2d † |
 | [CACI](https://caci.com/) | Master HVAC Technician | San Antonio, TX, US | [Apply](https://searchcareers.caci.com/careers/job/1443153651596?domain=caci.com&amp;hl=en) | 2d † |
 | [Visa](https://usa.visa.com/) | Director, Platform Engineering | US - Foster City, CA; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---Foster-City-CA/Director--Platform-Engineering_REF088255W) | 2d † |
+| [Toyota](https://toyota.com/) | Senior Paralegal | Plano, Texas; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Plano-Texas/Senior-Paralegal_10336260) | 2d † |
 | [Autostore](https://autostoresystem.com/) | Senior Engineer, Perception/Vision | Atlanta, GA, USA; United States of America | [Apply](https://autostore.wd3.myworkdayjobs.com/autostore/job/Atlanta-GA-USA/Senior-Engineer--Perception-Vision_JR102602) | 2d † |
 | [State Street](https://statestreet.com/) | Treasury Services-officer | Quincy, Massachusetts; United States of America | [Apply](https://statestreet.wd1.myworkdayjobs.com/Global/job/Quincy-Massachusetts/Treasury-Services-officer_R-798527) | 2d † |
 | [F5](https://f5.com/) | Sr. Principal Functional Operations Partner | Seattle; United States of America | [Apply](https://ffive.wd5.myworkdayjobs.com/f5jobs/job/Seattle/Sr-Principal-Functional-Operations-Partner_RP1038861) | 2d † |
@@ -558,12 +583,14 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [State Street](https://statestreet.com/) | Application Support Engineer | Burlington Massachusetts; United States of America | [Apply](https://statestreet.wd1.myworkdayjobs.com/Global/job/Burlington-Massachusetts/Application--Infastructure-and-Service-Management_R-798461) | 2d † |
 | [CACI](https://caci.com/) | 24/7 User Support and System Specialist | Denver, CO, US | [Apply](https://searchcareers.caci.com/careers/job/1443153657178?domain=caci.com&amp;hl=en) | 2d † |
 | [CACI](https://caci.com/) | Sr. Program Manager | Sterling, VA, US | [Apply](https://searchcareers.caci.com/careers/job/1443153658738?domain=caci.com&amp;hl=en) | 2d † |
+| [Toyota](https://toyota.com/) | Talent Acquisition Coordinator | Plano, Texas; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Plano-Texas/Talent-Acquisition-Coordinator_10333999) | 2d † |
 | [Sierra Nevada Corporation](https://sncorp.com/) | Structural Engineer III | Plano, TX; United States of America | [Apply](https://snc.wd1.myworkdayjobs.com/SNC_External_Career_Site/job/Plano-TX/Structural-Engineer-III_R0030888) | 2d † |
 | [Motorola](https://motorolasolutions.com/) | Fixed Sales Representative - Hybrid in Fort Worth, Texas | Fort Worth, TX (TX135); United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Fort-Worth-TX-TX135/Fixed-LPR-Sales-Representative_R68435) | 2d † |
 | [Visa](https://usa.visa.com/) | Network Engineer- WAN (Sr. Consultant level) | US - Ashburn, VA; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---Ashburn-VA/Sr-Consultant-Network-Engineer_REF082480W) | 2d † |
 | [State Street](https://statestreet.com/) | COO - Global Head of Business Operations, MD - State Street Investment Management | Boston, Massachusetts; United States of America | [Apply](https://statestreet.wd1.myworkdayjobs.com/Global/job/Boston-Massachusetts/COO---Global-Head-of-Business-Operations--MD---State-Street-Investment-Management_R-798552) | 2d † |
 | [NCR Voyix](https://ncrvoyix.com/) | Software Quality Engineer | IRVING, TX, USA; United States of America | [Apply](https://ncr.wd1.myworkdayjobs.com/ext_us/job/IRVING-TX-USA/Software-Quality-Engineer_R0158545) | 2d † |
 | [F5](https://f5.com/) | Channel Account Manager SLED | Washington DC; United States of America | [Apply](https://ffive.wd5.myworkdayjobs.com/f5jobs/job/Washington-DC/Channel-Account-Manager-SLED_RP1038443) | 2d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | Senior Manger, Environmental Health &amp; Safety (EHS) | Romeoville, IL; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Romeoville-IL/Senior-Manger--Environmental-Health---Safety--EHS-_R022893) | 2d † |
 | [LexisNexis Risk Solutions](https://risk.lexisnexis.com/) | Information System Security Officer (ISSO) | Boca Raton, FL (Yamato); United States of America | [Apply](https://relx.wd3.myworkdayjobs.com/RiskSolutions/job/Boca-Raton-FL-Yamato/Information-System-Security-Officer--ISSO-_R117439-1) | 2d † |
 | [Motorola](https://motorolasolutions.com/) | Sr Regulatory Product Compliance Specialist | Allen, TX (TX139); United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Allen-TX-TX139/Sr-Regulatory-Product-Compliance-Specialist_R63286) | 2d † |
 | [Motorola](https://motorolasolutions.com/) | Senior Electronics Technician | Schaumburg, IL; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Schaumburg-IL/Senior-Electronics-Technician_R67908) | 2d † |
@@ -590,12 +617,16 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [LexisNexis Risk Solutions](https://risk.lexisnexis.com/) | Customer Administrative Specialist | Arizona; United States of America | [Apply](https://relx.wd3.myworkdayjobs.com/RiskSolutions/job/Arizona/Customer-Administrative-Specialist_R118841) | 2d † |
 | [Visa](https://usa.visa.com/) | Software Engineer - Sr Consultant level-2 | US - Foster City, CA; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---Foster-City-CA/Software-Engineer---Sr-Consultant-level-2_REF080663W) | 2d † |
 | [Capital Health](https://capitalhealth.org/) | Registered Nurse - Emergency Room - RMC - PT - Night | RMC; United States of America | [Apply](https://capitalhealth.wd1.myworkdayjobs.com/CapitalHealthCareers/job/RMC/Registered-Nurse---Emergency-Room---RMC---PT---Night_JR111417) | 2d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | Executive Assistant | St. Louis, MO; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/St-Louis-MO/Executive-Assistant---Internal-Communications-Coordinator_R019106) | 2d † |
 | [CACI](https://caci.com/) | Junior Mechanical Engineer | Crane, IN, US | [Apply](https://searchcareers.caci.com/careers/job/1443153658593?domain=caci.com&amp;hl=en) | 2d † |
 | [Sierra Nevada Corporation](https://sncorp.com/) | Sr. IT Manager - Transformation &amp; Resiliency | Lone Tree, CO; United States of America | [Apply](https://snc.wd1.myworkdayjobs.com/SNC_External_Career_Site/job/Lone-Tree-CO/Sr-IT-Manager---Transformation---Resiliency_R0030919) | 2d † |
+| [Toyota](https://toyota.com/) | Engineer - Production Engineering | Princeton, Indiana; United States of America | [Apply](https://toyota.wd503.myworkdayjobs.com/TMNA/job/Princeton-Indiana/Engineer---Production-Engineering_10334318) | 2d † |
 | [Capital Health](https://capitalhealth.org/) | Registered Nurse - Hemodialysis - RMC - Full-time - Day | RMC; United States of America | [Apply](https://capitalhealth.wd1.myworkdayjobs.com/CapitalHealthCareers/job/RMC/Registered-Nurse---Hemodialysis---RMC---Full-time---Day_JR111444) | 2d † |
 | [Motorola](https://motorolasolutions.com/) | Service Delivery Technician - Fixed Video | North Carolina Remote Work; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/North-Carolina-Remote-Work/Service-Delivery-Technician---Fixed-Video_R68634) | 2d † |
 | [CACI](https://caci.com/) | UAS Red Team Pilot | Aberdeen Proving Ground, MD, US | [Apply](https://searchcareers.caci.com/careers/job/1443153136745?domain=caci.com&amp;hl=en) | 2d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | Senior Leader – Vision Systems Engineering | Waukesha, WI; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Waukesha-WI/Senior-Leader---Electrical---Software-Engineering_R021991-1) | 2d † |
 | [Motorola](https://motorolasolutions.com/) | Director of Corporate Communications | Chicago, IL; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Chicago-IL/Director-of-Corporate-Communications_R68856) | 2d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | Superintendent | Raleigh, NC; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Raleigh-NC/Superintendent_R022761) | 2d † |
 | [CACI](https://caci.com/) | Senior Network Security Engineer | Columbia, MD, US | [Apply](https://searchcareers.caci.com/careers/job/1443150990622?domain=caci.com&amp;hl=en) | 2d † |
 | [F5](https://f5.com/) | Senior Accountant | Seattle; United States of America | [Apply](https://ffive.wd5.myworkdayjobs.com/f5jobs/job/Seattle/Senior-Accountant_RP1038693) | 2d † |
 | [Motorola](https://motorolasolutions.com/) | Customer Success Advocate - Northwest | Colorado Remote Work; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Colorado-Remote-Work/Customer-Success-Advocate---Northwest_R66776) | 2d † |
@@ -604,6 +635,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [Motorola](https://motorolasolutions.com/) | CPE SW E2E Triage Intern - Summer 2027 | Plantation, FL; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Plantation-FL/CPE-SW-E2E-Triage-Intern---Summer-2027_R68165) | 2d † |
 | [LexisNexis Risk Solutions](https://risk.lexisnexis.com/) | DBA Lead | Alpharetta, GA; United States of America | [Apply](https://relx.wd3.myworkdayjobs.com/RiskSolutions/job/Alpharetta-GA/DBA-Lead_R118191) | 2d † |
 | [Visa](https://usa.visa.com/) | Business Development Representative | US - Atlanta, GA; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---Atlanta-GA/Business-Development-Representative_REF088769W) | 2d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | Fabricator | New Hampton, IA; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/New-Hampton-IA/Fabricator_R022804) | 2d † |
 | [State Street](https://statestreet.com/) | Operations Client Service, AVP | Quincy, Massachusetts; United States of America | [Apply](https://statestreet.wd1.myworkdayjobs.com/Global/job/Quincy-Massachusetts/Operations-Client-Service--AVP_R-797623) | 2d † |
 | [CACI](https://caci.com/) | Solutions Architect/Modeler | Remote (Any State) | [Apply](https://searchcareers.caci.com/careers/job/1443153659554?domain=caci.com&amp;hl=en) | 2d † |
 | [Capital Health](https://capitalhealth.org/) | Healthcare Facilities Specialist | RMC; United States of America | [Apply](https://capitalhealth.wd1.myworkdayjobs.com/CapitalHealthCareers/job/RMC/Healthcare-Facilities-Specialist_JR111445) | 2d † |
@@ -612,12 +644,16 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [State Street](https://statestreet.com/) | Environments and Data Strategy Practice Manager, Assistant Vice President | Quincy, Massachusetts; United States of America | [Apply](https://statestreet.wd1.myworkdayjobs.com/Global/job/Quincy-Massachusetts/Environments-and-Data-Strategy-Practice-Manager--Vice-President_R-790690) | 2d † |
 | [Capital Health](https://capitalhealth.org/) | Critical Care Technician - Emergency Room (HPW) - PT - Day | Hopewell; United States of America | [Apply](https://capitalhealth.wd1.myworkdayjobs.com/CapitalHealthCareers/job/Hopewell/Critical-Care-Technician---Emergency-Room--HPW----PT---Day_JR111400) | 2d † |
 | [Visa](https://usa.visa.com/) | Cybersecurity Engineer - Product Development | US - Austin, TX; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---Austin-TX/Cybersecurity-Engineer---Product-Development_REF088499W) | 2d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | Electrical Assembler | Phillips, WI; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Phillips-WI/Electrical-Assembler_R021944-1) | 2d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | Product Line Leader – Curing | Mediapolis, IA; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Mediapolis-IA/Curing-Leader_R021832) | 2d † |
 | [NewsBreak](https://newsbreak.com/) | GTM Lead, NDot AI | Mountain View, California, United States; New York, New York, United States | [Apply](https://job-boards.greenhouse.io/newsbreak/jobs/4716181006) | 2d |
 | [LexisNexis Risk Solutions](https://risk.lexisnexis.com/) | Site Reliability Engineering Lead | Alpharetta, GA; United States of America | [Apply](https://relx.wd3.myworkdayjobs.com/RiskSolutions/job/Alpharetta-GA/Site-Reliability-Engineering-Lead_R118128) | 2d † |
 | [Visa](https://usa.visa.com/) | Staff Software Engineer, Sr. Consultant (Agentic AI, Cloud, LLM, API) | US - Foster City, CA; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---Foster-City-CA/Software-Engineer---Sr-Consultant-level-1_REF080662W) | 2d † |
 | [CACI](https://caci.com/) | Sr. Systems Administrator (Active Directory) | Hampton, VA, US | [Apply](https://searchcareers.caci.com/careers/job/1443153658139?domain=caci.com&amp;hl=en) | 2d † |
 | [Motorola](https://motorolasolutions.com/) | Field Engineer - Missouri | Missouri Remote Work; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Missouri-Remote-Work/Field-Engineer---Missouri_R68998) | 2d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | Field Service Engineer/Technician | Remote - USA; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Remote---USA/Field-Service-Engineer-Technician_R020387) | 2d † |
 | [LexisNexis Risk Solutions](https://risk.lexisnexis.com/) | Architect | Alpharetta, GA; United States of America | [Apply](https://relx.wd3.myworkdayjobs.com/RiskSolutions/job/Alpharetta-GA/Architect_R117717-1) | 2d † |
+| [Barry-Wehmiller](https://barrywehmiller.com/) | Project Manager, Construction | Raleigh, NC; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Raleigh-NC/Project-Manager--Construction_R022760) | 2d † |
 | [CACI](https://caci.com/) | Cyber Security Operations Manager | Oklahoma City, OK, US | [Apply](https://searchcareers.caci.com/careers/job/1443153643379?domain=caci.com&amp;hl=en) | 2d † |
 | [State Street](https://statestreet.com/) | Product Transformation Coach - VP III - State Street Investment Management | Boston, Massachusetts; United States of America | [Apply](https://statestreet.wd1.myworkdayjobs.com/Global/job/Boston-Massachusetts/Product-Transformation-Coach---VP-III---State-Street-Investment-Management_R-797835) | 2d † |
 | [Sierra Nevada Corporation](https://sncorp.com/) | IT Support Technician II - Service Center | Lone Tree, CO; United States of America | [Apply](https://snc.wd1.myworkdayjobs.com/SNC_External_Career_Site/job/Lone-Tree-CO/IT-Support-Technician-II---Service-Center_R0030918) | 2d † |
@@ -631,6 +667,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [Crusoe](https://crusoeenergy.com/) | Staff Network Production Engineer, Deployment | San Francisco, CA - US | [Apply](https://jobs.ashbyhq.com/Crusoe/2b5d8063-e09b-4c21-95b1-89ca70f63011) | 2d |
 | [DoorDash](https://doordash.com/) | Director, New Restaurant Models- Strategy &amp; Operations | New York City, NY; San Francisco, CA; Seattle, WA; Los Angeles, CA | [Apply](https://job-boards.greenhouse.io/doordashusa/jobs/8209572) | 2d |
 | [Cerebras](https://www.cerebras.ai/open-positions) | Manufacturing Automation Engineer | Sunnyvale, CA | [Apply](https://jobs.ashbyhq.com/cerebras/20010f8f-5ede-469a-b432-c38dc223e11c) | 2d |
+| [IXL Learning](https://www.ixl.com/company/careers?gh_jid=8765715002) | Educational Sales Consultant, Central California | Fresno, CA | [Apply](https://www.ixl.com/company/jobs?gh_jid=8841330002) | 2d |
 | [Crusoe](https://crusoeenergy.com/) | Senior Manager, Utility Contracts | San Francisco, CA - US | [Apply](https://jobs.ashbyhq.com/Crusoe/7360f5f7-1ca0-4ff6-a504-d45792376725) | 2d |
 | [Pylon](https://usepylon.com/) | Customer Success Manager | New York | [Apply](https://jobs.ashbyhq.com/pylon-labs/04dc90b1-874d-46e1-a9b0-b5892025d7b3) | 2d |
 | [Stripe](https://stripe.com/) | Credit Operations Manager | Chicago, Atlanta, US-Remote | [Apply](https://stripe.com/jobs/search?gh_jid=8213951) | 2d |
@@ -654,6 +691,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [DoorDash](https://doordash.com/) | Manager, Sales Strategy &amp; Operations | Los Angeles, CA; San Francisco, CA; New York, NY; Atlanta, GA; Tempe, AZ; Austin, TX; Seattle, WA; Washington, DC; Chicago, IL; Denver, CO; Boston, MA | [Apply](https://job-boards.greenhouse.io/doordashusa/jobs/8227346) | 2d |
 | [Crusoe](https://crusoeenergy.com/) | Senior Software Enginer, CAPE | San Francisco, CA - US | [Apply](https://jobs.ashbyhq.com/Crusoe/d2213d93-733e-4aff-bcc3-2f3103159d2a) | 2d |
 | [SpaceX](https://spacex.com/) | Supplier Development Engineer, Silicon &amp; Packaging (Starlink)  | Redmond, WA | [Apply](https://boards.greenhouse.io/spacex/jobs/8834217002?gh_jid=8834217002) | 2d |
+| [IXL Learning](https://www.ixl.com/company/careers?gh_jid=8765715002) | Office Coordinator | San Mateo, CA | [Apply](https://www.ixl.com/company/jobs?gh_jid=8838080002) | 2d |
 | [SpaceX](https://spacex.com/) | Supplier Development Engineer, PCBA (Starlink) | Redmond, WA | [Apply](https://boards.greenhouse.io/spacex/jobs/8834213002?gh_jid=8834213002) | 2d |
 | [SpaceX](https://spacex.com/) | Supplier Development Engineer, Harnessing (Starlink) | Redmond, WA | [Apply](https://boards.greenhouse.io/spacex/jobs/8834233002?gh_jid=8834233002) | 2d |
 | [True Anomaly](https://trueanomaly.space/) | Senior Electrical Engineer, FPGA Development | Long Beach, CA | [Apply](https://job-boards.greenhouse.io/trueanomalyinc/jobs/5247312007) | 2d |

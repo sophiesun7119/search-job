@@ -29,13 +29,14 @@ Import a bounded batch from a local Simplify catalog, then investigate its leads
 ```sh
 PYTHONPATH=code/src python3 -m search_job.run var/search-job.sqlite3 \
   --simplify-catalog /path/to/catalog.sqlite3 --source-year 2026 --limit 100
-PYTHONPATH=code/src python3 -m search_job.run var/search-job.sqlite3 --resolve-profiles --limit 100
-PYTHONPATH=code/src python3 -m search_job.run var/search-job.sqlite3 --verify-routes --provider ashby --limit 100
+PYTHONPATH=code/src python3 -m search_job.run var/search-job.sqlite3 --triage-leads --limit 100
 PYTHONPATH=code/src python3 -m search_job.run var/search-job.sqlite3 \
   --scan --new-leads-only --provider ashby --limit 100
 ```
 
 The catalog's company and sample Apply link become a `source_leads` row, not a verified company-board route. Script checks follow the candidate official site to find its careers/ATS links. Unsupported providers remain `adapter_pending`; ambiguous or inaccessible routes remain pending with their last error. Once a missing provider collector has passed a live board test, `--activate-adapter PROVIDER` registers its officially evidenced leads for scanning. Run one provider at a time and inspect the source-lead stages before publishing; only a complete board scan promotes a new company to the `old` cohort.
+
+`--triage-leads` checks each saved Apply URL and redirect first, extracts an ATS hint, then resolves missing company domains and checks official careers pages for the current board. A live third-party sample does not activate its board. If an official page rejects the script but AI verifies its exact ATS link, use `--confirm-route LEAD_KEY --evidence-url OFFICIAL_PAGE --board-url ATS_LINK`; this records `ai_official_page`. Only use `--confirmation-source user` if the user supplied or confirmed the official link. `--route-report` counts source methods and exact sample-board matches; unattributed older rows are kept separate. `--verify-routes --lead-key LEAD_KEY` retries one lead after a parser fix. See the run skill for the script-first, AI-on-failure order.
 
 Import a portable JSON seed containing companies and their existing ATS routes, then scan one provider at a time:
 

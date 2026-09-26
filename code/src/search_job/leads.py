@@ -7,6 +7,7 @@ import html
 import json
 import ssl
 import urllib.request
+import urllib.error
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
@@ -30,6 +31,8 @@ def recognize_apply_url(url: str) -> tuple[str, str | None]:
     path = [unquote(part) for part in parts.path.split("/") if part]
     if host in {"boards.greenhouse.io", "job-boards.greenhouse.io"}:
         return "greenhouse", path[0] if path else None
+    if host == "boards-api.greenhouse.io" and len(path) >= 4 and path[:2] == ["v1", "boards"] and path[3] == "jobs":
+        return "greenhouse", path[2]
     if host == "jobs.ashbyhq.com":
         return "ashby", path[0] if path else None
     if host == "api.ashbyhq.com" and path[:2] == ["posting-api", "job-board"]:
@@ -122,6 +125,60 @@ def import_simplify_catalog(db: sqlite3.Connection, catalog_path: Path, *,
     return {"selected": len(selected), "year": year,
             "source_ids": [row["id"] for row in selected],
             "provider_hints": dict(sorted(providers.items()))}
+
+
+def _probe_sample(url: str) -> tuple[str | None, int | None, str | None]:
+    if urlsplit(url).scheme != "https":
+        return None, None, "Sample Apply URL is not HTTPS"
+    request = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "text/html"})
+    context = ssl.create_default_context(cafile=certifi.where()) if certifi else ssl.create_default_context()
+    try:
+        with urllib.request.urlopen(request, timeout=15, context=context) as response:
+            response.read(1)
+            return response.url, response.status, None
+    except urllib.error.HTTPError as exc:
+        return exc.url, exc.code, f"HTTP {exc.code}"
+    except Exception as exc:
+        return None, None, f"{type(exc).__name__}: {exc}"[:300]
+
+
+def probe_saved_samples(db: sqlite3.Connection, *, limit: int = 100, workers: int = 8) -> dict:
+    """Check saved third-party Apply URLs; never promote a route from this alone."""
+    if limit < 1 or not 1 <= workers <= 16:
+        raise ValueError("Invalid sample probe batch")
+    rows = db.execute("""SELECT lead_key,sample_apply_url,stage,route_evidence_url FROM source_leads
+      WHERE stage!='scanned' AND sample_apply_url IS NOT NULL
+      ORDER BY CAST(source_id AS INTEGER) LIMIT ?""", (limit,)).fetchall()
+    outcomes = []
+    originals = {row["lead_key"]: row for row in rows}
+    original_urls = {key: row["sample_apply_url"] for key, row in originals.items()}
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futures = {pool.submit(_probe_sample, row["sample_apply_url"]): row["lead_key"] for row in rows}
+        for future in as_completed(futures):
+            outcomes.append((futures[future], *future.result()))
+    stamp = datetime.now(timezone.utc).isoformat()
+    with db:
+        for key, final_url, status, error in outcomes:
+            original_provider, original_board = recognize_apply_url(original_urls[key])
+            final_provider, final_board = recognize_apply_url(final_url) if final_url else ("unknown", None)
+            provider, board = ((final_provider, final_board) if final_provider != "unknown" and final_board
+                               else (original_provider, original_board))
+            can_update_hint = originals[key]["stage"] == "route_pending" and not originals[key]["route_evidence_url"]
+            db.execute("""UPDATE source_leads SET sample_probe_url=?,sample_probe_status=?,
+              sample_probe_error=?,sample_probe_at=?,
+              provider_hint=CASE WHEN ? THEN COALESCE(?,provider_hint) ELSE provider_hint END,
+              board_hint=CASE WHEN ? THEN COALESCE(?,board_hint) ELSE board_hint END
+              WHERE lead_key=?""",
+              (final_url, status, error, stamp, can_update_hint,
+               provider if provider != "unknown" else None, can_update_hint, board, key))
+    return {"checked": len(outcomes), "http_statuses": dict(sorted(Counter(
+        str(status) if status is not None else "network_error"
+        for _, _, status, _ in outcomes).items())),
+        "redirected": sum(bool(final_url and final_url != original_urls[key])
+            for key, final_url, _, _ in outcomes),
+        "recognized_ats": sum((recognize_apply_url(final_url)[0] != "unknown" if final_url else False)
+            or recognize_apply_url(original_urls[key])[0] != "unknown"
+            for key, final_url, _, _ in outcomes)}
 
 
 def official_domain_from_profile(body: str) -> str | None:
@@ -277,14 +334,16 @@ def _official_route(lead: dict) -> dict:
 
 
 def verify_official_routes(db: sqlite3.Connection, *, provider_hint: str | None = None,
+                           lead_key: str | None = None,
                            limit: int = 100, workers: int = 8) -> dict:
     """Follow official company pages and save only evidence-backed board routes."""
     if limit < 1 or not 1 <= workers <= 16:
         raise ValueError("Invalid route verification batch")
     rows = [dict(row) for row in db.execute("""SELECT * FROM source_leads
       WHERE official_url IS NOT NULL AND stage='route_pending'
-        AND (? IS NULL OR provider_hint=?)
-      ORDER BY CAST(source_id AS INTEGER) LIMIT ?""", (provider_hint, provider_hint, limit))]
+        AND (? IS NULL OR provider_hint=?) AND (? IS NULL OR lead_key=?)
+      ORDER BY CAST(source_id AS INTEGER) LIMIT ?""",
+      (provider_hint, provider_hint, lead_key, lead_key, limit))]
     results = []
     with ThreadPoolExecutor(max_workers=workers) as pool:
         futures = {pool.submit(_official_route, lead): lead for lead in rows}
@@ -313,15 +372,35 @@ def verify_official_routes(db: sqlite3.Connection, *, provider_hint: str | None 
                   (company_key, board_key, result["evidence_page"]))
             db.execute("""UPDATE source_leads SET stage=?,company_key=?,
               provider_hint=COALESCE(?,provider_hint),board_hint=COALESCE(?,board_hint),
-              route_evidence_url=?,official_board_url=?,last_error=?,checked_at=? WHERE lead_key=?""",
+              route_evidence_url=?,route_resolution_method=CASE WHEN ? IS NOT NULL THEN 'script_official_page' ELSE route_resolution_method END,
+              official_board_url=?,last_error=?,checked_at=? WHERE lead_key=?""",
               (stage, company_key, provider, board, result.get("evidence_page"),
-               result.get("board_url"),
+               result.get("evidence_page"), result.get("board_url"),
                result.get("error"), stamp, lead["lead_key"]))
     counts = Counter(result["stage"] for _, result in results)
     return {"checked": len(results), "stages": dict(sorted(counts.items())),
             "unresolved": [{"lead": lead["lead_key"], "stage": result["stage"],
                              "error": result.get("error")} for lead, result in results
                             if result["stage"] in {"route_pending", "board_pending"}]}
+
+
+def route_resolution_report(db: sqlite3.Connection) -> dict:
+    """Separate sample clues from script, AI, and user-confirmed official routes."""
+    rows = db.execute("SELECT * FROM source_leads WHERE source_name='simplify'").fetchall()
+    methods = Counter(row["route_resolution_method"] or "unattributed_prior" for row in rows
+                      if row["route_evidence_url"])
+    sample_matches = Counter()
+    for row in rows:
+        if not row["route_evidence_url"]:
+            continue
+        sample_provider, sample_board = recognize_apply_url(row["sample_apply_url"] or "")
+        sample_matches["exact_board" if (sample_provider, sample_board) ==
+                       (row["provider_hint"], row["board_hint"]) else
+                       "different_or_unknown"] += 1
+    return {"official_routes_by_method": dict(sorted(methods.items())),
+            "sample_hint_vs_official": dict(sorted(sample_matches.items())),
+            "unresolved_by_stage": dict(sorted(Counter(row["stage"] for row in rows
+                if row["stage"] not in {"scanned", "scan_pending"}).items()))}
 
 
 def activate_tested_adapter(db: sqlite3.Connection, provider: str) -> dict:
@@ -348,3 +427,46 @@ def activate_tested_adapter(db: sqlite3.Connection, provider: str) -> dict:
             db.execute("""UPDATE source_leads SET stage='scan_pending',company_key=?,
               last_error=NULL,checked_at=? WHERE lead_key=?""", (company_key, stamp, lead["lead_key"]))
     return {"provider": provider, "activated_routes": len(rows)}
+
+
+def confirm_official_route(db: sqlite3.Connection, lead_key: str, *,
+                           evidence_url: str, board_url: str,
+                           confirmation_source: str = "ai") -> dict:
+    """Record an AI or user-reviewed official page/link when automated page reads fail.
+
+    The caller must have inspected the official page and verified that it links
+    to this exact ATS board. This function enforces URL/domain and provider
+    shape, but cannot replace that source inspection.
+    """
+    lead = db.execute("SELECT * FROM source_leads WHERE lead_key=?", (lead_key,)).fetchone()
+    if confirmation_source not in {"ai", "user"}:
+        raise ValueError("Confirmation source must be ai or user")
+    if lead is None or lead["stage"] not in {"route_pending", "board_pending"}:
+        raise ValueError("Lead is absent or not awaiting route evidence")
+    official_host = (urlsplit(lead["official_url"] or "").hostname or "").lower().removeprefix("www.")
+    evidence = urlsplit(evidence_url)
+    evidence_host = (evidence.hostname or "").lower().removeprefix("www.")
+    if (not official_host or evidence.scheme != "https" or
+            not (evidence_host == official_host or evidence_host.endswith("." + official_host))):
+        raise ValueError("Evidence page must be on the candidate official company domain")
+    provider, board = recognize_apply_url(board_url)
+    if urlsplit(board_url).scheme != "https" or provider == "unknown" or not board:
+        raise ValueError("Board URL must identify a supported or planned ATS route")
+    stage = "scan_pending" if provider in ACTIVE_COLLECTORS else "adapter_pending"
+    company_key = official_host if stage == "scan_pending" else None
+    stamp = datetime.now(timezone.utc).isoformat()
+    with db:
+        if company_key:
+            upsert_company(db, company_key, lead["name"], lead["official_url"],
+                           f"simplify:{lead['source_year']}")
+            board_key = f"{provider}:{board}"
+            upsert_board(db, board_key, provider, board, board_url)
+            db.execute("""INSERT INTO company_boards(company_key,board_key,evidence_url,status)
+              VALUES (?,?,?,'pending_recheck') ON CONFLICT(company_key,board_key) DO NOTHING""",
+              (company_key, board_key, evidence_url))
+        db.execute("""UPDATE source_leads SET stage=?,company_key=?,provider_hint=?,board_hint=?,
+          route_evidence_url=?,route_resolution_method=?,official_board_url=?,last_error=NULL,checked_at=? WHERE lead_key=?""",
+          (stage, company_key, provider, board, evidence_url,
+           f"{confirmation_source}_official_page", board_url, stamp, lead_key))
+    return {"lead": lead_key, "provider": provider, "board": board, "stage": stage,
+            "route_resolution_method": f"{confirmation_source}_official_page"}
