@@ -17,11 +17,11 @@ Read the three diagrams in order. Gray boxes are user inputs, blue boxes are **S
 | AI task | Trigger and input | Successful result | If unresolved |
 | --- | --- | --- | --- |
 | **AI-1 Company discovery** | A user requests a bounded search for new companies; existing companies and named lists are handled by scripts first. | Sourced company leads with useful careers/Application links. | Keep the discovery batch position and concrete failure. |
-| **AI-2 ATS investigation** | The official company careers route does not reveal a clear ATS host/path after script extraction and one bounded search. | Evidence-backed company-to-ATS provider route. | Record the unresolved route and evidence. |
+| **AI-2 ATS investigation** | The saved sample Job link, redirect, and official company careers route do not reveal a clear ATS host/path after script extraction. | Evidence-backed company-to-ATS provider route. | Record the exact blocker and request user review only after an actual AI attempt. |
 | **AI-3 Adapter development** | The ATS provider is confirmed, but no tested collector can read it. | One reusable adapter with fixtures and a bounded official-board test. | Mark `adapter_failed` only after the attempt; retain details. |
 | **AI-4 Board verification** | Provider and adapter are known, but the company-to-board URL/token or brand association remains uncertain or unreadable after script checks. | Verified company-to-board mapping and a readable board. | Record the exact board/association failure for review. |
 
-An **AI task** is a bounded Codex run that researches, changes code when necessary, and verifies its result. These are conditional handoffs, not four mandatory calls for every company. A queued work item is not completed AI work. Routine board scans and per-job classification do not use AI reasoning.
+An **AI task** is a bounded Codex run that researches, changes code when necessary, and verifies its result. These are conditional handoffs, not four mandatory calls for every company. A queued work item is not completed AI work. The local review Dashboard shows unresolved companies and their original Simplify links; `ai_pending` means the script failed and AI has not completed the investigation. `needs_user` requires a recorded AI attempt and a concrete link or fact requested from the user. Routine board scans and per-job classification do not use AI reasoning.
 
 The project skills follow these boundaries:
 

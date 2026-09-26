@@ -86,7 +86,7 @@ def import_simplify_catalog(db: sqlite3.Connection, catalog_path: Path, *,
     known_ids = {row[0] for row in db.execute("SELECT source_id FROM source_leads WHERE source_name='simplify'")}
     selected = []
     try:
-        rows = source.execute("""SELECT c.id,c.name,c.best_apply_url,c.best_year,
+        rows = source.execute("""SELECT c.id,c.name,c.best_apply_url,c.best_year,c.canonical_domain,
           (SELECT o.profile_url FROM observations o WHERE o.company_id=c.id
            AND o.source_year=c.best_year AND o.apply_url=c.best_apply_url
            ORDER BY o.id LIMIT 1) AS profile_url,
@@ -113,14 +113,19 @@ def import_simplify_catalog(db: sqlite3.Connection, catalog_path: Path, *,
     with db:
         for row in selected:
             provider, board = recognize_apply_url(row["best_apply_url"])
+            source_domain = (row["canonical_domain"] or "").strip().lower()
+            source_company_url = (f"https://{source_domain}/" if source_domain and
+                                  re.fullmatch(r"[a-z0-9.-]+", source_domain) else None)
             providers[provider] += 1
             db.execute("""INSERT INTO source_leads
               (lead_key,source_name,source_id,name,source_year,source_url,profile_url,
-               sample_apply_url,sample_title,sample_location,provider_hint,board_hint,stage)
-              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+               source_company_url,official_url,sample_apply_url,sample_title,sample_location,
+               provider_hint,board_hint,stage)
+              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
               (f"simplify:{row['id']}", "simplify", str(row["id"]), row["name"],
                row["best_year"], row["source_url"], row["profile_url"],
-               row["best_apply_url"], row["title"], row["location"],
+               source_company_url, source_company_url, row["best_apply_url"],
+               row["title"], row["location"],
                provider, board, "route_pending"))
     return {"selected": len(selected), "year": year,
             "source_ids": [row["id"] for row in selected],
@@ -221,10 +226,11 @@ def resolve_simplify_profiles(db: sqlite3.Connection, *, limit: int = 100,
     """Save candidate official domains; route ownership still needs verification."""
     if limit < 1 or not 1 <= workers <= 16:
         raise ValueError("Invalid profile resolution batch")
-    rows = db.execute("""SELECT lead_key,profile_url FROM source_leads
+    rows = db.execute("""SELECT lead_key,profile_url,review_state FROM source_leads
       WHERE source_name='simplify' AND stage='route_pending' AND official_url IS NULL
       ORDER BY CAST(source_id AS INTEGER) LIMIT ?""", (limit,)).fetchall()
     outcomes = []
+    prior_states = {row["lead_key"]: row["review_state"] for row in rows}
     with ThreadPoolExecutor(max_workers=workers) as pool:
         futures = {pool.submit(_profile_domain, row["profile_url"]): row["lead_key"] for row in rows}
         for future in as_completed(futures):
@@ -239,11 +245,42 @@ def resolve_simplify_profiles(db: sqlite3.Connection, *, limit: int = 100,
     stamp = datetime.now(timezone.utc).isoformat()
     with db:
         for key, domain, error in outcomes:
-            db.execute("""UPDATE source_leads SET official_url=?,last_error=?,checked_at=?
-              WHERE lead_key=?""", (f"https://{domain}/" if domain else None, error, stamp, key))
+            candidate = f"https://{domain}/" if domain else None
+            db.execute("""UPDATE source_leads SET official_url=?,profile_company_url=COALESCE(profile_company_url,?),
+              last_error=?,checked_at=?,review_state=?,review_updated_at=? WHERE lead_key=?""",
+              (candidate, candidate, error, stamp,
+               ("script_pending" if candidate else
+                prior_states[key] if prior_states[key] in {"ai_in_progress", "needs_user"} else "ai_pending"),
+               stamp, key))
     return {"attempted": len(outcomes), "domains_found": sum(domain is not None for _, domain, _ in outcomes),
             "unresolved": [{"lead": key, "error": error} for key, domain, error in sorted(outcomes)
                            if domain is None]}
+
+
+def preserve_profile_company_links(db: sqlite3.Connection, *, limit: int = 100,
+                                   workers: int = 8) -> dict:
+    """Preserve the website from each original Simplify profile, without changing current route decisions."""
+    if limit < 1 or not 1 <= workers <= 16:
+        raise ValueError("Invalid profile link batch")
+    rows = db.execute("""SELECT lead_key,profile_url FROM source_leads
+      WHERE source_name='simplify' AND profile_url IS NOT NULL AND profile_company_url IS NULL
+      ORDER BY CAST(source_id AS INTEGER) LIMIT ?""", (limit,)).fetchall()
+    outcomes = []
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futures = {pool.submit(_profile_domain, row["profile_url"]): row["lead_key"] for row in rows}
+        for future in as_completed(futures):
+            try:
+                domain = future.result()
+            except Exception:
+                domain = None
+            outcomes.append((futures[future], domain))
+    with db:
+        for key, domain in outcomes:
+            if domain:
+                db.execute("UPDATE source_leads SET profile_company_url=? WHERE lead_key=?",
+                           (f"https://{domain}/", key))
+    return {"attempted": len(outcomes), "preserved": sum(bool(domain) for _, domain in outcomes),
+            "unavailable": [key for key, domain in sorted(outcomes) if not domain]}
 
 
 class _PageLinks(HTMLParser):
@@ -373,10 +410,13 @@ def verify_official_routes(db: sqlite3.Connection, *, provider_hint: str | None 
             db.execute("""UPDATE source_leads SET stage=?,company_key=?,
               provider_hint=COALESCE(?,provider_hint),board_hint=COALESCE(?,board_hint),
               route_evidence_url=?,route_resolution_method=CASE WHEN ? IS NOT NULL THEN 'script_official_page' ELSE route_resolution_method END,
-              official_board_url=?,last_error=?,checked_at=? WHERE lead_key=?""",
+              official_board_url=?,last_error=?,checked_at=?,review_state=?,review_updated_at=? WHERE lead_key=?""",
               (stage, company_key, provider, board, result.get("evidence_page"),
                result.get("evidence_page"), result.get("board_url"),
-               result.get("error"), stamp, lead["lead_key"]))
+               result.get("error"), stamp,
+               ("resolved" if stage == "scan_pending" else "ai_pending" if stage == "adapter_pending" else
+                lead["review_state"] if lead["review_state"] in {"ai_in_progress", "needs_user"}
+                else "ai_pending"), stamp, lead["lead_key"]))
     counts = Counter(result["stage"] for _, result in results)
     return {"checked": len(results), "stages": dict(sorted(counts.items())),
             "unresolved": [{"lead": lead["lead_key"], "stage": result["stage"],
@@ -399,8 +439,26 @@ def route_resolution_report(db: sqlite3.Connection) -> dict:
                        "different_or_unknown"] += 1
     return {"official_routes_by_method": dict(sorted(methods.items())),
             "sample_hint_vs_official": dict(sorted(sample_matches.items())),
+            "review_states": dict(sorted(Counter(row["review_state"] for row in rows
+                if row["stage"] != "scanned").items())),
             "unresolved_by_stage": dict(sorted(Counter(row["stage"] for row in rows
                 if row["stage"] not in {"scanned", "scan_pending"}).items()))}
+
+
+def mark_ai_review(db: sqlite3.Connection, lead_key: str, *, outcome: str, note: str) -> dict:
+    """Record an actual AI attempt; only a failed attempt can request user review."""
+    states = {"investigating": "ai_in_progress", "needs-user": "needs_user"}
+    if outcome not in states or not note.strip():
+        raise ValueError("AI review needs an outcome and a concrete evidence/blocker note")
+    lead = db.execute("SELECT stage FROM source_leads WHERE lead_key=?", (lead_key,)).fetchone()
+    if not lead or lead["stage"] not in {"route_pending", "board_pending", "adapter_pending"}:
+        raise ValueError("Only unresolved leads can enter AI review")
+    stamp = datetime.now(timezone.utc).isoformat()
+    with db:
+        db.execute("""UPDATE source_leads SET review_state=?,ai_review_note=?,ai_reviewed_at=?,
+          review_updated_at=? WHERE lead_key=?""",
+          (states[outcome], note.strip()[:1000], stamp, stamp, lead_key))
+    return {"lead": lead_key, "review_state": states[outcome]}
 
 
 def activate_tested_adapter(db: sqlite3.Connection, provider: str) -> dict:
@@ -425,7 +483,8 @@ def activate_tested_adapter(db: sqlite3.Connection, provider: str) -> dict:
               VALUES (?,?,?,'pending_recheck') ON CONFLICT(company_key,board_key) DO NOTHING""",
               (company_key, board_key, lead["route_evidence_url"]))
             db.execute("""UPDATE source_leads SET stage='scan_pending',company_key=?,
-              last_error=NULL,checked_at=? WHERE lead_key=?""", (company_key, stamp, lead["lead_key"]))
+              last_error=NULL,checked_at=?,review_state='resolved',review_updated_at=? WHERE lead_key=?""",
+              (company_key, stamp, stamp, lead["lead_key"]))
     return {"provider": provider, "activated_routes": len(rows)}
 
 
@@ -465,8 +524,10 @@ def confirm_official_route(db: sqlite3.Connection, lead_key: str, *,
               VALUES (?,?,?,'pending_recheck') ON CONFLICT(company_key,board_key) DO NOTHING""",
               (company_key, board_key, evidence_url))
         db.execute("""UPDATE source_leads SET stage=?,company_key=?,provider_hint=?,board_hint=?,
-          route_evidence_url=?,route_resolution_method=?,official_board_url=?,last_error=NULL,checked_at=? WHERE lead_key=?""",
+          route_evidence_url=?,route_resolution_method=?,official_board_url=?,last_error=NULL,
+          checked_at=?,review_state=?,review_updated_at=? WHERE lead_key=?""",
           (stage, company_key, provider, board, evidence_url,
-           f"{confirmation_source}_official_page", board_url, stamp, lead_key))
+           f"{confirmation_source}_official_page", board_url, stamp,
+           "resolved" if stage == "scan_pending" else "ai_pending", stamp, lead_key))
     return {"lead": lead_key, "provider": provider, "board": board, "stage": stage,
             "route_resolution_method": f"{confirmation_source}_official_page"}

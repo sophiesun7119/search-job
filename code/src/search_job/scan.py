@@ -110,8 +110,9 @@ def scan_registered(db: sqlite3.Connection, *, provider: str | None = None,
                         db.execute("UPDATE companies SET scan_cohort='old',validated_at=? WHERE company_key=?",
                                    (utc_now(), company))
                         report["promoted_old"] += 1
-                    db.execute("""UPDATE source_leads SET stage='scanned',last_error=NULL,checked_at=?
-                      WHERE company_key=? AND stage='scan_pending'""", (utc_now(), company))
+                    db.execute("""UPDATE source_leads SET stage='scanned',last_error=NULL,checked_at=?,
+                      review_state='resolved',review_updated_at=?
+                      WHERE company_key=? AND stage='scan_pending'""", (utc_now(), utc_now(), company))
             report["scanned_boards"] += int(complete)
             report["partial_boards"] += int(not complete)
             report["seen"] += len(observed)
@@ -121,9 +122,10 @@ def scan_registered(db: sqlite3.Connection, *, provider: str | None = None,
         except Exception as error:
             with db:
                 record_scan(db, board, uuid.uuid4().hex, started, utc_now(), "failed", set())
-                db.execute("""UPDATE source_leads SET last_error=?,checked_at=?
+                db.execute("""UPDATE source_leads SET last_error=?,checked_at=?,
+                  review_state='ai_pending',review_updated_at=?
                   WHERE company_key=? AND stage='scan_pending'""",
-                  (f"{type(error).__name__}: {error}"[:300], utc_now(), company))
+                  (f"{type(error).__name__}: {error}"[:300], utc_now(), utc_now(), company))
             report["failures"].append({"company": company, "board": board,
                                        "error": f"{type(error).__name__}: {error}"})
     report["adapter_pending"] = db.execute("SELECT COUNT(*) FROM companies WHERE company_key NOT IN (SELECT company_key FROM company_boards)").fetchone()[0]

@@ -9,8 +9,9 @@ from pathlib import Path
 from .core import connect
 from .intake import import_seed
 from .leads import (activate_tested_adapter, confirm_official_route, import_simplify_catalog,
-                    probe_saved_samples,
+                    mark_ai_review, preserve_profile_company_links, probe_saved_samples,
                     resolve_simplify_profiles, route_resolution_report, verify_official_routes)
+from .review_dashboard import write_review_dashboard
 from .render import write_outputs
 from .scan import scan_registered
 
@@ -25,6 +26,13 @@ def main() -> None:
     parser.add_argument("--probe-samples", action="store_true", help="Check saved Apply URLs without treating them as official routes")
     parser.add_argument("--triage-leads", action="store_true", help="Probe sample links first, then resolve company sites and verify official ATS routes")
     parser.add_argument("--route-report", action="store_true", help="Count script, AI, and user-verified routes")
+    parser.add_argument("--preserve-profile-links", action="store_true",
+                        help="Save company websites found in original Simplify profiles without changing routes")
+    parser.add_argument("--ai-review-lead", help="Record an actual AI investigation of one unresolved lead")
+    parser.add_argument("--ai-review-outcome", choices=("investigating", "needs-user"))
+    parser.add_argument("--review-note", help="Evidence and blocker for --ai-review-lead")
+    parser.add_argument("--review-dashboard", type=Path,
+                        help="Local dashboard output path (default: DATABASE parent/review-dashboard.html)")
     parser.add_argument("--verify-routes", action="store_true", help="Check saved leads against official company careers pages")
     parser.add_argument("--lead-key", help="Limit route verification to one saved lead key")
     parser.add_argument("--activate-adapter",
@@ -50,6 +58,8 @@ def main() -> None:
         parser.error("--simplify-catalog needs a positive --limit")
     if args.confirm_route and (not args.evidence_url or not args.board_url):
         parser.error("--confirm-route needs --evidence-url and --board-url")
+    if args.ai_review_lead and (not args.ai_review_outcome or not args.review_note):
+        parser.error("--ai-review-lead needs --ai-review-outcome and --review-note")
     with connect(args.database) as db:
         if args.simplify_catalog:
             print(json.dumps({"lead_import": import_simplify_catalog(
@@ -65,6 +75,9 @@ def main() -> None:
         if args.resolve_profiles and not args.triage_leads:
             print(json.dumps({"profile_resolution": resolve_simplify_profiles(db, limit=args.limit or 100)},
                 ensure_ascii=False))
+        if args.preserve_profile_links:
+            print(json.dumps({"profile_company_links": preserve_profile_company_links(
+                db, limit=args.limit or 100)}, ensure_ascii=False))
         if args.probe_samples and not args.triage_leads:
             print(json.dumps({"sample_probe": probe_saved_samples(db, limit=args.limit or 100)},
                 ensure_ascii=False))
@@ -79,6 +92,9 @@ def main() -> None:
             print(json.dumps({"route_confirmation": confirm_official_route(
                 db, args.confirm_route, evidence_url=args.evidence_url,
                 board_url=args.board_url, confirmation_source=args.confirmation_source)}, ensure_ascii=False))
+        if args.ai_review_lead:
+            print(json.dumps({"ai_review": mark_ai_review(db, args.ai_review_lead,
+                outcome=args.ai_review_outcome, note=args.review_note)}, ensure_ascii=False))
         if args.route_report and not args.triage_leads:
             print(json.dumps({"route_report": route_resolution_report(db)}, ensure_ascii=False))
         if args.seed:
@@ -91,6 +107,9 @@ def main() -> None:
             args.markdown.parent.mkdir(parents=True, exist_ok=True)
             args.json.parent.mkdir(parents=True, exist_ok=True)
             write_outputs(db, args.markdown, args.json, datetime.now(timezone.utc))
+        print(json.dumps({"review_dashboard": write_review_dashboard(
+            db, args.review_dashboard or args.database.parent / "review-dashboard.html")},
+            ensure_ascii=False))
 
 
 if __name__ == "__main__":

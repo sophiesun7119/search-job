@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Search Job · 公司路线审核</title>
+<style>
+:root{color-scheme:light;font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#182337;background:#f5f7fb}
+*{box-sizing:border-box}body{margin:0}.wrap{max-width:1120px;margin:auto;padding:36px 22px 90px}
+header{padding:30px 34px;background:#13243d;color:white;border-radius:18px}header p{margin:8px 0 0;color:#cbd7e9}
+h1{font-size:29px;margin:0}.timestamp{font-size:12px;margin-top:18px;color:#a9bed8}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.stat{background:white;border:1px solid #dfe5ee;border-radius:13px;padding:16px}.stat strong{display:block;font-size:28px}.stat span{color:#566579}
+.note{background:#eaf1ff;border-left:4px solid #4174c9;padding:14px 18px;border-radius:7px;margin-bottom:20px}
+.toolbar{display:flex;gap:10px;margin:24px 0 14px;flex-wrap:wrap}input,select{font:inherit;background:white;border:1px solid #c9d2df;border-radius:9px;padding:10px 12px}
+input{flex:1;min-width:250px}select{min-width:180px}.result{color:#536176;margin:0 0 12px}
+.lead{background:white;border:1px solid #dfe5ee;border-radius:13px;padding:18px 22px;margin:10px 0;box-shadow:0 2px 9px #1a2e4b08}
+.lead[hidden]{display:none}.lead-head{display:flex;justify-content:space-between;align-items:start;gap:16px}.lead h2{font-size:18px;margin:0}.lead small{color:#65748a}.badges{display:flex;gap:7px;flex-wrap:wrap;justify-content:end}
+.badge{background:#edf2f8;color:#264264;padding:4px 9px;border-radius:999px;font-size:12px;white-space:nowrap}.badge.review{background:#fff2d8;color:#754b00}
+.reason{margin:12px 0 4px}.hint{font-size:13px;color:#65748a;margin:0 0 11px;overflow-wrap:anywhere}
+details{border-top:1px solid #e5eaf0;padding-top:9px}summary{cursor:pointer;color:#285daa;font-weight:600}dl{display:grid;grid-template-columns:220px minmax(0,1fr);gap:9px 16px;margin:15px 0 3px}dt{color:#65748a}dd{margin:0;overflow-wrap:anywhere}a{color:#1758b5}.missing{color:#8b96a5} .empty{padding:25px;text-align:center;color:#65748a}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}.lead-head{display:block}.badges{justify-content:start;margin-top:9px}dl{grid-template-columns:1fr}dt{font-weight:600}dd{margin-bottom:6px}}
+</style>
+</head>
+<body><main class="wrap">
+<header><h1>Search Job · 公司路线审核</h1>
+<p>查看 Simplify 来源的公司、原始岗位链接、官网线索和当前处理阶段。</p>
+<div class="timestamp">生成时间：{{generated_at}} · 本地数据库快照</div></header>
+<section class="stats" aria-label="批次统计">
+<div class="stat"><strong>{{total}}</strong><span>导入公司</span></div>
+<div class="stat"><strong>{{scanned}}</strong><span>已完成扫描</span></div>
+<div class="stat"><strong>{{pending}}</strong><span>尚未完成</span></div>
+<div class="stat"><strong>{{needs_user}}</strong><span>AI 后需你提供线索</span></div>
+</section>
+<p class="note">未完成：ATS 路线 {{route_pending}} 家、招聘板归属 {{board_pending}} 家、adapter {{adapter_pending}} 家。“待 AI 处理”表示脚本已停在该步骤；只有 AI 实际调查仍失败后，才会标为“需要你提供线索”。原始目录没有公司官网字段值时会如实显示；另列 Simplify 公司资料中提取的官网及当前候选官网。</p>
+<section class="toolbar" aria-label="筛选公司"><input id="search" type="search" placeholder="搜索公司、ATS 或失败原因">
+<select id="stage"><option value="">全部阶段</option><option value="route_pending">ATS 路线</option><option value="board_pending">招聘板归属</option><option value="adapter_pending">Adapter</option><option value="scan_pending">等待扫描</option></select>
+<select id="review"><option value="">全部核查状态</option><option value="ai_pending">待 AI 处理</option><option value="ai_in_progress">AI 核查中</option><option value="needs_user">需要你提供线索</option><option value="script_pending">等待脚本</option></select></section>
+<p id="result" class="result"></p>
+<section id="leads">{{cards}}</section>
+</main><script>
+const search=document.getElementById('search'),stage=document.getElementById('stage'),review=document.getElementById('review');
+const cards=[...document.querySelectorAll('.lead')];
+function filter(){let visible=0,q=search.value.trim().toLowerCase();for(const card of cards){const show=(!q||card.dataset.search.includes(q))&&(!stage.value||card.dataset.stage===stage.value)&&(!review.value||card.dataset.review===review.value);card.hidden=!show;if(show)visible++}document.getElementById('result').textContent=`显示 ${visible} / ${cards.length} 家未完成公司`}
+for(const control of [search,stage,review])control.addEventListener('input',filter);filter();
+</script></body></html>

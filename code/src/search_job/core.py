@@ -50,9 +50,18 @@ def connect(path: str | Path) -> sqlite3.Connection:
         db.execute("ALTER TABLE source_leads ADD COLUMN official_board_url TEXT")
     for name, kind in (("sample_probe_url", "TEXT"), ("sample_probe_status", "INTEGER"),
                        ("sample_probe_error", "TEXT"), ("sample_probe_at", "TEXT"),
-                       ("route_resolution_method", "TEXT CHECK (route_resolution_method IN ('script_official_page','ai_official_page','user_official_page'))")):
+                       ("route_resolution_method", "TEXT CHECK (route_resolution_method IN ('script_official_page','ai_official_page','user_official_page'))"),
+                       ("source_company_url", "TEXT"), ("profile_company_url", "TEXT"),
+                       ("review_state", "TEXT NOT NULL DEFAULT 'script_pending' CHECK (review_state IN ('script_pending','ai_pending','ai_in_progress','needs_user','resolved'))"),
+                       ("ai_review_note", "TEXT"), ("ai_reviewed_at", "TEXT"),
+                       ("review_updated_at", "TEXT")):
         if name not in lead_columns:
             db.execute(f"ALTER TABLE source_leads ADD COLUMN {name} {kind}")
+    if "review_state" not in lead_columns:
+        db.execute("""UPDATE source_leads SET review_state=CASE
+          WHEN stage IN ('scanned','scan_pending') THEN 'resolved'
+          WHEN stage IN ('route_pending','board_pending','adapter_pending') AND checked_at IS NOT NULL THEN 'ai_pending'
+          ELSE 'script_pending' END""")
     columns = {row[1] for row in db.execute("PRAGMA table_info(company_boards)")}
     if "brand_filter" not in columns:
         # Upgrade databases created by the first local stage without dropping

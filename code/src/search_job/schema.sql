@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS source_leads (
   source_year INTEGER,
   source_url TEXT,
   profile_url TEXT,
+  source_company_url TEXT,
+  profile_company_url TEXT,
   sample_apply_url TEXT,
   sample_title TEXT,
   sample_location TEXT,
@@ -33,6 +35,11 @@ CREATE TABLE IF NOT EXISTS source_leads (
     ('imported','route_pending','adapter_pending','board_pending','scan_pending','scanned')),
   last_error TEXT,
   checked_at TEXT,
+  review_state TEXT NOT NULL DEFAULT 'script_pending' CHECK (review_state IN
+    ('script_pending','ai_pending','ai_in_progress','needs_user','resolved')),
+  ai_review_note TEXT,
+  ai_reviewed_at TEXT,
+  review_updated_at TEXT,
   UNIQUE (source_name, source_id)
 );
 CREATE TABLE IF NOT EXISTS provider_capabilities (

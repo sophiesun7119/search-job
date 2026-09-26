@@ -12,7 +12,9 @@ from search_job.collectors import collect
 from search_job.core import SCHEMA, connect
 from search_job.intake import import_seed
 from search_job.leads import (confirm_official_route, import_simplify_catalog,
-                              probe_saved_samples, recognize_apply_url)
+                              mark_ai_review, probe_saved_samples, recognize_apply_url,
+                              verify_official_routes)
+from search_job.review_dashboard import write_review_dashboard
 from search_job.scan import scan_registered
 
 
@@ -106,12 +108,13 @@ class CollectorTest(unittest.TestCase):
             catalog = Path(directory) / "catalog.sqlite3"
             with sqlite3.connect(catalog) as source:
                 source.executescript("""CREATE TABLE companies(id INTEGER,name TEXT,best_apply_url TEXT,
-                  best_year INTEGER,status TEXT); CREATE TABLE observations(id INTEGER,company_id INTEGER,
+                  best_year INTEGER,status TEXT,canonical_domain TEXT); CREATE TABLE observations(id INTEGER,company_id INTEGER,
                   source_year INTEGER,apply_url TEXT,profile_url TEXT,source_url TEXT,title TEXT,location TEXT);""")
                 for id_ in (1, 2, 3):
                     url = f"https://jobs.ashbyhq.com/company{id_}/job"
-                    source.execute("INSERT INTO companies VALUES (?,?,?,?,?)",
-                                   (id_, f"Company {id_}", url, 2026, "pending"))
+                    source.execute("INSERT INTO companies VALUES (?,?,?,?,?,?)",
+                                   (id_, f"Company {id_}", url, 2026, "pending",
+                                    "company1.example" if id_ == 1 else None))
                     source.execute("INSERT INTO observations VALUES (?,?,?,?,?,?,?,?)",
                                    (id_, id_, 2026, url, f"https://simplify.jobs/c/company-{id_}",
                                     "https://example.com/list", "Engineer", "Remote US"))
@@ -121,6 +124,8 @@ class CollectorTest(unittest.TestCase):
                 self.assertEqual(first["source_ids"], [1, 2])
                 self.assertEqual(second["source_ids"], [3])
                 self.assertEqual(db.execute("SELECT COUNT(*) FROM source_leads").fetchone()[0], 3)
+                self.assertEqual(db.execute("SELECT source_company_url FROM source_leads WHERE lead_key='simplify:1'").fetchone()[0],
+                                 "https://company1.example/")
                 self.assertEqual(import_simplify_catalog(db, catalog, limit=2)["selected"], 0)
         self.assertEqual(recognize_apply_url("https://jobs.lever.co/acme/123"), ("lever", "acme"))
         self.assertEqual(recognize_apply_url("https://app.careerpuck.com/job-board/color-health/job/123"),
@@ -161,6 +166,34 @@ class CollectorTest(unittest.TestCase):
                     probe_saved_samples(db)
                 row = db.execute("SELECT provider_hint,board_hint FROM source_leads").fetchone()
                 self.assertEqual(tuple(row), ("careerpuck", "new"))
+
+    def test_review_dashboard_preserves_links_and_requires_actual_ai_attempt(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with connect(Path(directory) / "jobs.sqlite3") as db:
+                db.execute("""INSERT INTO source_leads(lead_key,source_name,source_id,name,
+                  profile_url,source_company_url,official_url,sample_apply_url,stage,last_error,
+                  review_state) VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+                  ("simplify:1", "simplify", "1", "Acme <test>",
+                   "https://simplify.jobs/c/Acme", "https://acme.example/", "https://acme.example/",
+                   "https://jobs.ashbyhq.com/acme/123", "route_pending", "HTTP 403", "ai_pending"))
+                page = Path(directory) / "review.html"
+                result = write_review_dashboard(db, page)
+                self.assertEqual(result["pending"], 1)
+                body = page.read_text()
+                self.assertIn("Acme &lt;test&gt;", body)
+                self.assertIn("https://acme.example/", body)
+                self.assertIn("https://jobs.ashbyhq.com/acme/123", body)
+                self.assertIn("待 AI 处理", body)
+                self.assertNotIn("需要你提供线索</span>", body)
+                mark_ai_review(db, "simplify:1", outcome="needs-user",
+                               note="Official careers page still blocks access; no board ownership evidence")
+                self.assertEqual(write_review_dashboard(db, page)["needs_user"], 1)
+                self.assertIn("Official careers page still blocks access", page.read_text())
+                with patch("search_job.leads._official_route", return_value={
+                        "stage": "route_pending", "error": "Still blocked"}):
+                    verify_official_routes(db, lead_key="simplify:1")
+                self.assertEqual(db.execute("SELECT review_state FROM source_leads").fetchone()[0],
+                                 "needs_user")
 
     def test_seed_and_scan_idempotent_and_failed_scan_is_inert(self):
         with tempfile.TemporaryDirectory() as directory:
