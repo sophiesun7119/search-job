@@ -6,8 +6,6 @@ Scripts collect and sort openings; AI agents assist with development and request
 
 **Contribute:** [Open an issue](https://github.com/sophiesun7119/search-job/issues) or fork the repo and submit a pull request. For category changes, include example titles; the [matching rules](code/PLAN.md) live in code and generate the tables below.
 
-Generated: 2026-09-26T00:52:01.913289+00:00.
-
 <details>
 <summary>How this list is selected</summary>
 

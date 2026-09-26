@@ -117,6 +117,7 @@ class StageOneTest(unittest.TestCase):
         self.assertIn("Historical preview — open status not verified", md)
         self.assertIn("## Browse 1 saved job by category", md)
         self.assertIn("[Back to top](#search-job)", md)
+        self.assertNotIn("Generated:", md)
         self.assertNotIn("{{SNAPSHOT_STATUS}}", md)
         self.assertNotIn("{{COMPANY_COVERAGE}}", md)
 

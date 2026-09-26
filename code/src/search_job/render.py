@@ -107,7 +107,6 @@ def render_markdown(db: sqlite3.Connection, as_of: datetime, *, historical_previ
     coverage = f"**{companies_total}** {'company' if companies_total == 1 else 'companies'}"
     intro = intro.replace("{{COMPANY_COVERAGE}}", coverage)
     lines = intro.replace("{{SNAPSHOT_STATUS}}\n\n", status + "\n\n" if status else "").rstrip().splitlines() + [""]
-    lines += [f"Generated: {as_of.isoformat()}.", ""]
     lines += ["<details>", "<summary>How this list is selected</summary>", ""]
     if not historical_preview:
         lines += ["Only currently open postings seen in the latest complete board scan, with an ATS publication timestamp within the past 72 hours and a confirmed US location, are shown here. Older, closed, non-US, and uncertain postings remain in the database and full JSON export.", ""]
