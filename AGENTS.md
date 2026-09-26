@@ -1,12 +1,12 @@
 # Search Job project guidance
 
-Stage 1 has a database model, renderer, JSON export, and a labeled historical preview. Do not claim that live collectors, schedules or current verified public listings are active until their code and a verified run exist.
+The data model, renderer, JSON export, route-seed import and seven collectors for the existing company pool have passed a local live run. The public root README is a generated past-72-hour, US-location-filtered view of the saved local live index; the full JSON export remains local. Companies have `new`/`old` scan cohorts with 72-hour/24-hour processing windows. Do not claim that new-company discovery/intake, official ownership audits for every route, or schedules are implemented. Read `code/STAGE.md` for the current verified scope.
 
 Search Job finds and publishes public job openings. Keep credentials and machine-specific paths out of the repository. Official company and ATS evidence establish board routes. Scripts handle routine recognition and scanning; an actual AI task handles requested discovery, unresolved route/board evidence, or adapter development. A script-created work item does not mean AI has completed it.
 
 For an authorized local run, use `.agents/skills/search-job-run/` to coordinate one bounded batch. Its four conditional AI handoffs have separate skills: company discovery, official ATS investigation, adapter development, and company-board verification. Routine scans and public title classification stay script-run. Read `code/STAGE.md` before invoking any planned capability.
 
-Work in bounded batches. After a real bounded test, inspect the generated README and JSON and report company candidates, confirmed and adapter-pending providers, scanned boards, published openings, blocked routes and failures. Do not run searches during design discussion.
+Work in bounded batches. After a real bounded test, inspect the generated README and JSON and report company candidates, confirmed and adapter-pending providers, complete and partial boards, stored openings, blocked routes and failures. Do not run searches during design discussion.
 
 Treat `code/README.md` as concise usage for verified code, `code/PLAN.md` as the latest target architecture and category rules, and `code/STAGE.md` as implementation progress. Edit the root README introduction in `code/templates/README-intro.md`, then regenerate it; the root README holds all category tables. Before publishing, inspect the exact tracked files and Git history for sensitive data.
 

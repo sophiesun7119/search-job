@@ -9,7 +9,7 @@ from pathlib import Path
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 SCHEMA = Path(__file__).with_name("schema.sql")
-RULE_VERSION = "title-v2"
+RULE_VERSION = "title-v3"
 
 CATEGORY_ORDER = (
     ("sde", "Software Engineering — Senior and unspecified"),
@@ -32,6 +32,29 @@ def connect(path: str | Path) -> sqlite3.Connection:
     db.row_factory = sqlite3.Row
     db.execute("PRAGMA foreign_keys = ON")
     db.executescript(SCHEMA.read_text())
+    company_columns = {row[1] for row in db.execute("PRAGMA table_info(companies)")}
+    if "scan_cohort" not in company_columns:
+        db.execute("ALTER TABLE companies ADD COLUMN scan_cohort TEXT NOT NULL DEFAULT 'new' CHECK (scan_cohort IN ('new','old'))")
+    if "validated_at" not in company_columns:
+        db.execute("ALTER TABLE companies ADD COLUMN validated_at TEXT")
+    columns = {row[1] for row in db.execute("PRAGMA table_info(company_boards)")}
+    if "brand_filter" not in columns:
+        # Upgrade databases created by the first local stage without dropping
+        # companies, board routes, or openings.
+        db.executescript("""BEGIN IMMEDIATE;
+          ALTER TABLE company_boards RENAME TO company_boards_v1;
+          CREATE TABLE company_boards (
+            company_key TEXT NOT NULL REFERENCES companies(company_key),
+            board_key TEXT NOT NULL REFERENCES boards(board_key),
+            evidence_url TEXT, brand_filter TEXT, checked_at TEXT,
+            status TEXT NOT NULL CHECK (status IN
+              ('pending_recheck','pending_identity','verified','failed')),
+            PRIMARY KEY (company_key,board_key));
+          INSERT INTO company_boards(company_key,board_key,evidence_url,checked_at,status)
+            SELECT company_key,board_key,evidence_url,checked_at,status
+            FROM company_boards_v1;
+          DROP TABLE company_boards_v1;
+          COMMIT;""")
     return db
 
 
@@ -77,8 +100,9 @@ def management_categories(title: str) -> list[tuple[str, str]]:
     if not re.search(r"\bmanagers?\b", t):
         return []
     matches = []
-    if re.search(r"\bproducts?\b", t):
-        matches.append(("product-manager", "title:product+manager"))
+    if re.search(r"\bproducts?\s+managers?\b", t) or re.search(
+            r"\bmanagers?\s*,\s*product(?:\s+management)?\b(?=\s*(?:$|[-,(]))", t):
+        matches.append(("product-manager", "title:product-manager-role"))
     if re.search(r"\bengineer(?:s|ing)?\b", t):
         matches.append(("engineering-manager", "title:engineer+manager"))
     return matches
@@ -89,7 +113,7 @@ def classify(title: str) -> tuple[str, str]:
     management = management_categories(title)
     if management:
         return management[0]
-    if re.search(r"\b(manager|director|head of|vice president|vp|chief|architect|sales|support|presales|account executive|consultant|recruiter)\b", t):
+    if re.search(r"\b(manager|director|head of|vice president|vp|chief|architect|sales|support|presales|account executive|consultant|recruiter)\b|\bdeveloper (?:advocate|relations)\b|\bdevrel\b", t):
         return "other", "non-development-role"
     if re.search(r"\b(front[ -]?end|frontend|ui engineer|web designer)\b", t):
         return "frontend", "specialist:frontend"
@@ -125,7 +149,7 @@ def classify_level(title: str) -> tuple[str, str]:
 
 
 def upsert_company(db: sqlite3.Connection, company_key: str, name: str, official_url: str, source: str) -> None:
-    db.execute("""INSERT INTO companies VALUES (?,?,?,?)
+    db.execute("""INSERT INTO companies(company_key,name,official_url,source) VALUES (?,?,?,?)
        ON CONFLICT(company_key) DO UPDATE SET name=excluded.name, official_url=excluded.official_url""",
        (company_key, name, canonical_url(official_url), source))
 
@@ -175,13 +199,24 @@ def upsert_opening(db: sqlite3.Connection, *, company_key: str, provider: str, b
     for location, apply_url in variants or [("", url)]:
         db.execute("INSERT OR IGNORE INTO opening_variants VALUES (?,?,?)",
                    (key, location, canonical_url(apply_url)))
+    write_title_tags(db, key, title)
+    return key
+
+
+def write_title_tags(db: sqlite3.Connection, key: str, title: str) -> None:
     category, evidence = classify(title)
     db.execute("DELETE FROM opening_tags WHERE opening_key=? AND (tag IN ('sde','sde-entry','sde-staff','frontend','mobile','qa-test','analyst','scientist','product-manager','engineering-manager','other') OR tag LIKE 'level:%')", (key,))
     for tag, reason in management_categories(title) or [(category, evidence)]:
         db.execute("INSERT INTO opening_tags VALUES (?,?,?,?)", (key, tag, RULE_VERSION, reason))
     level, level_evidence = classify_level(title)
     db.execute("INSERT INTO opening_tags VALUES (?,?,?,?)", (key, level, RULE_VERSION, level_evidence))
-    return key
+
+
+def refresh_all_tags(db: sqlite3.Connection) -> int:
+    rows = db.execute("SELECT opening_key,title FROM openings").fetchall()
+    for row in rows:
+        write_title_tags(db, row["opening_key"], row["title"])
+    return len(rows)
 
 
 def record_scan(db: sqlite3.Connection, board_key: str, scan_key: str, started_at: str,

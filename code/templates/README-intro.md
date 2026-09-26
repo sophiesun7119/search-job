@@ -1,11 +1,9 @@
 # Search Job
 
-Search Job finds public job openings and organizes them by role. It gathers company career and ATS listings into a local job index, then publishes clear category tables here.
+Find recently posted US-located jobs from company career pages, grouped by role. Search Job currently tracks {{COMPANY_COVERAGE}} in its company pool; the listings below come from boards that have completed a scan. Follow a category and apply through the original job link while the role is fresh.
 
 {{SNAPSHOT_STATUS}}
 
-- **Browse what matters to you:** start with the broad Software Engineering list or jump to Product Manager, Engineering Manager, Analyst and other categories below.
-- **See where a role came from:** each row links a company and a saved application page; Age distinguishes an ATS publication date from the time we first found a role.
-- **Understand and improve the rules:** the classification logic is public, so contributors can suggest better title matches with concrete examples.
+Scripts collect and sort openings; AI agents assist with development and requested investigations of new company routes. **Updates are manually triggered today.** An automatic refresh about every six hours is planned.
 
-This project is developed with AI assistance. The intended live workflow uses scripts for repeatable company/board checks, collection and classification; bounded AI tasks find new companies and resolve missing ATS routes, adapters or board mappings. The [code guide](code/README.md) explains how to use what exists now, the [architecture and category rules](code/PLAN.md) explain the full workflow, and the [stage record](code/STAGE.md) shows what has actually been verified. A local scheduled refresh is planned after live collection is stable.
+**Contribute:** [Open an issue](https://github.com/sophiesun7119/search-job/issues) or fork the repo and submit a pull request. For category changes, include example titles; the [matching rules](code/PLAN.md) live in code and generate the tables below.
