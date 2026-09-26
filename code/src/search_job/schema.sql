@@ -7,6 +7,29 @@ CREATE TABLE IF NOT EXISTS companies (
   scan_cohort TEXT NOT NULL DEFAULT 'new' CHECK (scan_cohort IN ('new','old')),
   validated_at TEXT
 );
+CREATE TABLE IF NOT EXISTS source_leads (
+  lead_key TEXT PRIMARY KEY,
+  source_name TEXT NOT NULL,
+  source_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  source_year INTEGER,
+  source_url TEXT,
+  profile_url TEXT,
+  sample_apply_url TEXT,
+  sample_title TEXT,
+  sample_location TEXT,
+  official_url TEXT,
+  company_key TEXT REFERENCES companies(company_key),
+  provider_hint TEXT,
+  board_hint TEXT,
+  route_evidence_url TEXT,
+  official_board_url TEXT,
+  stage TEXT NOT NULL DEFAULT 'imported' CHECK (stage IN
+    ('imported','route_pending','adapter_pending','board_pending','scan_pending','scanned')),
+  last_error TEXT,
+  checked_at TEXT,
+  UNIQUE (source_name, source_id)
+);
 CREATE TABLE IF NOT EXISTS provider_capabilities (
   provider TEXT PRIMARY KEY,
   adapter_key TEXT NOT NULL,

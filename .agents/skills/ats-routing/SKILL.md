@@ -5,7 +5,7 @@ description: Investigate a Search Job company's unresolved official careers-to-A
 
 # ATS routing
 
-Use for **AI-2** only when the official company careers page and saved Application links do not yield a clear ATS host/path through scripts. Start from the company, its official domain, and the original source link. Check [STAGE.md](../../../code/STAGE.md) before calling a planned command; [PLAN.md](../../../code/PLAN.md) defines the target evidence chain.
+Use for **AI-2** only when the official company careers page and saved Application links do not yield a clear ATS host/path through scripts. Start from the company, its official domain, and the original source link. For saved Simplify leads, run `search_job.run --resolve-profiles` and `--verify-routes --provider <hint>` first; inspect `source_leads.stage`, `route_evidence_url` and `last_error`. Check [STAGE.md](../../../code/STAGE.md) before calling a planned command; [PLAN.md](../../../code/PLAN.md) defines the target evidence chain.
 
 Use official careers/job links first. If the route cannot be found or parsed, make one bounded `company + careers` web search and confirm a result against the official company domain. Embedded jobs or a third-party Apply URL are clues, not proof of an official ATS association. Identify the provider and save the official evidence without asserting a company-board mapping yet.
 

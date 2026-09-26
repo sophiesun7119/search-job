@@ -22,7 +22,8 @@ def _brand_match(job: dict, brand: str | None) -> bool:
 
 def scan_registered(db: sqlite3.Connection, *, provider: str | None = None,
                     company_key: str | None = None, limit: int | None = None,
-                    lookback_days: int = 3, full_recheck: bool = False) -> dict:
+                    lookback_days: int = 3, full_recheck: bool = False,
+                    new_leads_only: bool = False) -> dict:
     if lookback_days < 0 or limit is not None and limit < 1:
         raise ValueError("Invalid scan limit")
     rows = db.execute("""SELECT cb.company_key, cb.brand_filter, cb.evidence_url,
@@ -32,7 +33,10 @@ def scan_registered(db: sqlite3.Connection, *, provider: str | None = None,
       JOIN boards b ON b.board_key=cb.board_key
       WHERE cb.status!='pending_identity' AND (? IS NULL OR b.provider=?)
         AND (? IS NULL OR cb.company_key=?)
-      ORDER BY b.provider,cb.company_key""", (provider, provider, company_key, company_key)).fetchall()
+        AND (?=0 OR EXISTS (SELECT 1 FROM source_leads l
+             WHERE l.company_key=cb.company_key AND l.stage='scan_pending'))
+      ORDER BY b.provider,cb.company_key""", (provider, provider, company_key, company_key,
+                                              int(new_leads_only))).fetchall()
     if limit:
         rows = rows[:limit]
     report = {"candidates": db.execute("SELECT COUNT(*) FROM companies").fetchone()[0],
@@ -106,6 +110,8 @@ def scan_registered(db: sqlite3.Connection, *, provider: str | None = None,
                         db.execute("UPDATE companies SET scan_cohort='old',validated_at=? WHERE company_key=?",
                                    (utc_now(), company))
                         report["promoted_old"] += 1
+                    db.execute("""UPDATE source_leads SET stage='scanned',last_error=NULL,checked_at=?
+                      WHERE company_key=? AND stage='scan_pending'""", (utc_now(), company))
             report["scanned_boards"] += int(complete)
             report["partial_boards"] += int(not complete)
             report["seen"] += len(observed)
@@ -115,6 +121,9 @@ def scan_registered(db: sqlite3.Connection, *, provider: str | None = None,
         except Exception as error:
             with db:
                 record_scan(db, board, uuid.uuid4().hex, started, utc_now(), "failed", set())
+                db.execute("""UPDATE source_leads SET last_error=?,checked_at=?
+                  WHERE company_key=? AND stage='scan_pending'""",
+                  (f"{type(error).__name__}: {error}"[:300], utc_now(), company))
             report["failures"].append({"company": company, "board": board,
                                        "error": f"{type(error).__name__}: {error}"})
     report["adapter_pending"] = db.execute("SELECT COUNT(*) FROM companies WHERE company_key NOT IN (SELECT company_key FROM company_boards)").fetchone()[0]

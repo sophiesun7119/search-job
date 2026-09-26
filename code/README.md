@@ -4,7 +4,7 @@ Search Job finds public openings from official company job pages and organizes t
 
 [SCHEMA.md](SCHEMA.md) documents every current SQLite table, its columns and relationships.
 
-**Today:** local SQLite indexing, title categories, README/JSON rendering, route-seed import and live collectors for the seven providers in the current company pool work. The root [job list](../README.md) shows open, ATS-dated postings from the past 72 hours with a confirmed US location and a complete latest board scan. The full index remains in SQLite and JSON. A local preview is generated under ignored `var/` during a run.
+**Today:** local SQLite indexing, title categories, README/JSON rendering, route-seed import and live collectors for the existing company pool work. Bounded Simplify lead import and script-first official-route checks are available; unresolved routes still need review. The root [job list](../README.md) shows open, ATS-dated postings from the past 72 hours with a confirmed US location and a complete latest board scan. The full index remains in SQLite and JSON. A local preview is generated under ignored `var/` during a run.
 
 ## Run the code
 
@@ -23,6 +23,19 @@ PYTHONPATH=code/src python3 -m search_job.cli var/search-job.sqlite3 \
 ```
 
 `var/` is ignored by Git. The root README is regenerated from the local live database after reviewing the local preview.
+
+Import a bounded batch from a local Simplify catalog, then investigate its leads without re-importing earlier source IDs:
+
+```sh
+PYTHONPATH=code/src python3 -m search_job.run var/search-job.sqlite3 \
+  --simplify-catalog /path/to/catalog.sqlite3 --source-year 2026 --limit 100
+PYTHONPATH=code/src python3 -m search_job.run var/search-job.sqlite3 --resolve-profiles --limit 100
+PYTHONPATH=code/src python3 -m search_job.run var/search-job.sqlite3 --verify-routes --provider ashby --limit 100
+PYTHONPATH=code/src python3 -m search_job.run var/search-job.sqlite3 \
+  --scan --new-leads-only --provider ashby --limit 100
+```
+
+The catalog's company and sample Apply link become a `source_leads` row, not a verified company-board route. Script checks follow the candidate official site to find its careers/ATS links. Unsupported providers remain `adapter_pending`; ambiguous or inaccessible routes remain pending with their last error. Once a missing provider collector has passed a live board test, `--activate-adapter PROVIDER` registers its officially evidenced leads for scanning. Run one provider at a time and inspect the source-lead stages before publishing; only a complete board scan promotes a new company to the `old` cohort.
 
 Import a portable JSON seed containing companies and their existing ATS routes, then scan one provider at a time:
 

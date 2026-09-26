@@ -32,11 +32,22 @@ def connect(path: str | Path) -> sqlite3.Connection:
     db.row_factory = sqlite3.Row
     db.execute("PRAGMA foreign_keys = ON")
     db.executescript(SCHEMA.read_text())
+    from .collectors import ACTIVE_COLLECTORS, PLANNED_COLLECTORS
+    db.executemany("""INSERT INTO provider_capabilities(provider,adapter_key,support_status)
+      VALUES (?,?,'active') ON CONFLICT(provider) DO UPDATE SET
+      adapter_key=excluded.adapter_key,support_status='active'""",
+      [(provider, provider) for provider in sorted(ACTIVE_COLLECTORS)])
+    db.executemany("""INSERT INTO provider_capabilities(provider,adapter_key,support_status)
+      VALUES (?,?,'planned') ON CONFLICT(provider) DO NOTHING""",
+      [(provider, provider) for provider in sorted(PLANNED_COLLECTORS)])
     company_columns = {row[1] for row in db.execute("PRAGMA table_info(companies)")}
     if "scan_cohort" not in company_columns:
         db.execute("ALTER TABLE companies ADD COLUMN scan_cohort TEXT NOT NULL DEFAULT 'new' CHECK (scan_cohort IN ('new','old'))")
     if "validated_at" not in company_columns:
         db.execute("ALTER TABLE companies ADD COLUMN validated_at TEXT")
+    lead_columns = {row[1] for row in db.execute("PRAGMA table_info(source_leads)")}
+    if "official_board_url" not in lead_columns:
+        db.execute("ALTER TABLE source_leads ADD COLUMN official_board_url TEXT")
     columns = {row[1] for row in db.execute("PRAGMA table_info(company_boards)")}
     if "brand_filter" not in columns:
         # Upgrade databases created by the first local stage without dropping

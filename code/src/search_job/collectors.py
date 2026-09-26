@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 import re
 import ssl
+import html
 import urllib.request
 from datetime import datetime, timezone
 from urllib.parse import quote, urlsplit
@@ -17,6 +18,11 @@ try:
     import certifi
 except ImportError:  # system trust store remains usable
     certifi = None
+
+ACTIVE_COLLECTORS = frozenset({"greenhouse", "ashby", "smartrecruiters", "gem",
+                               "rippling", "vizirecruiter", "eightfold", "lever",
+                               "workday", "workable", "jazzhr"})
+PLANNED_COLLECTORS = frozenset({"oracle", "icims"})
 
 
 class JobList(list):
@@ -40,6 +46,16 @@ def _read(url: str, payload: dict | None = None) -> dict | list | str:
     if "rippling.com" in (urlsplit(url).hostname or "") and "/jobs" in urlsplit(url).path:
         return raw.decode("utf-8", "replace")
     return json.loads(raw)
+
+
+def _read_html(url: str) -> str:
+    request = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "text/html"})
+    context = ssl.create_default_context(cafile=certifi.where()) if certifi else ssl.create_default_context()
+    with urllib.request.urlopen(request, timeout=25, context=context) as response:
+        raw = response.read(5_000_000)
+    if len(raw) >= 5_000_000:
+        raise ValueError("HTML board response too large")
+    return raw.decode("utf-8", "replace")
 
 
 def _job(job_id: object, url: str, title: str, location: str = "", *,
@@ -87,6 +103,128 @@ def collect(provider: str, token: str, domain: str | None = None) -> list[dict]:
             jobs.append(_job(item.get("id") or url.rstrip("/").split("/")[-1], url,
                              item["title"], item.get("location") or "",
                              published=published, date_field="publishedAt" if published else None))
+        return jobs
+    if provider == "lever":
+        jobs = []
+        for page in range(100):
+            batch = _read(f"https://api.lever.co/v0/postings/{safe}?mode=json&limit=100&skip={page * 100}")
+            if not isinstance(batch, list):
+                raise ValueError("Lever listing shape changed")
+            for item in batch:
+                url = item.get("hostedUrl") or ""
+                if urlsplit(url).hostname != "jobs.lever.co":
+                    raise ValueError("Lever returned an unexpected application host")
+                categories = item.get("categories") or {}
+                locations = categories.get("allLocations") or [categories.get("location") or ""]
+                created = item.get("createdAt")
+                published = datetime.fromtimestamp(int(created) / 1000, timezone.utc).isoformat() if created else None
+                updated = item.get("updatedAt")
+                updated_at = datetime.fromtimestamp(int(updated) / 1000, timezone.utc).isoformat() if updated else None
+                jobs.append(_job(item["id"], url, item["text"],
+                                 "; ".join(str(loc) for loc in locations if loc),
+                                 published=published, date_field="createdAt" if published else None,
+                                 updated=updated_at))
+            if len(batch) < 100:
+                return jobs
+        raise ValueError("Lever page cap reached")
+    if provider == "workday":
+        parts = token.split("|")
+        if len(parts) != 3:
+            raise ValueError("Invalid Workday board token")
+        host, tenant, site = parts
+        if not (re.fullmatch(r"[a-z0-9-]+\.wd\d+\.myworkdayjobs\.com", host) or
+                re.fullmatch(r"wd\d+\.myworkdaysite\.com", host)):
+            raise ValueError("Invalid Workday host")
+        if not all(re.fullmatch(r"[A-Za-z0-9_-]+", value) for value in (tenant, site)):
+            raise ValueError("Invalid Workday tenant or site")
+        base = f"https://{host}/wday/cxs/{quote(tenant)}/{quote(site)}"
+        jobs = []
+        offset = 0
+        total = None
+        for page in range(300):
+            listing = _read(base + "/jobs", {"appliedFacets": {}, "limit": 20,
+                                             "offset": offset, "searchText": ""})
+            postings = listing.get("jobPostings") if isinstance(listing, dict) else None
+            if not isinstance(postings, list):
+                raise ValueError("Workday listing shape changed")
+            if total is None:
+                total = listing.get("total")
+                if not isinstance(total, int) or total < len(postings):
+                    raise ValueError("Workday total is missing or invalid")
+            for item in postings:
+                path = item.get("externalPath") or ""
+                if not path.startswith("/job/"):
+                    continue
+                posted_on = item.get("postedOn") or ""
+                days = re.fullmatch(r"Posted (\d+)\+? Days? Ago", posted_on, re.I)
+                recent = ("Today" in posted_on or "Yesterday" in posted_on or
+                          (days is not None and int(days.group(1)) <= 3))
+                url = f"https://{host}/{quote(site)}{path}"
+                title = item.get("title") or ""
+                location = item.get("locationsText") or ""
+                published = None
+                if recent:
+                    detail = _read(base + path)
+                    info = detail.get("jobPostingInfo") if isinstance(detail, dict) else None
+                    if not isinstance(info, dict):
+                        raise ValueError("Workday job detail shape changed")
+                    if info.get("canApply") is False:
+                        continue
+                    country = info.get("country") or {}
+                    country_name = country.get("descriptor") or "" if isinstance(country, dict) else ""
+                    location = "; ".join(filter(None, (info.get("location") or location, country_name)))
+                    title = info.get("title") or title
+                    url = info.get("externalUrl") or url
+                    published = info.get("startDate")
+                jobs.append(_job(path, url, title, location, published=published,
+                                 date_field="startDate" if published else None))
+            offset += len(postings)
+            if offset >= total:
+                return jobs
+            if not postings:
+                raise ValueError("Workday pagination stopped early")
+        raise ValueError("Workday page cap reached")
+    if provider == "workable":
+        data = _read(f"https://www.workable.com/api/accounts/{safe}?details=true")
+        if not isinstance(data, dict) or not isinstance(data.get("jobs"), list):
+            raise ValueError("Workable public listing shape changed")
+        jobs = []
+        for item in data["jobs"]:
+            url = item.get("url") or item.get("shortlink") or ""
+            if urlsplit(url).hostname != "apply.workable.com":
+                raise ValueError("Workable returned an unexpected application host")
+            locations = item.get("locations") or []
+            if not isinstance(locations, list):
+                raise ValueError("Workable locations shape changed")
+            places = [", ".join(dict.fromkeys(str(loc.get(key)) for key in
+                      ("city", "region", "country") if loc.get(key))) for loc in locations
+                      if isinstance(loc, dict)]
+            for place in places or [""]:
+                jobs.append(_job(item.get("shortcode") or url.rstrip("/").split("/")[-1],
+                                 url, item["title"], place,
+                                 published=item.get("published_on"),
+                                 date_field="published_on" if item.get("published_on") else None))
+        return jobs
+    if provider == "jazzhr":
+        if not re.fullmatch(r"[a-z0-9-]+\.applytojob\.com", token):
+            raise ValueError("Invalid JazzHR board host")
+        body = _read_html(f"https://{token}/apply")
+        pattern = re.compile(r'<h3[^>]*>\s*<a\s+href="(https://[^\"]+/apply/[A-Za-z0-9]+/[^\"]*)"[^>]*>'
+                             r'(.*?)</a>\s*</h3>\s*<ul[^>]*>(.*?)</ul>', re.I | re.S)
+        matches = list(pattern.finditer(body))
+        if not matches and "list-group-item" in body:
+            raise ValueError("JazzHR public job-list markup changed")
+        jobs = []
+        for match in matches:
+            url = html.unescape(match.group(1))
+            parts = urlsplit(url)
+            path = [part for part in parts.path.split("/") if part]
+            if parts.hostname != token or len(path) < 2 or path[0] != "apply":
+                raise ValueError("JazzHR returned an unexpected job route")
+            title = html.unescape(re.sub(r"<[^>]+>", "", match.group(2))).strip()
+            location_match = re.search(r"<i[^>]*fa-map-marker[^>]*></i>\s*([^<]+)", match.group(3), re.I | re.S)
+            location = html.unescape(location_match.group(1)).strip() if location_match else ""
+            jobs.append(_job(path[1], url, title, location))
         return jobs
     if provider == "smartrecruiters":
         jobs = []
