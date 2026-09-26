@@ -104,30 +104,33 @@ def render_markdown(db: sqlite3.Connection, as_of: datetime, *, historical_previ
                   f"> Saved scope: {companies_total} known companies; {companies_with_rows} have {len(rows)} cached ATS postings. Companies without saved postings are not evidence of no openings. Locations were not stored in the old cache and appear as —.")
     else:
         status = ""
-    coverage = f"**{companies_total}** {'company is' if companies_total == 1 else 'companies are'}"
+    coverage = f"**{companies_total}** {'company' if companies_total == 1 else 'companies'}"
     intro = intro.replace("{{COMPANY_COVERAGE}}", coverage)
     lines = intro.replace("{{SNAPSHOT_STATUS}}\n\n", status + "\n\n" if status else "").rstrip().splitlines() + [""]
     lines += [f"Generated: {as_of.isoformat()}.", ""]
+    lines += ["<details>", "<summary>How this list is selected</summary>", ""]
     if not historical_preview:
         lines += ["Only currently open postings seen in the latest complete board scan, with an ATS publication timestamp within the past 72 hours and a confirmed US location, are shown here. Older, closed, non-US, and uncertain postings remain in the database and full JSON export.", ""]
     age_explanation = ("Age is shown in days. 🔎 means age since **first discovery**, not ATS publication. "
                        if historical_preview else "Age is shown in days from the ATS publication date. ")
+    listing_kind = "saved job" if historical_preview else "opening"
+    listing_count = f"{len(rows)} {listing_kind}{'' if len(rows) == 1 else 's'}"
     lines += [age_explanation + "† means the ATS supplied a date without an exact time. `0d` is within 24 hours only for exact timestamps; for date-only sources it means the same calendar date.",
-              "", "## Categories", ""]
+              "", "</details>", "", "<a id=\"categories\"></a>",
+              f"## Browse {listing_count} by category", ""]
     for key, label in CATEGORY_ORDER:
         active = sum(row["open_state"] == "open" for row in categories[key])
         unknown = sum(row["open_state"] == "unknown" for row in categories[key])
         inactive = sum(row["open_state"] == "inactive" for row in categories[key])
         if active + unknown + inactive:
-            counts = (f"{unknown} saved / unverified" if historical_preview
-                      else f"{active} open, {unknown} unverified, {inactive} inactive")
-            lines.append(f"- [{label}](#{key}): {counts}")
+            count = active + unknown + inactive
+            lines.append(f"- [{label}](#{key}) ({count})")
     lines.append("")
     for key, label in CATEGORY_ORDER:
         group = categories[key]
         if not group:
             continue
-        lines += [f'<a id="{key}"></a>', f"## {label}", ""]
+        lines += [f'<a id="{key}"></a>', f"## {label}", "", "[Back to top](#search-job)", ""]
         current = [row for row in group if row["open_state"] == "open"]
         unknown = [row for row in group if row["open_state"] == "unknown"]
         inactive = [row for row in group if row["open_state"] == "inactive"]

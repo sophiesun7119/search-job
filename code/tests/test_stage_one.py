@@ -110,11 +110,13 @@ class StageOneTest(unittest.TestCase):
     def test_reader_intro_and_preview_status_survive_regeneration(self):
         self.add()
         md = render_markdown(self.db, self.as_of, historical_preview=True)
-        self.assertIn("Search Job helps you find newly posted jobs", md)
-        self.assertIn("**Current coverage:** **1** company is", md)
-        self.assertIn("[code](code/PLAN.md)", md)
-        self.assertIn("Refreshes are currently triggered manually", md)
+        self.assertIn("Find recently posted US-located jobs", md)
+        self.assertIn("**1** company in its company pool", md)
+        self.assertIn("[matching rules](code/PLAN.md)", md)
+        self.assertIn("Updates are manually triggered today", md)
         self.assertIn("Historical preview — open status not verified", md)
+        self.assertIn("## Browse 1 saved job by category", md)
+        self.assertIn("[Back to top](#search-job)", md)
         self.assertNotIn("{{SNAPSHOT_STATUS}}", md)
         self.assertNotIn("{{COMPANY_COVERAGE}}", md)
 

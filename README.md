@@ -1,36 +1,40 @@
 # Search Job
 
-Search Job helps you find newly posted jobs at companies hiring in the United States. It collects public openings from company career pages and applicant tracking systems (ATS), then organizes recent US-located roles by category below. Use the links to reach the original application pages and apply while a role is fresh.
+Find recently posted US-located jobs from company career pages, grouped by role. Search Job currently tracks **78** companies in its company pool; the listings below come from boards that have completed a scan. Follow a category and apply through the original job link while the role is fresh.
 
-**Current coverage:** **78** companies are in the Search Job company pool. The tables below show qualifying openings from companies with successfully scanned job boards; not every company will have a role in this view. Coverage will grow as more company routes are verified. Each row shows the role, location, original application link, and age based on the source's publication date.
+Scripts collect and sort openings; AI agents assist with development and requested investigations of new company routes. **Updates are manually triggered today.** An automatic refresh about every six hours is planned.
 
-Scripts handle routine job collection and category matching, with AI assistance for development and requested investigation of new company routes or missing adapters. Browse the [categories](#categories) to follow the roles you care about, and check back regularly. **Refreshes are currently triggered manually.** An automatic refresh about every six hours is planned; it is not running yet.
-
-### Contribute
-
-Suggestions for clearer categories, missing role types, and README wording are welcome. Fork this repository, make a focused change, and open a pull request explaining it. For category changes, include example titles that should and should not match; the matching rules live in [code](code/PLAN.md), and the job tables are generated from those rules and the saved index. You can also open an issue to discuss an idea before writing code.
+**Contribute:** [Open an issue](https://github.com/sophiesun7119/search-job/issues) or fork the repo and submit a pull request. For category changes, include example titles; the [matching rules](code/PLAN.md) live in code and generate the tables below.
 
 Generated: 2026-09-26T00:52:01.913289+00:00.
+
+<details>
+<summary>How this list is selected</summary>
 
 Only currently open postings seen in the latest complete board scan, with an ATS publication timestamp within the past 72 hours and a confirmed US location, are shown here. Older, closed, non-US, and uncertain postings remain in the database and full JSON export.
 
 Age is shown in days from the ATS publication date. † means the ATS supplied a date without an exact time. `0d` is within 24 hours only for exact timestamps; for date-only sources it means the same calendar date.
 
-## Categories
+</details>
 
-- [Software Engineering — Senior and unspecified](#sde): 58 open, 0 unverified, 0 inactive
-- [Software Engineering — Junior and New Grad](#sde-entry): 8 open, 0 unverified, 0 inactive
-- [Software Engineering — Staff and Principal](#sde-staff): 18 open, 0 unverified, 0 inactive
-- [Product Manager](#product-manager): 5 open, 0 unverified, 0 inactive
-- [Engineering Manager](#engineering-manager): 6 open, 0 unverified, 0 inactive
-- [Mobile](#mobile): 1 open, 0 unverified, 0 inactive
-- [QA and Test](#qa-test): 11 open, 0 unverified, 0 inactive
-- [Analyst](#analyst): 26 open, 0 unverified, 0 inactive
-- [Scientist and Researcher](#scientist): 6 open, 0 unverified, 0 inactive
-- [Other and unclassified](#other): 275 open, 0 unverified, 0 inactive
+<a id="categories"></a>
+## Browse 414 openings by category
+
+- [Software Engineering — Senior and unspecified](#sde) (58)
+- [Software Engineering — Junior and New Grad](#sde-entry) (8)
+- [Software Engineering — Staff and Principal](#sde-staff) (18)
+- [Product Manager](#product-manager) (5)
+- [Engineering Manager](#engineering-manager) (6)
+- [Mobile](#mobile) (1)
+- [QA and Test](#qa-test) (11)
+- [Analyst](#analyst) (26)
+- [Scientist and Researcher](#scientist) (6)
+- [Other and unclassified](#other) (275)
 
 <a id="sde"></a>
 ## Software Engineering — Senior and unspecified
+
+[Back to top](#search-job)
 
 | Company | Role | Location | Application | Age |
 | --- | --- | --- | --- | --- |
@@ -96,6 +100,8 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 <a id="sde-entry"></a>
 ## Software Engineering — Junior and New Grad
 
+[Back to top](#search-job)
+
 | Company | Role | Location | Application | Age |
 | --- | --- | --- | --- | --- |
 | [Snowflake](https://snowflake.com/) | Software Engineer Intern (AI / ML) - Spring 2027 | US-CA-Menlo Park | [Apply](https://jobs.ashbyhq.com/snowflake/4be290ae-dd9d-488c-9d90-56fcd69101ca) | 0d |
@@ -109,6 +115,8 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 
 <a id="sde-staff"></a>
 ## Software Engineering — Staff and Principal
+
+[Back to top](#search-job)
 
 | Company | Role | Location | Application | Age |
 | --- | --- | --- | --- | --- |
@@ -134,6 +142,8 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 <a id="product-manager"></a>
 ## Product Manager
 
+[Back to top](#search-job)
+
 | Company | Role | Location | Application | Age |
 | --- | --- | --- | --- | --- |
 | [Vercel](https://vercel.com/) | Product Manager, Dashboard | Remote - United States | [Apply](https://job-boards.greenhouse.io/vercel/jobs/6205772004) | 1d |
@@ -144,6 +154,8 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 
 <a id="engineering-manager"></a>
 ## Engineering Manager
+
+[Back to top](#search-job)
 
 | Company | Role | Location | Application | Age |
 | --- | --- | --- | --- | --- |
@@ -157,12 +169,16 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 <a id="mobile"></a>
 ## Mobile
 
+[Back to top](#search-job)
+
 | Company | Role | Location | Application | Age |
 | --- | --- | --- | --- | --- |
 | [Notion](https://notion.com/) | Software Engineer Intern, Mobile (Winter 2027) | San Francisco, California | [Apply](https://jobs.ashbyhq.com/notion/2b587e66-deac-421a-a824-9415ba78b5a7) | 1d |
 
 <a id="qa-test"></a>
 ## QA and Test
+
+[Back to top](#search-job)
 
 | Company | Role | Location | Application | Age |
 | --- | --- | --- | --- | --- |
@@ -180,6 +196,8 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 
 <a id="analyst"></a>
 ## Analyst
+
+[Back to top](#search-job)
 
 | Company | Role | Location | Application | Age |
 | --- | --- | --- | --- | --- |
@@ -213,6 +231,8 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 <a id="scientist"></a>
 ## Scientist and Researcher
 
+[Back to top](#search-job)
+
 | Company | Role | Location | Application | Age |
 | --- | --- | --- | --- | --- |
 | [Kikoff](https://kikoff.com/) | Staff Data Scientist, Grant | San Francisco | [Apply](https://job-boards.greenhouse.io/kikoff/jobs/4421304009) | 0d |
@@ -224,6 +244,8 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 
 <a id="other"></a>
 ## Other and unclassified
+
+[Back to top](#search-job)
 
 | Company | Role | Location | Application | Age |
 | --- | --- | --- | --- | --- |
