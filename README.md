@@ -1,6 +1,6 @@
 # Search Job
 
-Find recently posted US-located jobs from company career pages, grouped by role. Search Job currently tracks **116** companies in its company pool; the listings below come from boards that have completed a scan. Follow a category and apply through the original job link while the role is fresh.
+Find recently posted US-located jobs from company career pages, grouped by role. Search Job currently tracks **117** companies in its company pool; the listings below come from boards that have completed a scan. Follow a category and apply through the original job link while the role is fresh.
 
 Scripts collect and sort openings; AI agents assist with development and requested investigations of new company routes. **Updates are manually triggered today.** An automatic refresh about every six hours is planned.
 
@@ -16,18 +16,18 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 </details>
 
 <a id="categories"></a>
-## Browse 633 openings by category
+## Browse 642 openings by category
 
-- [Software Engineering — Senior and unspecified](#sde) (76)
+- [Software Engineering — Senior and unspecified](#sde) (77)
 - [Software Engineering — Junior and New Grad](#sde-entry) (10)
 - [Software Engineering — Staff and Principal](#sde-staff) (18)
 - [Product Manager](#product-manager) (9)
 - [Engineering Manager](#engineering-manager) (6)
 - [Mobile](#mobile) (1)
 - [QA and Test](#qa-test) (12)
-- [Analyst](#analyst) (44)
+- [Analyst](#analyst) (46)
 - [Scientist and Researcher](#scientist) (11)
-- [Other and unclassified](#other) (446)
+- [Other and unclassified](#other) (452)
 
 <a id="sde"></a>
 ## Software Engineering — Senior and unspecified
@@ -81,6 +81,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [LexisNexis Risk Solutions](https://risk.lexisnexis.com/) | Software Engineer III | Alpharetta, GA; United States of America | [Apply](https://relx.wd3.myworkdayjobs.com/RiskSolutions/job/Alpharetta-GA/Software-Engineer-III_R116673-1) | 2d † |
 | [Motorola](https://motorolasolutions.com/) | Senior Systems Engineer - Pennsylvania | Pennsylvania Remote Work; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Pennsylvania-Remote-Work/Senior-Systems-Engineer---Pennsylvania_R67297) | 2d † |
 | [CACI](https://caci.com/) | Software Engineer - Early Career - Cloud | Hanover, MD, US; Remote (Any State) | [Apply](https://searchcareers.caci.com/careers/job/1443152876607?domain=caci.com&amp;hl=en) | 2d † |
+| [Clearwater Analytics](https://cwan.com/) | Sr. Site Reliability Engineer | Office - Boise; United States of America | [Apply](https://clearwateranalytics.wd1.myworkdayjobs.com/Clearwater_Analytics_Careers/job/Office---Boise/Sr-Site-Reliability-Engineer_R12334) | 2d † |
 | [CACI](https://caci.com/) | Field Systems Engineer (Radar/C-UAS) | Sterling, VA, US | [Apply](https://searchcareers.caci.com/careers/job/1443152357455?domain=caci.com&amp;hl=en) | 2d † |
 | [LexisNexis Risk Solutions](https://risk.lexisnexis.com/) | Software Engineering Lead | Arizona; United States of America | [Apply](https://relx.wd3.myworkdayjobs.com/RiskSolutions/job/Arizona/Software-Engineering-Lead_R118074) | 2d † |
 | [CACI](https://caci.com/) | DevOps Engineer | Denver, CO, US | [Apply](https://searchcareers.caci.com/careers/job/1443152154802?domain=caci.com&amp;hl=en) | 2d † |
@@ -237,6 +238,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [CACI](https://caci.com/) | IT Asset Management Analyst | Fort Belvoir, VA, US; Washington, DC, US | [Apply](https://searchcareers.caci.com/careers/job/1443153676691?domain=caci.com&amp;hl=en) | 1d † |
 | [CACI](https://caci.com/) | COOP Officer/C5ISR Analyst | Washington, DC, US | [Apply](https://searchcareers.caci.com/careers/job/1443153681549?domain=caci.com&amp;hl=en) | 1d † |
 | [Visa](https://usa.visa.com/) | Coordinator, Commercial and Money Movement Operating Management (Analyst) | US - San Francisco, CA; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---San-Francisco-CA/Analyst--Commercial-and-Money-Movement-Operating-Management_REF083210W-1) | 1d † |
+| [Clearwater Analytics](https://cwan.com/) | Reconciliation Analyst | Office - Boise; United States of America | [Apply](https://clearwateranalytics.wd1.myworkdayjobs.com/Clearwater_Analytics_Careers/job/Office---Boise/Reconciliation-Analyst_R3180-1-1) | 1d † |
 | [CACI](https://caci.com/) | Program Finance Analyst | Annapolis Junction, MD, US | [Apply](https://searchcareers.caci.com/careers/job/1443153676335?domain=caci.com&amp;hl=en) | 1d † |
 | [Barry-Wehmiller](https://barrywehmiller.com/) | Business Analyst | Spokane, WA; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Spokane-WA/Business-Analyst_R022878) | 1d † |
 | [CACI](https://caci.com/) | Scrum Master &amp; Requirements Analyst | Washington, DC, US | [Apply](https://searchcareers.caci.com/careers/job/1443153679445?domain=caci.com&amp;hl=en) | 1d † |
@@ -252,6 +254,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [CACI](https://caci.com/) | Oracle Procure-to-Pay (P2P) Business Analyst | Remote (Any State) | [Apply](https://searchcareers.caci.com/careers/job/1443153658308?domain=caci.com&amp;hl=en) | 2d † |
 | [CACI](https://caci.com/) | Data Analyst | Chantilly, VA, US | [Apply](https://searchcareers.caci.com/careers/job/1443153658780?domain=caci.com&amp;hl=en) | 2d † |
 | [CACI](https://caci.com/) | Program Analyst – Tethered Aerostat Radar System (TARS) Program | Remote (Any State) | [Apply](https://searchcareers.caci.com/careers/job/1443153655370?domain=caci.com&amp;hl=en) | 2d † |
+| [Clearwater Analytics](https://cwan.com/) | Client Servicing Analyst - New Graduate | Office - Boise; United States of America | [Apply](https://clearwateranalytics.wd1.myworkdayjobs.com/Clearwater_Analytics_Careers/job/Office---Boise/Client-Service-Analyst_R12319) | 2d † |
 | [CACI](https://caci.com/) | Senior Data Analyst | Washington, DC, US; National Harbor, MD, US | [Apply](https://searchcareers.caci.com/careers/job/1443153657415?domain=caci.com&amp;hl=en) | 2d † |
 | [CACI](https://caci.com/) | Senior Business Analyst | Remote (Any State) | [Apply](https://searchcareers.caci.com/careers/job/1443152935971?domain=caci.com&amp;hl=en) | 2d † |
 | [State Street](https://statestreet.com/) | Alternative Investments Business Transformation Business Analyst, Officer | Boston, Massachusetts; United States of America | [Apply](https://statestreet.wd1.myworkdayjobs.com/Global/job/Boston-Massachusetts/Alternative-Investments-Business-Transformation-Business-Analyst--Officer_R-768994-1) | 2d † |
@@ -387,6 +390,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [Sierra Nevada Corporation](https://sncorp.com/) | Mechanical Engineer I | Lone Tree, CO; United States of America | [Apply](https://snc.wd1.myworkdayjobs.com/SNC_External_Career_Site/job/Lone-Tree-CO/Mechanical-Engineer-I_R0030931-1) | 1d † |
 | [Sierra Nevada Corporation](https://sncorp.com/) | Avionics Technician IV - Deploy Only | Shalimar, FL; United States of America | [Apply](https://snc.wd1.myworkdayjobs.com/SNC_External_Career_Site/job/Shalimar-FL/Avionics-Technician-IV---Deploy-Only_R0030917) | 1d † |
 | [CACI](https://caci.com/) | Senior Data and AI Integrator | Tampa, FL, US | [Apply](https://searchcareers.caci.com/careers/job/1443153681836?domain=caci.com&amp;hl=en) | 1d † |
+| [Clearwater Analytics](https://cwan.com/) | Senior Technical Writer | Office - New York; United States of America | [Apply](https://clearwateranalytics.wd1.myworkdayjobs.com/Clearwater_Analytics_Careers/job/Office---New-York/Senior-Technical-Writer_R12377) | 1d † |
 | [CACI](https://caci.com/) | Configuration Management Specialist | Reston, VA, US | [Apply](https://searchcareers.caci.com/careers/job/1443153367729?domain=caci.com&amp;hl=en) | 1d † |
 | [Motorola](https://motorolasolutions.com/) | Customer Education Specialist - Flex (US Remote) | Utah, US Offsite; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Utah-US-Offsite/Customer-Education-Specialist---Flex--US-Remote-_R69088) | 1d † |
 | [CACI](https://caci.com/) | Operating System Deployment Engineer | Remote (Any State); Chantilly, VA, US | [Apply](https://searchcareers.caci.com/careers/job/1443153670550?domain=caci.com&amp;hl=en) | 1d † |
@@ -394,6 +398,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [CACI](https://caci.com/) | UX Designer | Washington, DC, US | [Apply](https://searchcareers.caci.com/careers/job/1443153671154?domain=caci.com&amp;hl=en) | 1d † |
 | [CACI](https://caci.com/) | Systems Engineer - DevOps Kubernetes Support | Hanover, MD, US | [Apply](https://searchcareers.caci.com/careers/job/1443153675093?domain=caci.com&amp;hl=en) | 1d † |
 | [Sierra Nevada Corporation](https://sncorp.com/) | Safety Manager I - Industrial Hygiene | Centennial, CO; United States of America | [Apply](https://snc.wd1.myworkdayjobs.com/SNC_External_Career_Site/job/Centennial-CO/Industrial-Hygiene-Program-Manager_R0030500-1) | 1d † |
+| [Clearwater Analytics](https://cwan.com/) | Reconciliation Associate | Office - Boise; United States of America | [Apply](https://clearwateranalytics.wd1.myworkdayjobs.com/Clearwater_Analytics_Careers/job/Office---Boise/Reconciliation-Associate_R12380) | 1d † |
 | [Capital Health](https://capitalhealth.org/) | NP/PA Practice - FT - Day - OB/GYN | CH OB/GYN Bordentown; United States of America | [Apply](https://capitalhealth.wd1.myworkdayjobs.com/CapitalHealthCareers/job/CH-OBGYN-Bordentown/NP-PA-Practice---FT---Day---OB-GYN_JR111453) | 1d † |
 | [Barry-Wehmiller](https://barrywehmiller.com/) | Manufacturing Engineer | Phillips, WI; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Phillips-WI/Manufacturing-Engineer_R022332) | 1d † |
 | [Barry-Wehmiller](https://barrywehmiller.com/) | Chief People Officer | St. Louis, MO; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/St-Louis-MO/Chief-People-Officer_R022910) | 1d † |
@@ -443,6 +448,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [CACI](https://caci.com/) | Proposal Solution Architect (Electronic Warfare) | Sterling, VA, US; Chantilly, VA, US; Annapolis Junction, MD, US | [Apply](https://searchcareers.caci.com/careers/job/1443153254488?domain=caci.com&amp;hl=en) | 1d † |
 | [Barry-Wehmiller](https://barrywehmiller.com/) | Designer, Instrumentation &amp; Controls | Portland, OR; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Portland-OR/I-C-Designer_R021566-1) | 1d † |
 | [Capital Health](https://capitalhealth.org/) | Med Office Coordinator - FT - Day - CMG Central Resource Office Lawrenceville NJ | 3131 Princeton Pike; United States of America | [Apply](https://capitalhealth.wd1.myworkdayjobs.com/CapitalHealthCareers/job/3131-Princeton-Pike/Med-Office-Coordinator---FT---Day---CMG-Central-Resource-Office-Lawrenceville-NJ_JR111435) | 1d † |
+| [Clearwater Analytics](https://cwan.com/) | Implementations Project Manager Associate | Office - Chicago; United States of America | [Apply](https://clearwateranalytics.wd1.myworkdayjobs.com/Clearwater_Analytics_Careers/job/Office---Chicago/Implementations-Project-Manager-Associate_R11493-1-1) | 1d † |
 | [CACI](https://caci.com/) | Intel Ops Controller, Space Mission | Herndon, VA, US | [Apply](https://searchcareers.caci.com/careers/job/1443153671943?domain=caci.com&amp;hl=en) | 1d † |
 | [Visa](https://usa.visa.com/) | Director, Account Executive | US - Washington, DC; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---Washington-DC/Director--Account-Executive_REF088630W) | 1d † |
 | [CACI](https://caci.com/) | Knowledge Manager | Tampa, FL, US | [Apply](https://searchcareers.caci.com/careers/job/1443153678249?domain=caci.com&amp;hl=en) | 1d † |
@@ -635,6 +641,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [Motorola](https://motorolasolutions.com/) | CPE SW E2E Triage Intern - Summer 2027 | Plantation, FL; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Plantation-FL/CPE-SW-E2E-Triage-Intern---Summer-2027_R68165) | 2d † |
 | [LexisNexis Risk Solutions](https://risk.lexisnexis.com/) | DBA Lead | Alpharetta, GA; United States of America | [Apply](https://relx.wd3.myworkdayjobs.com/RiskSolutions/job/Alpharetta-GA/DBA-Lead_R118191) | 2d † |
 | [Visa](https://usa.visa.com/) | Business Development Representative | US - Atlanta, GA; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---Atlanta-GA/Business-Development-Representative_REF088769W) | 2d † |
+| [Clearwater Analytics](https://cwan.com/) | Business Development Representative - New Graduate | Office - Boise; United States of America | [Apply](https://clearwateranalytics.wd1.myworkdayjobs.com/Clearwater_Analytics_Careers/job/Office---Boise/Business-Development-Representative_R12205) | 2d † |
 | [Barry-Wehmiller](https://barrywehmiller.com/) | Fabricator | New Hampton, IA; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/New-Hampton-IA/Fabricator_R022804) | 2d † |
 | [State Street](https://statestreet.com/) | Operations Client Service, AVP | Quincy, Massachusetts; United States of America | [Apply](https://statestreet.wd1.myworkdayjobs.com/Global/job/Quincy-Massachusetts/Operations-Client-Service--AVP_R-797623) | 2d † |
 | [CACI](https://caci.com/) | Solutions Architect/Modeler | Remote (Any State) | [Apply](https://searchcareers.caci.com/careers/job/1443153659554?domain=caci.com&amp;hl=en) | 2d † |
@@ -647,6 +654,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [Barry-Wehmiller](https://barrywehmiller.com/) | Electrical Assembler | Phillips, WI; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Phillips-WI/Electrical-Assembler_R021944-1) | 2d † |
 | [Barry-Wehmiller](https://barrywehmiller.com/) | Product Line Leader – Curing | Mediapolis, IA; United States of America | [Apply](https://barrywehmiller.wd1.myworkdayjobs.com/BWCareers/job/Mediapolis-IA/Curing-Leader_R021832) | 2d † |
 | [NewsBreak](https://newsbreak.com/) | GTM Lead, NDot AI | Mountain View, California, United States; New York, New York, United States | [Apply](https://job-boards.greenhouse.io/newsbreak/jobs/4716181006) | 2d |
+| [Clearwater Analytics](https://cwan.com/) | Client Servicing Associate - Asset Management | Office - Chicago; United States of America | [Apply](https://clearwateranalytics.wd1.myworkdayjobs.com/Clearwater_Analytics_Careers/job/Office---Chicago/Client-Servicing-Associate_R3313-1) | 2d † |
 | [LexisNexis Risk Solutions](https://risk.lexisnexis.com/) | Site Reliability Engineering Lead | Alpharetta, GA; United States of America | [Apply](https://relx.wd3.myworkdayjobs.com/RiskSolutions/job/Alpharetta-GA/Site-Reliability-Engineering-Lead_R118128) | 2d † |
 | [Visa](https://usa.visa.com/) | Staff Software Engineer, Sr. Consultant (Agentic AI, Cloud, LLM, API) | US - Foster City, CA; United States of America | [Apply](https://visa.wd5.myworkdayjobs.com/Visa/job/US---Foster-City-CA/Software-Engineer---Sr-Consultant-level-1_REF080662W) | 2d † |
 | [CACI](https://caci.com/) | Sr. Systems Administrator (Active Directory) | Hampton, VA, US | [Apply](https://searchcareers.caci.com/careers/job/1443153658139?domain=caci.com&amp;hl=en) | 2d † |
@@ -660,6 +668,7 @@ Age is shown in days from the ATS publication date. † means the ATS supplied a
 | [NCR Voyix](https://ncrvoyix.com/) | Field Service Technician - Cheyenne, WY | WYOMING VIRTUAL, USA; United States of America | [Apply](https://ncr.wd1.myworkdayjobs.com/ext_us/job/WYOMING-VIRTUAL-USA/Field-Service-Technician---Wyoming_R0158342) | 2d † |
 | [Capital Health](https://capitalhealth.org/) | Community Liaison PACE - FT - Day - LIFE Bordentown NJ | LIFE; United States of America | [Apply](https://capitalhealth.wd1.myworkdayjobs.com/CapitalHealthCareers/job/LIFE/Community-Liaison-PACE---FT---Day---LIFE-Bordentown-NJ_JR111459) | 2d † |
 | [F5](https://f5.com/) | Technical Program Manager II (Former Summer 2026 Interns) | San Jose; United States of America | [Apply](https://ffive.wd5.myworkdayjobs.com/f5jobs/job/San-Jose/Technical-Program-Manager-II--Former-Summer-2026-Interns-_RP1038900) | 2d † |
+| [Clearwater Analytics](https://cwan.com/) | Lead Implementation Associate | Office - Boise; United States of America | [Apply](https://clearwateranalytics.wd1.myworkdayjobs.com/Clearwater_Analytics_Careers/job/Office---Boise/Lead-Implementation-Associate_R11963-1) | 2d † |
 | [Motorola](https://motorolasolutions.com/) | Complaints Administrative Assistant - Remote | Texas Remote Work; United States of America | [Apply](https://motorolasolutions.wd5.myworkdayjobs.com/Careers/job/Texas-Remote-Work/Complaints-Administrative-Assistant_R68884) | 2d † |
 | [SpaceX](https://spacex.com/) | Materials Engineer, Thin Films  | Bastrop, TX | [Apply](https://boards.greenhouse.io/spacex/jobs/8839590002?gh_jid=8839590002) | 2d |
 | [SpaceX](https://spacex.com/) | Sr. Materials Engineer, Thin Films | Bastrop, TX | [Apply](https://boards.greenhouse.io/spacex/jobs/8837198002?gh_jid=8837198002) | 2d |
