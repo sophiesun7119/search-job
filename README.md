@@ -1,12 +1,14 @@
 # Search Job
 
-Search Job finds public job openings and organizes them by role. It gathers company career and ATS listings into a local job index, then publishes US-located roles in the category tables here.
+Search Job helps you find newly posted jobs at companies hiring in the United States. It collects public openings from company career pages and applicant tracking systems (ATS), then organizes recent US-located roles by category below. Use the links to reach the original application pages and apply while a role is fresh.
 
-- **Browse what matters to you:** start with the broad Software Engineering list or jump to Product Manager, Engineering Manager, Analyst and other categories below.
-- **See where a role came from:** each row links a company and a saved application page; Age distinguishes an ATS publication date from the time we first found a role.
-- **Understand and improve the rules:** the classification logic is public, so contributors can suggest better title matches with concrete examples.
+**Current coverage:** **78** companies are in the Search Job company pool. The tables below show qualifying openings from companies with successfully scanned job boards; not every company will have a role in this view. Coverage will grow as more company routes are verified. Each row shows the role, location, original application link, and age based on the source's publication date.
 
-This project is developed with AI assistance. The intended live workflow uses scripts for repeatable company/board checks, collection and classification; bounded AI tasks find new companies and resolve missing ATS routes, adapters or board mappings. The [code guide](code/README.md) explains how to use what exists now, the [architecture and category rules](code/PLAN.md) explain the full workflow, and the [stage record](code/STAGE.md) shows what has actually been verified. A local scheduled refresh is planned after live collection is stable.
+Scripts handle routine job collection and category matching, with AI assistance for development and requested investigation of new company routes or missing adapters. Browse the [categories](#categories) to follow the roles you care about, and check back regularly. **Refreshes are currently triggered manually.** An automatic refresh about every six hours is planned; it is not running yet.
+
+### Contribute
+
+Suggestions for clearer categories, missing role types, and README wording are welcome. Fork this repository, make a focused change, and open a pull request explaining it. For category changes, include example titles that should and should not match; the matching rules live in [code](code/PLAN.md), and the job tables are generated from those rules and the saved index. You can also open an issue to discuss an idea before writing code.
 
 Generated: 2026-09-26T00:52:01.913289+00:00.
 

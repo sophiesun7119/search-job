@@ -104,6 +104,8 @@ def render_markdown(db: sqlite3.Connection, as_of: datetime, *, historical_previ
                   f"> Saved scope: {companies_total} known companies; {companies_with_rows} have {len(rows)} cached ATS postings. Companies without saved postings are not evidence of no openings. Locations were not stored in the old cache and appear as —.")
     else:
         status = ""
+    coverage = f"**{companies_total}** {'company is' if companies_total == 1 else 'companies are'}"
+    intro = intro.replace("{{COMPANY_COVERAGE}}", coverage)
     lines = intro.replace("{{SNAPSHOT_STATUS}}\n\n", status + "\n\n" if status else "").rstrip().splitlines() + [""]
     lines += [f"Generated: {as_of.isoformat()}.", ""]
     if not historical_preview:

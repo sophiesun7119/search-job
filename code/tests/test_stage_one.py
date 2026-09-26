@@ -110,11 +110,13 @@ class StageOneTest(unittest.TestCase):
     def test_reader_intro_and_preview_status_survive_regeneration(self):
         self.add()
         md = render_markdown(self.db, self.as_of, historical_preview=True)
-        self.assertIn("Search Job finds public job openings", md)
-        self.assertIn("[architecture and category rules](code/PLAN.md)", md)
-        self.assertIn("[stage record](code/STAGE.md)", md)
+        self.assertIn("Search Job helps you find newly posted jobs", md)
+        self.assertIn("**Current coverage:** **1** company is", md)
+        self.assertIn("[code](code/PLAN.md)", md)
+        self.assertIn("Refreshes are currently triggered manually", md)
         self.assertIn("Historical preview — open status not verified", md)
         self.assertNotIn("{{SNAPSHOT_STATUS}}", md)
+        self.assertNotIn("{{COMPANY_COVERAGE}}", md)
 
     def test_complete_scan_only_closes_after_two_misses(self):
         key = self.add()
