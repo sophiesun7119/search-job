@@ -42,6 +42,7 @@ def scan_registered(db: sqlite3.Connection, *, provider: str | None = None,
     report = {"candidates": db.execute("SELECT COUNT(*) FROM companies").fetchone()[0],
               "routes": len(rows), "scanned_boards": 0, "seen": 0, "new": 0,
               "recent": 0, "processed": 0, "partial_boards": 0, "failures": [],
+              "source_count_gaps": [],
               "lookback_days": lookback_days, "full_recheck": full_recheck,
               "promoted_old": 0}
     now = datetime.now(timezone.utc)
@@ -77,8 +78,8 @@ def scan_registered(db: sqlite3.Connection, *, provider: str | None = None,
                     is_recent = reference is not None and reference >= cutoff
                     refresh_visible = (bool(existed) and reference is not None and
                                        reference >= now - timedelta(days=3))
+                    recent_count += is_recent and key not in observed
                     observed.add(key)
-                    recent_count += is_recent
                     if not (full_recheck or is_recent or refresh_visible or
                             (reference is None and not existed)):
                         continue
@@ -119,6 +120,10 @@ def scan_registered(db: sqlite3.Connection, *, provider: str | None = None,
             report["new"] += new_count
             report["recent"] += recent_count
             report["processed"] += processed_count
+            if getattr(jobs, "source_count_gap", 0):
+                report["source_count_gaps"].append({"board": board,
+                    "gap": jobs.source_count_gap,
+                    "reason": "Oracle public listing count exceeds the matching visible IDs in two sorts"})
         except Exception as error:
             with db:
                 record_scan(db, board, uuid.uuid4().hex, started, utc_now(), "failed", set())

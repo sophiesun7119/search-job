@@ -19,16 +19,18 @@ try:
 except ImportError:  # system trust store remains usable
     certifi = None
 
-ACTIVE_COLLECTORS = frozenset({"greenhouse", "ashby", "smartrecruiters", "gem",
+ACTIVE_COLLECTORS = frozenset({"greenhouse", "ashby", "smartrecruiters", "gem", "oracle",
                                "rippling", "vizirecruiter", "eightfold", "lever",
                                "workday", "workable", "jazzhr"})
-PLANNED_COLLECTORS = frozenset({"oracle", "icims", "careerpuck"})
+PLANNED_COLLECTORS = frozenset({"icims", "careerpuck"})
 
 
 class JobList(list):
-    def __init__(self, jobs: list[dict], *, complete: bool = True):
+    def __init__(self, jobs: list[dict], *, complete: bool = True,
+                 source_count_gap: int = 0):
         super().__init__(jobs)
         self.complete = complete
+        self.source_count_gap = source_count_gap
 
 
 def _read(url: str, payload: dict | None = None) -> dict | list | str:
@@ -70,6 +72,87 @@ def _job(job_id: object, url: str, title: str, location: str = "", *,
 
 def collect(provider: str, token: str, domain: str | None = None) -> list[dict]:
     safe = quote(token, safe="")
+    if provider == "oracle":
+        parts = token.split("|")
+        if len(parts) != 2:
+            raise ValueError("Invalid Oracle board token")
+        host, site = parts
+        if not re.fullmatch(r"[a-z0-9-]+(?:\.[a-z0-9-]+)*\.oraclecloud\.com", host):
+            raise ValueError("Invalid Oracle board host")
+        if not re.fullmatch(r"[A-Za-z0-9_-]+", site):
+            raise ValueError("Invalid Oracle site")
+        base = f"https://{host}/hcmRestApi/resources/latest/recruitingCEJobRequisitions"
+        jobs = []
+        seen = set()
+        expected = None
+        offset = 0
+        for _ in range(300):
+            finder = f"findReqs;siteNumber={site},limit=200,offset={offset}"
+            data = _read(f"{base}?onlyData=true&finder={finder}&expand=requisitionList.secondaryLocations")
+            roots = data.get("items") if isinstance(data, dict) else None
+            if not isinstance(roots, list) or len(roots) != 1 or not isinstance(roots[0], dict):
+                raise ValueError("Oracle listing shape changed")
+            result = roots[0]
+            batch = result.get("requisitionList")
+            total = result.get("TotalJobsCount")
+            if (not isinstance(batch, list) or not isinstance(total, int) or total < 0
+                    or total > 30000 or result.get("Offset") != offset):
+                raise ValueError("Oracle listing count or pagination changed")
+            if expected is None:
+                expected = total
+            else:
+                expected = max(expected, total)
+            for item in batch:
+                if not isinstance(item, dict):
+                    raise ValueError("Oracle requisition shape changed")
+                job_id = str(item.get("Id") or "")
+                if job_id in seen:
+                    continue
+                seen.add(job_id)
+                places = [(item.get("PrimaryLocation") or "",
+                           item.get("PrimaryLocationCountry") or "")]
+                secondary = item.get("secondaryLocations") or []
+                if not isinstance(secondary, list):
+                    raise ValueError("Oracle secondary locations shape changed")
+                places += [(place.get("Name") or "", place.get("CountryCode") or "")
+                           for place in secondary if isinstance(place, dict)]
+                for location, country in dict.fromkeys(places):
+                    if country == "US" and "United States" not in location:
+                        location = "; ".join(filter(None, (location, "United States")))
+                    jobs.append(_job(job_id,
+                        f"https://{host}/hcmUI/CandidateExperience/en/sites/{site}/job/{job_id}",
+                        item.get("Title") or "", location,
+                        published=item.get("PostedDate"),
+                        date_field="PostedDate" if item.get("PostedDate") else None))
+            offset += len(batch)
+            if offset >= expected:
+                gap = expected - len(seen)
+                if gap == 1:
+                    # Some Oracle boards include one inaccessible requisition in
+                    # TotalJobsCount. Reconcile a second sort before treating the
+                    # publicly visible set as complete.
+                    alternate = set()
+                    alt_offset = 0
+                    for _ in range(300):
+                        alt_finder = (f"findReqs;siteNumber={site},limit=200,offset={alt_offset},"
+                                      "sortBy=POSTING_DATES_DESC")
+                        alt = _read(f"{base}?onlyData=true&finder={alt_finder}&expand=requisitionList")
+                        alt_roots = alt.get("items") if isinstance(alt, dict) else None
+                        if not isinstance(alt_roots, list) or len(alt_roots) != 1:
+                            raise ValueError("Oracle reconciliation shape changed")
+                        alt_batch = alt_roots[0].get("requisitionList")
+                        if not isinstance(alt_batch, list) or alt_roots[0].get("Offset") != alt_offset:
+                            raise ValueError("Oracle reconciliation pagination changed")
+                        alternate.update(str(item["Id"]) for item in alt_batch)
+                        alt_offset += len(alt_batch)
+                        if alt_offset >= expected or not alt_batch:
+                            break
+                    if alternate == seen and alt_offset >= expected:
+                        return JobList(jobs, source_count_gap=gap)
+                return JobList(jobs, complete=gap <= 0, source_count_gap=max(0, gap))
+            if not batch:
+                raise ValueError("Oracle pagination stopped early")
+        raise ValueError("Oracle page cap reached")
     if provider == "greenhouse":
         # Listing fields are enough for title categories and dates. Avoid the
         # large per-job description payload (some boards exceed 20 MB).

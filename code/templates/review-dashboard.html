@@ -32,7 +32,7 @@ details{border-top:1px solid #e5eaf0;padding-top:9px}summary{cursor:pointer;colo
 <div class="stat"><strong>{{pending}}</strong><span>尚未完成</span></div>
 <div class="stat"><strong>{{needs_user}}</strong><span>AI 后需你提供线索</span></div>
 </section>
-<p class="note">未完成：ATS 路线 {{route_pending}} 家、招聘板归属 {{board_pending}} 家、adapter {{adapter_pending}} 家。“待 AI 处理”表示脚本已停在该步骤；只有 AI 实际调查仍失败后，才会标为“需要你提供线索”。原始目录没有公司官网字段值时会如实显示；另列 Simplify 公司资料中提取的官网及当前候选官网。</p>
+<p class="note">未完成：ATS 路线 {{route_pending}} 家、招聘板归属 {{board_pending}} 家、adapter {{adapter_pending}} 家。“待 AI 处理”表示脚本已停在该步骤，下一步由 AI 继续；只有 AI 确认缺少你能提供的公司或招聘板信息，才会标为“需要你提供线索”。Adapter 开发或 API 故障由 AI 处理。原始目录没有公司官网字段值时会如实显示；另列 Simplify 公司资料中提取的官网及当前候选官网。</p>
 <section class="toolbar" aria-label="筛选公司"><input id="search" type="search" placeholder="搜索公司、ATS 或失败原因">
 <select id="stage"><option value="">全部阶段</option><option value="route_pending">ATS 路线</option><option value="board_pending">招聘板归属</option><option value="adapter_pending">Adapter</option><option value="scan_pending">等待扫描</option></select>
 <select id="review"><option value="">全部核查状态</option><option value="ai_pending">待 AI 处理</option><option value="ai_in_progress">AI 核查中</option><option value="needs_user">需要你提供线索</option><option value="script_pending">等待脚本</option></select></section>

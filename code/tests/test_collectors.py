@@ -19,6 +19,44 @@ from search_job.scan import scan_registered
 
 
 class CollectorTest(unittest.TestCase):
+    def test_oracle_listing_paginates_and_preserves_location_and_date(self):
+        first = {"items": [{"Offset": 0, "TotalJobsCount": 2, "requisitionList": [
+            {"Id": "157648", "Title": "Software Engineer", "PostedDate": "2026-09-25",
+             "PrimaryLocation": "Phoenix, AZ", "PrimaryLocationCountry": "US",
+             "secondaryLocations": [{"Name": "Chicago, IL", "CountryCode": "US"}]}]}]}
+        second = {"items": [{"Offset": 1, "TotalJobsCount": 2, "requisitionList": [
+            {"Id": "157649", "Title": "Engineer", "PostedDate": "2026-09-24",
+             "PrimaryLocation": "Dublin, Ireland", "PrimaryLocationCountry": "IE"}]}]}
+        with patch("search_job.collectors._read", side_effect=[first, second]) as read:
+            jobs = collect("oracle", "ibqbjb.fa.ocs.oraclecloud.com|Honeywell")
+        self.assertTrue(jobs.complete)
+        self.assertEqual(len(jobs), 3)
+        self.assertEqual(jobs[0]["id"], "157648")
+        self.assertEqual(jobs[0]["date_field"], "PostedDate")
+        self.assertEqual(jobs[0]["location"], "Phoenix, AZ; United States")
+        self.assertEqual(jobs[1]["location"], "Chicago, IL; United States")
+        self.assertEqual(jobs[2]["location"], "Dublin, Ireland")
+        self.assertIn("offset=1", read.call_args_list[1].args[0])
+
+    def test_oracle_one_hidden_requisition_needs_matching_second_sort(self):
+        def page(offset, ids):
+            return {"items": [{"Offset": offset, "TotalJobsCount": 3,
+                "requisitionList": [{"Id": id_, "Title": "Engineer", "PostedDate": "2026-09-25",
+                                     "PrimaryLocation": "Chicago, IL", "PrimaryLocationCountry": "US"}
+                                    for id_ in ids]}]}
+        with patch("search_job.collectors._read", side_effect=[
+                page(0, ["1", "2"]), page(2, ["2"]),
+                page(0, ["1", "2"]), page(2, ["2"])]):
+            jobs = collect("oracle", "tenant.fa.ocs.oraclecloud.com|Careers")
+        self.assertTrue(jobs.complete)
+        self.assertEqual(jobs.source_count_gap, 1)
+        self.assertEqual({job["id"] for job in jobs}, {"1", "2"})
+        with patch("search_job.collectors._read", side_effect=[
+                page(0, ["1", "2"]), page(2, ["2"]),
+                page(0, ["1", "3"]), page(2, ["3"])]):
+            mismatched = collect("oracle", "tenant.fa.ocs.oraclecloud.com|Careers")
+        self.assertFalse(mismatched.complete)
+
     def test_stage_one_database_upgrade_preserves_routes(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "old.sqlite3"
@@ -37,7 +75,7 @@ class CollectorTest(unittest.TestCase):
                 self.assertIn("brand_filter", {row[1] for row in db.execute("PRAGMA table_info(company_boards)")})
                 self.assertEqual(db.execute("SELECT scan_cohort FROM companies").fetchone()[0], "new")
                 self.assertEqual(db.execute("SELECT support_status FROM provider_capabilities WHERE provider='workday'").fetchone()[0], "active")
-                self.assertEqual(db.execute("SELECT support_status FROM provider_capabilities WHERE provider='oracle'").fetchone()[0], "planned")
+                self.assertEqual(db.execute("SELECT support_status FROM provider_capabilities WHERE provider='oracle'").fetchone()[0], "active")
 
     def test_greenhouse_and_ashby_listing_dates(self):
         greenhouse = {"jobs": [{"id": 123, "absolute_url": "https://job-boards.greenhouse.io/acme/jobs/123",
