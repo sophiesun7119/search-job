@@ -9,6 +9,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from search_job.core import classify, classify_level, connect, record_scan, upsert_board, upsert_company, upsert_opening
 from search_job.render import render_json, render_markdown
+from search_job.location import is_us_location
 
 
 class StageOneTest(unittest.TestCase):
@@ -28,7 +29,8 @@ class StageOneTest(unittest.TestCase):
                     provider_job_id=job_id,
                     canonical_apply_url=f"https://job-boards.greenhouse.io/a/jobs/{job_id}",
                     title=title, first_seen_at="2026-09-25T10:00:00+00:00",
-                    last_seen_at="2026-09-25T10:00:00+00:00", open_state="open")
+                    last_seen_at="2026-09-25T10:00:00+00:00", open_state="open",
+                    variants=[("Chicago, IL", f"https://job-boards.greenhouse.io/a/jobs/{job_id}")])
         data.update(extra)
         return upsert_opening(self.db, **data)
 
@@ -55,7 +57,8 @@ class StageOneTest(unittest.TestCase):
                          "first_published")
         self.add(source_date_field="first_published",
                  source_date_value="2026-09-23T10:00:00+00:00",
-                 published_at="2026-09-23T10:00:00+00:00")
+                 published_at="2026-09-23T10:00:00+00:00",
+                 variants=[("New York", "https://example.com/apply/ny")])
         source_value = self.db.execute("SELECT published_at,source_date_value FROM openings WHERE opening_key=?", (key,)).fetchone()
         self.assertEqual(source_value[0], "2026-09-23T10:00:00+00:00")
         self.assertEqual(source_value[1], "2026-09-23T10:00:00+00:00")
@@ -136,6 +139,25 @@ class StageOneTest(unittest.TestCase):
         self.assertIn("0d †", md)
         self.assertIn("0d 🔎", md)
         self.assertIn("90d", md)
+
+    def test_us_readme_filter_keeps_source_jobs_in_json(self):
+        self.add(job_id="us", variants=[("Remote - US", "https://example.com/us")])
+        self.add(job_id="ireland", variants=[("Remote - Ireland", "https://example.com/ireland")])
+        self.add(job_id="spain", variants=[("Remote - Spain", "https://example.com/spain")])
+        self.add(job_id="unknown", variants=[("Remote", "https://example.com/unknown")])
+        md = render_markdown(self.db, self.as_of)
+        self.assertIn("Remote - US", md)
+        self.assertNotIn("Remote - Ireland", md)
+        self.assertNotIn("Remote - Spain", md)
+        self.assertNotIn("https://example.com/unknown", md)
+        self.assertEqual(len(json.loads(render_json(self.db, self.as_of))["openings"]), 4)
+        self.assertTrue(is_us_location("San Francisco, CA | New York City, NY"))
+        self.assertTrue(is_us_location("Remote (Any State)"))
+        self.assertFalse(is_us_location("Remote - Canada"))
+        self.assertFalse(is_us_location("Hybrid"))
+        self.assertFalse(is_us_location("Perth, WA, Australia"))
+        self.assertFalse(is_us_location("Madrid, MD, Spain"))
+        self.assertTrue(is_us_location("London, UK; San Francisco, CA"))
 
 
 if __name__ == "__main__":

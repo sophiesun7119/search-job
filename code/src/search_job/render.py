@@ -7,6 +7,7 @@ import sqlite3
 from datetime import datetime
 from pathlib import Path
 from .core import CATEGORY_ORDER, parse_time
+from .location import is_us_location
 
 SCHEMA_VERSION = 1
 INTRO_TEMPLATE = Path(__file__).resolve().parents[2] / "templates" / "README-intro.md"
@@ -20,7 +21,7 @@ def _url(value: str) -> str:
     return html.escape(value, quote=True).replace("(", "%28").replace(")", "%29")
 
 
-def _rows(db: sqlite3.Connection) -> list[dict]:
+def _rows(db: sqlite3.Connection, *, us_only: bool = False) -> list[dict]:
     result = []
     for row in db.execute("""SELECT o.*, c.name AS company_name, c.official_url
                                FROM openings o JOIN companies c ON c.company_key=o.company_key"""):
@@ -28,6 +29,10 @@ def _rows(db: sqlite3.Connection) -> list[dict]:
         item["variants"] = [dict(v) for v in db.execute(
             "SELECT location, apply_url FROM opening_variants WHERE opening_key=? ORDER BY location,apply_url",
             (row["opening_key"],))]
+        if us_only:
+            item["variants"] = [v for v in item["variants"] if is_us_location(v["location"])]
+            if not item["variants"]:
+                continue
         item["tags"] = [dict(t) for t in db.execute(
             "SELECT tag,rule_version,evidence FROM opening_tags WHERE opening_key=? ORDER BY tag",
             (row["opening_key"],))]
@@ -71,7 +76,7 @@ def _table(rows: list[dict], as_of: datetime, *, inactive: bool = False) -> str:
 
 
 def render_markdown(db: sqlite3.Connection, as_of: datetime, *, historical_preview: bool = False) -> str:
-    rows = _rows(db)
+    rows = _rows(db, us_only=not historical_preview)
     companies_total = db.execute("SELECT COUNT(*) FROM companies").fetchone()[0]
     companies_with_rows = len({row["company_key"] for row in rows})
     categories = {key: [row for row in rows if any(tag["tag"] == key for tag in row["tags"])]
@@ -85,8 +90,10 @@ def render_markdown(db: sqlite3.Connection, as_of: datetime, *, historical_previ
     else:
         status = ""
     lines = intro.replace("{{SNAPSHOT_STATUS}}\n\n", status + "\n\n" if status else "").rstrip().splitlines() + [""]
-    lines += [f"Generated: {as_of.isoformat()}.", "",
-              "Age is shown in days. 🔎 means age since **first discovery**, not ATS publication. † means the ATS supplied a date without an exact time. `0d` is within 24 hours only for exact timestamps; for date-only sources it means the same calendar date.",
+    lines += [f"Generated: {as_of.isoformat()}.", ""]
+    if not historical_preview:
+        lines += ["Only postings with a confirmed US location are shown here. Jobs with non-US or unclear locations remain in the database and JSON export.", ""]
+    lines += ["Age is shown in days. 🔎 means age since **first discovery**, not ATS publication. † means the ATS supplied a date without an exact time. `0d` is within 24 hours only for exact timestamps; for date-only sources it means the same calendar date.",
               "", "## Categories", ""]
     for key, label in CATEGORY_ORDER:
         active = sum(row["open_state"] == "open" for row in categories[key])

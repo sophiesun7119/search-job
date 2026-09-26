@@ -1,6 +1,6 @@
 # Search Job
 
-Search Job finds public job openings and organizes them by role. It gathers company career and ATS listings into a local job index, then publishes clear category tables here.
+Search Job finds public job openings and organizes them by role. It gathers company career and ATS listings into a local job index, then publishes US-located roles in the category tables here.
 
 {{SNAPSHOT_STATUS}}
 

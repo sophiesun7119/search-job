@@ -19,4 +19,6 @@ The executable schema is [`src/search_job/schema.sql`](src/search_job/schema.sql
 
 The broad Senior/unspecified, Junior/New Grad, Staff/Principal, Product Manager, Engineering Manager and other sections in the root README come from `opening_tags` joined to `openings`. They are **not separate SQLite tables**. The title rules live in [`src/search_job/core.py`](src/search_job/core.py), and the renderer lives in [`src/search_job/render.py`](src/search_job/render.py). All currently listed jobs are stored, including those older than a three-day lookback; `--lookback-days` affects the scan report's recent count only.
 
+The README also checks `opening_variants.location` using [`src/search_job/location.py`](src/search_job/location.py) and hides non-US or unclear locations. The DB and JSON retain their source locations and jobs. The location check does not decide work authorization.
+
 To inspect a local copy without modifying it, run `sqlite3 -readonly var/search-job.sqlite3 '.schema'`. For row counts, use `SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;` and `SELECT COUNT(*) FROM openings;` in a read-only SQLite session.

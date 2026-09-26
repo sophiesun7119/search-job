@@ -88,6 +88,8 @@ Search Job's **local SQLite is the source of truth**. Rendering queries it at a 
 
 The same DB produces a **versioned JSON export** with stable opening keys, variants, tags, date provenance and open state. Unresolved route, adapter and board failures stay recorded for review. Generated README rows are changed by updating rules/data and rerendering, not by hand-editing output. Local SQLite, credentials and run logs never enter Git. Development changes are reviewed and pushed to `origin/dev`; `main` changes only on explicit merge instruction. A local scheduled refresh is a later stage; GitHub Actions and unattended AI work are not assumed.
 
+The public README shows only jobs whose ATS location clearly includes the United States. Non-US and unclear locations remain in SQLite and the full JSON export. This location rule concerns where the role may be worked; it does not assert citizenship, visa sponsorship or work authorization.
+
 ## Contributing to the rules
 
 A useful proposal names example titles that should match, example titles that should not, the intended category or badge, and whether the change should affect existing saved postings. Add focused fixtures for the new boundary before regenerating the README. [STAGE.md](STAGE.md) identifies which parts of this target flow have been verified so far.

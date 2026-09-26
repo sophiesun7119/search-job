@@ -21,14 +21,16 @@ def _brand_match(job: dict, brand: str | None) -> bool:
 
 
 def scan_registered(db: sqlite3.Connection, *, provider: str | None = None,
-                    limit: int | None = None, lookback_days: int = 3) -> dict:
+                    company_key: str | None = None, limit: int | None = None,
+                    lookback_days: int = 3) -> dict:
     if lookback_days < 0 or limit is not None and limit < 1:
         raise ValueError("Invalid scan limit")
     rows = db.execute("""SELECT cb.company_key, cb.brand_filter, cb.evidence_url,
       b.board_key,b.provider,b.board_token FROM company_boards cb
       JOIN boards b ON b.board_key=cb.board_key
       WHERE cb.status!='pending_identity' AND (? IS NULL OR b.provider=?)
-      ORDER BY b.provider,cb.company_key""", (provider, provider)).fetchall()
+        AND (? IS NULL OR cb.company_key=?)
+      ORDER BY b.provider,cb.company_key""", (provider, provider, company_key, company_key)).fetchall()
     if limit:
         rows = rows[:limit]
     report = {"candidates": db.execute("SELECT COUNT(*) FROM companies").fetchone()[0],

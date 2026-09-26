@@ -1,6 +1,6 @@
 # Search Job project guidance
 
-The data model, renderer, JSON export, route-seed import and seven collectors for the existing company pool have passed a local live run. The public root README is still a labeled historical preview; generated live README/JSON files are local until reviewed. Do not claim that new-company intake, official ownership audits for every route, or schedules are implemented. Read `code/STAGE.md` for the current verified scope.
+The data model, renderer, JSON export, route-seed import and seven collectors for the existing company pool have passed a local live run. The public root README is a generated, US-location-filtered view of the saved local live index; the full JSON export remains local. Do not claim that new-company intake, official ownership audits for every route, or schedules are implemented. Read `code/STAGE.md` for the current verified scope.
 
 Search Job finds and publishes public job openings. Keep credentials and machine-specific paths out of the repository. Official company and ATS evidence establish board routes. Scripts handle routine recognition and scanning; an actual AI task handles requested discovery, unresolved route/board evidence, or adapter development. A script-created work item does not mean AI has completed it.
 

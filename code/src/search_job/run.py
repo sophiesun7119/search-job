@@ -18,6 +18,7 @@ def main() -> None:
     parser.add_argument("--seed", type=Path, help="Portable JSON company/board route seed")
     parser.add_argument("--scan", action="store_true", help="Read live ATS boards")
     parser.add_argument("--provider", help="Limit scan to one provider")
+    parser.add_argument("--company", help="Limit scan to one saved company domain")
     parser.add_argument("--limit", type=int, help="Maximum company routes in this run")
     parser.add_argument("--lookback-days", type=int, default=3, help="Recent count window; all listed jobs still enter DB")
     parser.add_argument("--markdown", type=Path)
@@ -29,7 +30,7 @@ def main() -> None:
         if args.seed:
             print(json.dumps({"import": import_seed(db, args.seed)}, ensure_ascii=False))
         if args.scan:
-            print(json.dumps({"scan": scan_registered(db, provider=args.provider,
+            print(json.dumps({"scan": scan_registered(db, provider=args.provider, company_key=args.company,
                 limit=args.limit, lookback_days=args.lookback_days)}, ensure_ascii=False))
         if args.markdown:
             args.markdown.parent.mkdir(parents=True, exist_ok=True)
