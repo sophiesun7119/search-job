@@ -8,9 +8,12 @@ from __future__ import annotations
 
 import json
 import re
+import socket
 import ssl
 import html
+import urllib.error
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from urllib.parse import quote, urlsplit
 
@@ -21,8 +24,9 @@ except ImportError:  # system trust store remains usable
 
 ACTIVE_COLLECTORS = frozenset({"greenhouse", "ashby", "smartrecruiters", "gem", "oracle",
                                "rippling", "vizirecruiter", "eightfold", "lever",
-                               "workday", "workable", "jazzhr"})
-PLANNED_COLLECTORS = frozenset({"icims", "careerpuck"})
+                               "workday", "workable", "jazzhr", "careerpuck", "icims", "pinpoint",
+                               "bamboohr"})
+PLANNED_COLLECTORS = frozenset()
 
 
 class JobList(list):
@@ -33,16 +37,28 @@ class JobList(list):
         self.source_count_gap = source_count_gap
 
 
-def _read(url: str, payload: dict | None = None) -> dict | list | str:
+def _read(url: str, payload: dict | None = None, *, host_header: str | None = None) -> dict | list | str:
     headers = {"User-Agent": "SearchJob/1.0", "Accept": "application/json"}
+    if host_header:
+        headers["Host"] = host_header
     body = None
     if payload is not None:
         body = json.dumps(payload).encode()
         headers["Content-Type"] = "application/json"
     request = urllib.request.Request(url, data=body, headers=headers)
     context = ssl.create_default_context(cafile=certifi.where()) if certifi else ssl.create_default_context()
-    with urllib.request.urlopen(request, timeout=25, context=context) as response:
-        raw = response.read(20_000_000)
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(request, timeout=25, context=context) as response:
+                raw = response.read(20_000_000)
+            break
+        except urllib.error.HTTPError as error:
+            if error.code not in {429, 502, 503, 504} or attempt == 2:
+                raise
+        except (urllib.error.URLError, ConnectionResetError, TimeoutError) as error:
+            reason = getattr(error, "reason", error)
+            if not isinstance(reason, (ConnectionResetError, TimeoutError, socket.gaierror)) or attempt == 2:
+                raise
     if len(raw) >= 20_000_000:
         raise ValueError(f"Response too large: {url}")
     if "rippling.com" in (urlsplit(url).hostname or "") and "/jobs" in urlsplit(url).path:
@@ -53,8 +69,18 @@ def _read(url: str, payload: dict | None = None) -> dict | list | str:
 def _read_html(url: str) -> str:
     request = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "text/html"})
     context = ssl.create_default_context(cafile=certifi.where()) if certifi else ssl.create_default_context()
-    with urllib.request.urlopen(request, timeout=25, context=context) as response:
-        raw = response.read(5_000_000)
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(request, timeout=20, context=context) as response:
+                raw = response.read(5_000_000)
+            break
+        except urllib.error.HTTPError as error:
+            if error.code not in {429, 502, 503, 504} or attempt == 2:
+                raise
+        except (urllib.error.URLError, ConnectionResetError, TimeoutError) as error:
+            reason = getattr(error, "reason", error)
+            if not isinstance(reason, (ConnectionResetError, TimeoutError, socket.gaierror)) or attempt == 2:
+                raise
     if len(raw) >= 5_000_000:
         raise ValueError("HTML board response too large")
     return raw.decode("utf-8", "replace")
@@ -70,8 +96,206 @@ def _job(job_id: object, url: str, title: str, location: str = "", *,
             "brands": brands or []}
 
 
+def _icims_classic(host: str, first: str) -> list[dict]:
+    pages = [first]
+    page_numbers = [int(n) for n in re.findall(r"jobs/search\?pr=(\d+)", html.unescape(first))]
+    last_page = max(page_numbers, default=0)
+    if last_page >= 300:
+        raise ValueError("iCIMS page cap reached")
+    for page in range(1, last_page + 1):
+        pages.append(_read_html(f"https://{host}/jobs/search?pr={page}&in_iframe=1"))
+    cards_to_read = []
+    seen = set()
+    for body in pages:
+        cards = re.findall(r'<li class="iCIMS_JobCardItem">(.*?)</li>', body, re.S)
+        if not cards and "iCIMS_JobsTable" not in body:
+            raise ValueError("iCIMS listing markup changed")
+        for card in cards:
+            link = re.search(r'<a href="(https://[^"]+/jobs/(\d+)/[^\"]+/job(?:\?[^"]*)?)"[^>]*>\s*'
+                             r'.*?<h3[^>]*>(.*?)</h3>', card, re.S)
+            if not link:
+                raise ValueError("iCIMS job card shape changed")
+            url, job_id, raw_title = link.groups()
+            if urlsplit(url).hostname != host:
+                raise ValueError("iCIMS returned an unexpected job host")
+            if job_id in seen:
+                continue
+            seen.add(job_id)
+            fields = {}
+            for label, value in re.findall(r'<div class="iCIMS_JobHeaderTag">\s*<dt[^>]*>(.*?)</dt>\s*'
+                                          r'<dd[^>]*>(.*?)</dd>', card, re.S):
+                clean = lambda part: html.unescape(re.sub(r'<[^>]+>', ' ', part)).strip()
+                fields[clean(label).lower()] = clean(value)
+            location = fields.get("job location") or fields.get("location : location") or ""
+            title = html.unescape(re.sub(r'<[^>]+>', ' ', raw_title)).strip()
+            cards_to_read.append((job_id, url, title, location))
+    def detail_date(url: str) -> str | None:
+        # JSON-LD on the official detail carries the source date with day precision.
+        detail = _read_html(url)
+        json_ld = re.search(r'<script type="application/ld\+json">(.*?)</script>', detail, re.S)
+        if json_ld:
+            data = json.loads(json_ld.group(1))
+            if isinstance(data, dict):
+                return data.get("datePosted")
+        return None
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        dates = list(pool.map(detail_date, (url for _, url, _, _ in cards_to_read)))
+    return [_job(job_id, url, title, location, published=date,
+                 date_field="datePosted" if date else None)
+            for (job_id, url, title, location), date in zip(cards_to_read, dates)]
+
+
+def _icims_jibe(official_url: str, company_domain: str | None) -> list[dict]:
+    parts = urlsplit(official_url)
+    host = (parts.hostname or "").lower()
+    if (parts.scheme != "https" or not company_domain or
+            not (host == company_domain or host.endswith("." + company_domain))):
+        raise ValueError("iCIMS redirect is outside the verified company domain")
+    jobs = []
+    expected = None
+    seen = set()
+    for page in range(1, 301):
+        data = _read(f"https://{host}/api/jobs?limit=99&page={page}")
+        batch = data.get("jobs") if isinstance(data, dict) else None
+        total = data.get("totalCount") if isinstance(data, dict) else None
+        if not isinstance(batch, list) or not isinstance(total, int) or total < 0:
+            raise ValueError("iCIMS/Jibe listing shape changed")
+        if expected is None:
+            expected = total
+        for wrapper in batch:
+            item = wrapper.get("data") if isinstance(wrapper, dict) else None
+            if not isinstance(item, dict) or item.get("ats_code") != "icims":
+                raise ValueError("iCIMS/Jibe job shape changed")
+            job_id = str(item.get("slug") or "")
+            if job_id in seen:
+                raise ValueError("iCIMS/Jibe pagination repeated a job")
+            seen.add(job_id)
+            location = item.get("full_location") or item.get("location_name") or ""
+            country = item.get("country") or ""
+            if country and country.lower() not in location.lower():
+                location = "; ".join(filter(None, (location, country)))
+            canonical = (item.get("meta_data") or {}).get("canonical_url") or ""
+            url = canonical if urlsplit(canonical).hostname == host else f"https://{host}/jobs/{job_id}"
+            posted = item.get("posted_date")
+            jobs.append(_job(job_id, url, item.get("title") or "", location,
+                             published=posted, date_field="posted_date" if posted else None))
+        if len(jobs) >= expected:
+            if len(jobs) != expected:
+                raise ValueError("iCIMS/Jibe total changed during scan")
+            return jobs
+        if not batch:
+            raise ValueError("iCIMS/Jibe pagination stopped early")
+    raise ValueError("iCIMS/Jibe page cap reached")
+
+
+def _pinpoint(host: str, company_domain: str | None) -> list[dict]:
+    data = _read(f"https://{host}/postings.json")
+    rows = data.get("data") if isinstance(data, dict) else None
+    if not isinstance(rows, list):
+        raise ValueError("Pinpoint posting feed shape changed")
+    def parse(item: dict) -> dict:
+        if not isinstance(item, dict):
+            raise ValueError("Pinpoint posting shape changed")
+        url = item.get("url") or ""
+        target_host = (urlsplit(url).hostname or "").lower()
+        if not (target_host == host or (company_domain and
+                (target_host == company_domain or target_host.endswith("." + company_domain)))):
+            raise ValueError("Pinpoint posting URL is outside the verified board/company domain")
+        detail = _read_html(url)
+        json_ld = re.search(r'<script type="application/ld\+json">(.*?)</script>', detail, re.S)
+        posted = None
+        if json_ld:
+            source = json.loads(json_ld.group(1))
+            if isinstance(source, dict):
+                posted = source.get("datePosted")
+        location = item.get("location") or {}
+        if not isinstance(location, dict):
+            raise ValueError("Pinpoint location shape changed")
+        place = location.get("name") or ""
+        country = location.get("country") or ""
+        if country and country.lower() not in place.lower():
+            place = "; ".join(filter(None, (place, country)))
+        return _job(item.get("id"), url, item.get("title") or "", place,
+                    published=posted, date_field="datePosted" if posted else None)
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        return list(pool.map(parse, rows))
+
+
+def _bamboohr(host: str) -> list[dict]:
+    listing = _read(f"https://{host}/careers/list")
+    rows = listing.get("result") if isinstance(listing, dict) else None
+    total = (listing.get("meta") or {}).get("totalCount") if isinstance(listing, dict) else None
+    if not isinstance(rows, list) or not isinstance(total, int) or total != len(rows):
+        raise ValueError("BambooHR listing count or shape changed")
+
+    def parse(item: dict) -> dict:
+        if not isinstance(item, dict) or not re.fullmatch(r"\d+", str(item.get("id") or "")):
+            raise ValueError("BambooHR job identity changed")
+        job_id = str(item["id"])
+        url = f"https://{host}/careers/{job_id}"
+        detail = _read(f"{url}/detail")
+        opening = (detail.get("result") or {}).get("jobOpening") if isinstance(detail, dict) else None
+        if not isinstance(opening, dict) or opening.get("jobOpeningStatus") != "Open":
+            raise ValueError("BambooHR detail is missing an open job")
+        location = opening.get("location") or {}
+        if not isinstance(location, dict):
+            raise ValueError("BambooHR location shape changed")
+        place = ", ".join(str(location[field]).strip() for field in
+                          ("city", "state", "addressCountry") if location.get(field))
+        posted = opening.get("datePosted")
+        return _job(job_id, url, item.get("jobOpeningName") or "", place,
+                    published=posted, date_field="datePosted" if posted else None)
+
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        jobs = list(pool.map(parse, rows))
+    if len({job["id"] for job in jobs}) != total:
+        raise ValueError("BambooHR listing contains duplicate job IDs")
+    return jobs
+
+
 def collect(provider: str, token: str, domain: str | None = None) -> list[dict]:
     safe = quote(token, safe="")
+    if provider == "bamboohr":
+        if not re.fullmatch(r"[a-z0-9-]+\.bamboohr\.com", token):
+            raise ValueError("Invalid BambooHR board host")
+        return _bamboohr(token)
+    if provider == "pinpoint":
+        if not re.fullmatch(r"[a-z0-9-]+\.pinpointhq\.com", token):
+            raise ValueError("Invalid Pinpoint board host")
+        return _pinpoint(token, domain)
+    if provider == "icims":
+        if not re.fullmatch(r"[a-z0-9-]+(?:\.[a-z0-9-]+)+", token):
+            raise ValueError("Invalid iCIMS board host")
+        if not token.endswith(".icims.com"):
+            return _icims_jibe(f"https://{token}/jobs", domain)
+        first = _read_html(f"https://{token}/jobs/search?ss=1&in_iframe=1")
+        redirect = re.search(r"window\.top\.location\.href\s*=\s*'([^']+)'", first)
+        if redirect:
+            target = redirect.group(1).replace("\\/", "/")
+            return _icims_jibe(target, domain)
+        return _icims_classic(token, first)
+    if provider == "careerpuck":
+        if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", token):
+            raise ValueError("Invalid CareerPuck board token")
+        data = _read(f"https://api.careerpuck.com/v1/public/job-boards/{safe}")
+        if not isinstance(data, dict) or data.get("permalink") != token or not isinstance(data.get("jobs"), list):
+            raise ValueError("CareerPuck board shape changed")
+        jobs = []
+        for item in data["jobs"]:
+            if not isinstance(item, dict):
+                raise ValueError("CareerPuck job shape changed")
+            if item.get("status") != "public":
+                continue
+            job_id = item.get("atsSourceId") or item.get("permalink")
+            url = item.get("publicUrl") or ""
+            if not (url.startswith(f"https://app.careerpuck.com/job-board/{token}/job/")
+                    and job_id and str(job_id) == url.rstrip("/").split("/")[-1]):
+                raise ValueError("CareerPuck returned an unexpected job route")
+            posted = item.get("postedAt")
+            jobs.append(_job(job_id, url, (item.get("title") or "").strip(),
+                             item.get("location") or "", published=posted,
+                             date_field="postedAt" if posted else None))
+        return jobs
     if provider == "oracle":
         parts = token.split("|")
         if len(parts) != 2:
@@ -215,18 +439,24 @@ def collect(provider: str, token: str, domain: str | None = None) -> list[dict]:
         if len(parts) != 3:
             raise ValueError("Invalid Workday board token")
         host, tenant, site = parts
-        if not (re.fullmatch(r"[a-z0-9-]+\.wd\d+\.myworkdayjobs\.com", host) or
+        if not (re.fullmatch(r"[a-z0-9_-]+\.wd\d+\.myworkdayjobs\.com", host) or
                 re.fullmatch(r"wd\d+\.myworkdaysite\.com", host)):
             raise ValueError("Invalid Workday host")
         if not all(re.fullmatch(r"[A-Za-z0-9_-]+", value) for value in (tenant, site)):
             raise ValueError("Invalid Workday tenant or site")
-        base = f"https://{host}/wday/cxs/{quote(tenant)}/{quote(site)}"
+        # Some Workday tenants publish an underscore hostname whose wildcard TLS
+        # certificate Python rejects. Use the certificate-valid hyphen alias for
+        # transport, while routing HTTP to the verified official tenant.
+        transport_host = host.replace("_", "-")
+        host_header = host if transport_host != host else None
+        base = f"https://{transport_host}/wday/cxs/{quote(tenant)}/{quote(site)}"
         jobs = []
         offset = 0
         total = None
         for page in range(300):
             listing = _read(base + "/jobs", {"appliedFacets": {}, "limit": 20,
-                                             "offset": offset, "searchText": ""})
+                                             "offset": offset, "searchText": ""},
+                            host_header=host_header)
             postings = listing.get("jobPostings") if isinstance(listing, dict) else None
             if not isinstance(postings, list):
                 raise ValueError("Workday listing shape changed")
@@ -247,7 +477,7 @@ def collect(provider: str, token: str, domain: str | None = None) -> list[dict]:
                 location = item.get("locationsText") or ""
                 published = None
                 if recent:
-                    detail = _read(base + path)
+                    detail = _read(base + path, host_header=host_header)
                     info = detail.get("jobPostingInfo") if isinstance(detail, dict) else None
                     if not isinstance(info, dict):
                         raise ValueError("Workday job detail shape changed")
@@ -400,10 +630,11 @@ def collect(provider: str, token: str, domain: str | None = None) -> list[dict]:
                 return jobs
         raise ValueError("Rippling page cap reached")
     if provider == "eightfold":
-        if token != "searchcareers.caci.com" and not token.endswith(".eightfold.ai"):
-            raise ValueError("Unverified Eightfold host")
         if not domain or not re.fullmatch(r"[a-z0-9.-]+", domain):
             raise ValueError("Eightfold needs the verified company domain")
+        if (token != "searchcareers.caci.com" and not token.endswith(".eightfold.ai")
+                and token != f"careers.{domain}"):
+            raise ValueError("Unverified Eightfold host")
         encoded_domain = quote(domain, safe="")
         jobs = []
         expected = None
@@ -424,7 +655,8 @@ def collect(provider: str, token: str, domain: str | None = None) -> list[dict]:
                 seen_ids.add(str(item["id"]))
                 date = datetime.fromtimestamp(int(item["postedTs"]), timezone.utc).date().isoformat() if item.get("postedTs") else None
                 url = f"https://{token}/careers/job/{item['id']}?domain={encoded_domain}&hl=en"
-                jobs.append(_job(item["id"], url, item["name"], "; ".join(item.get("locations") or []),
+                jobs.append(_job(item["id"], url, item["name"],
+                                 "; ".join(item.get("standardizedLocations") or item.get("locations") or []),
                                  published=date, date_field="postedTs" if date else None))
             if (page + 1) * 10 >= expected or not positions:
                 return JobList(jobs, complete=len(jobs) >= expected)

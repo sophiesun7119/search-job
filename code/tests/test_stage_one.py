@@ -167,6 +167,9 @@ class StageOneTest(unittest.TestCase):
         self.assertFalse(is_us_location("Hybrid"))
         self.assertFalse(is_us_location("Perth, WA, Australia"))
         self.assertFalse(is_us_location("Madrid, MD, Spain"))
+        self.assertFalse(is_us_location("Bengaluru, KA, IN"))
+        self.assertFalse(is_us_location("Toronto, ON, CA"))
+        self.assertTrue(is_us_location("Billerica, MA, US"))
         self.assertTrue(is_us_location("London, UK; San Francisco, CA"))
 
 

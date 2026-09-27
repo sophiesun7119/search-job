@@ -1,6 +1,6 @@
 # Search Job project guidance
 
-The data model, renderer, JSON export, route-seed and bounded Simplify lead import, and twelve collectors have passed local tests. The public root README is a generated past-72-hour, US-location-filtered view of the saved local live index; the full JSON export remains local. Companies have `new`/`old` scan cohorts with 72-hour/24-hour processing windows. Do not claim that every imported lead has an officially verified route or that scheduling is implemented. Read `code/STAGE.md` for the current verified scope.
+The data model, renderer, JSON export, route-seed and bounded Simplify lead import, and sixteen collectors have passed local tests. The public root README is a generated past-72-hour, US-location-filtered view of the saved local live index; the full JSON export remains local. Companies have `new`/`old` scan cohorts with 72-hour/24-hour processing windows. Do not claim that every imported lead has an officially verified route or that scheduling is implemented. Read `code/STAGE.md` for the current verified scope.
 
 Search Job finds and publishes public job openings. Keep credentials and machine-specific paths out of the repository. Official company and ATS evidence establish board routes. Scripts handle routine recognition and scanning; an actual AI task handles requested discovery, unresolved route/board evidence, or adapter development. A script-created work item does not mean AI has completed it.
 

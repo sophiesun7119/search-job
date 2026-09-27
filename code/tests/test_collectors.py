@@ -1,4 +1,5 @@
 import json
+import io
 import sqlite3
 import sys
 import tempfile
@@ -8,7 +9,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from search_job.collectors import collect
+from search_job.collectors import _read, collect
 from search_job.core import SCHEMA, connect
 from search_job.intake import import_seed
 from search_job.leads import (confirm_official_route, import_simplify_catalog,
@@ -19,6 +20,108 @@ from search_job.scan import scan_registered
 
 
 class CollectorTest(unittest.TestCase):
+    def test_eightfold_company_domain_uses_explicit_country_location(self):
+        listing = {"data": {"count": 1, "positions": [{"id": 123, "name": "Engineer",
+            "postedTs": 1790294400, "locations": ["Billerica,MA"],
+            "standardizedLocations": ["Billerica, MA, US"]}]}}
+        self.assertEqual(recognize_apply_url(
+            "https://careers.acme.com/careers/job/123?domain=acme.com"),
+            ("eightfold", "careers.acme.com"))
+        with patch("search_job.collectors._read", return_value=listing):
+            jobs = collect("eightfold", "careers.acme.com", "acme.com")
+        self.assertEqual(jobs[0]["location"], "Billerica, MA, US")
+        with self.assertRaisesRegex(ValueError, "Unverified Eightfold host"):
+            collect("eightfold", "careers.other.com", "acme.com")
+
+    def test_bamboohr_public_listing_uses_detail_date_and_country(self):
+        listing = {"meta": {"totalCount": 1}, "result": [{"id": "62", "jobOpeningName": "Engineer"}]}
+        detail = {"result": {"jobOpening": {"jobOpeningStatus": "Open",
+            "datePosted": "2026-09-25", "location": {"city": "Burnaby",
+                "state": "British Columbia", "addressCountry": "Canada"}}}}
+        with patch("search_job.collectors._read", side_effect=[listing, detail]) as read:
+            jobs = collect("bamboohr", "acme.bamboohr.com")
+        self.assertEqual(recognize_apply_url("https://acme.bamboohr.com/careers/62"),
+                         ("bamboohr", "acme.bamboohr.com"))
+        self.assertEqual(read.call_args_list[0].args[0], "https://acme.bamboohr.com/careers/list")
+        self.assertEqual(jobs[0]["published"], "2026-09-25")
+        self.assertEqual(jobs[0]["location"], "Burnaby, British Columbia, Canada")
+        with patch("search_job.collectors._read", return_value={"meta": {"totalCount": 2}, "result": []}):
+            with self.assertRaisesRegex(ValueError, "count"):
+                collect("bamboohr", "acme.bamboohr.com")
+
+    def test_pinpoint_public_feed_and_detail_date(self):
+        feed = {"data": [{"id": "123", "title": "Engineer", "url":
+            "https://careers.acme.com/en/postings/abc", "location": {"name": "Chicago, IL"}}]}
+        detail = '<script type="application/ld+json">{"datePosted":"2026-09-25T10:00:00Z"}</script>'
+        with patch("search_job.collectors._read", return_value=feed), patch(
+                "search_job.collectors._read_html", return_value=detail):
+            jobs = collect("pinpoint", "acme.pinpointhq.com", "acme.com")
+        self.assertEqual(len(jobs), 1)
+        self.assertEqual(jobs[0]["id"], "123")
+        self.assertEqual(jobs[0]["location"], "Chicago, IL")
+        self.assertEqual(jobs[0]["published"], "2026-09-25T10:00:00Z")
+
+    def test_icims_classic_listing_reads_pages_and_source_detail_date(self):
+        card = ('<li class="iCIMS_JobCardItem"><a href="https://careers-acme.icims.com/jobs/123/'
+                'engineer/job?in_iframe=1" class="iCIMS_Anchor"><h3>Engineer</h3></a>'
+                '<div class="iCIMS_JobHeaderTag"><dt>Job Location</dt><dd>US-IL-Chicago</dd></div></li>')
+        listing = ('<ul class="iCIMS_JobsTable">' + card + '</ul>'
+                   '<a href="https://careers-acme.icims.com/jobs/search?pr=0&amp;in_iframe=1">1</a>')
+        detail = '<script type="application/ld+json">{"datePosted":"2026-09-25T04:00:00Z"}</script>'
+        with patch("search_job.collectors._read_html", side_effect=[listing, detail]):
+            jobs = collect("icims", "careers-acme.icims.com", "acme.com")
+        self.assertEqual(len(jobs), 1)
+        self.assertEqual(jobs[0]["location"], "US-IL-Chicago")
+        self.assertEqual(jobs[0]["published"], "2026-09-25T04:00:00Z")
+        self.assertEqual(jobs[0]["url"], "https://careers-acme.icims.com/jobs/123/engineer/job?in_iframe=1")
+
+    def test_icims_jibe_redirect_uses_company_domain_and_paginates(self):
+        redirect = "<script>window.top.location.href = 'https:\\/\\/careers.acme.com\\/jobs';</script>"
+        item = {"ats_code": "icims", "slug": "123", "title": "Engineer",
+                "full_location": "Chicago, Illinois", "country": "United States",
+                "posted_date": "2026-09-25T12:00:00+0000",
+                "meta_data": {"canonical_url": "https://careers.acme.com/jobs/123"}}
+        data = {"totalCount": 1, "jobs": [{"data": item}]}
+        with patch("search_job.collectors._read_html", return_value=redirect), patch(
+                "search_job.collectors._read", return_value=data) as read:
+            jobs = collect("icims", "careers-acme.icims.com", "acme.com")
+        self.assertEqual(len(jobs), 1)
+        self.assertEqual(jobs[0]["location"], "Chicago, Illinois; United States")
+        self.assertEqual(jobs[0]["published"], "2026-09-25T12:00:00+0000")
+        self.assertIn("careers.acme.com/api/jobs?limit=99&page=1", read.call_args.args[0])
+
+    def test_icims_company_domain_requires_marker_and_verified_domain(self):
+        self.assertEqual(recognize_apply_url("https://careers.acme.com/jobs/123?icims=1"),
+                         ("icims", "careers.acme.com"))
+        self.assertEqual(recognize_apply_url("https://careers.acme.com/jobs/123"),
+                         ("unknown", None))
+        with patch("search_job.collectors._read", return_value={"totalCount": 0, "jobs": []}):
+            self.assertEqual(collect("icims", "careers.acme.com", "acme.com"), [])
+            with self.assertRaisesRegex(ValueError, "outside the verified company domain"):
+                collect("icims", "careers.other.com", "acme.com")
+
+    def test_careerpuck_public_board_preserves_identity_location_and_source_date(self):
+        payload = {"permalink": "acme", "jobs": [
+            {"status": "public", "atsSourceId": "123", "title": " Engineer ",
+             "location": "Remote, USA", "postedAt": "2026-09-25T12:00:00Z",
+             "publicUrl": "https://app.careerpuck.com/job-board/acme/job/123"},
+            {"status": "draft", "atsSourceId": "456", "title": "Hidden",
+             "publicUrl": "https://app.careerpuck.com/job-board/acme/job/456"}]}
+        with patch("search_job.collectors._read", return_value=payload):
+            jobs = collect("careerpuck", "acme")
+        self.assertEqual(len(jobs), 1)
+        self.assertEqual(jobs[0]["id"], "123")
+        self.assertEqual(jobs[0]["title"], "Engineer")
+        self.assertEqual(jobs[0]["location"], "Remote, USA")
+        self.assertEqual(jobs[0]["date_field"], "postedAt")
+        self.assertEqual(jobs[0]["published"], "2026-09-25T12:00:00Z")
+
+    def test_public_listing_retries_one_connection_reset(self):
+        with patch("search_job.collectors.urllib.request.urlopen",
+                   side_effect=[ConnectionResetError("temporary reset"), io.BytesIO(b'{"jobs":[]}')]) as urlopen:
+            self.assertEqual(_read("https://example.com/jobs"), {"jobs": []})
+        self.assertEqual(urlopen.call_count, 2)
+
     def test_oracle_listing_paginates_and_preserves_location_and_date(self):
         first = {"items": [{"Offset": 0, "TotalJobsCount": 2, "requisitionList": [
             {"Id": "157648", "Title": "Software Engineer", "PostedDate": "2026-09-25",
@@ -117,6 +220,16 @@ class CollectorTest(unittest.TestCase):
         self.assertEqual(workday_jobs[1]["published"], "2026-09-25")
         self.assertIn("United States", workday_jobs[1]["location"])
 
+    def test_workday_underscore_host_uses_verified_tenant_over_valid_tls_alias(self):
+        listing = {"total": 1, "jobPostings": [{"externalPath": "/job/Engineer_1",
+            "title": "Engineer", "locationsText": "Chicago, IL", "postedOn": "Posted 20 Days Ago"}]}
+        with patch("search_job.collectors._read", return_value=listing) as read:
+            jobs = collect("workday", "osv_amerisure.wd5.myworkdayjobs.com|osv_amerisure|Amerisure")
+        self.assertEqual(len(jobs), 1)
+        self.assertIn("https://osv_amerisure.wd5.myworkdayjobs.com/Amerisure/job/Engineer_1", jobs[0]["url"])
+        self.assertIn("osv-amerisure.wd5.myworkdayjobs.com", read.call_args.args[0])
+        self.assertEqual(read.call_args.kwargs["host_header"], "osv_amerisure.wd5.myworkdayjobs.com")
+
     def test_workable_public_jobs_use_published_on_and_country(self):
         payload = {"jobs": [{"shortcode": "ABC", "url": "https://apply.workable.com/j/ABC",
                              "title": "Software Engineer", "published_on": "2026-09-25",
@@ -170,6 +283,8 @@ class CollectorTest(unittest.TestCase):
                          ("careerpuck", "color-health"))
         self.assertEqual(recognize_apply_url("https://boards-api.greenhouse.io/v1/boards/ixllearning/jobs/123"),
                          ("greenhouse", "ixllearning"))
+        self.assertEqual(recognize_apply_url("https://osv_amerisure.wd5.myworkdayjobs.com/Amerisure/jobs"),
+                         ("workday", "osv_amerisure.wd5.myworkdayjobs.com|osv_amerisure|Amerisure"))
 
     def test_agent_reviewed_route_requires_official_evidence_domain(self):
         with tempfile.TemporaryDirectory() as directory:

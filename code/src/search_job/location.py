@@ -23,6 +23,11 @@ def is_us_location(location: str) -> bool:
 
 
 def _segment_is_us(value: str) -> bool:
+    # A three-part ATS location commonly ends in an ISO country code. Treat it
+    # as country evidence before interpreting IN/CA/DE/etc. as US state codes.
+    components = [part.strip() for part in value.split(",")]
+    if len(components) >= 3 and re.fullmatch(r"[A-Z]{2}", components[-1]):
+        return components[-1] == "US"
     if re.search(r"\b(?:united states(?: of america)?|usa|u\.s\.a?\.|us)\b", value, re.I):
         return True
     if re.search(r"remote\s*\(any state\)", value, re.I):

@@ -13,7 +13,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import unquote, urljoin, urlsplit
+from urllib.parse import parse_qs, unquote, urljoin, urlsplit
 
 from .core import upsert_board, upsert_company
 from .collectors import ACTIVE_COLLECTORS
@@ -47,7 +47,7 @@ def recognize_apply_url(url: str) -> tuple[str, str | None]:
         return "vizirecruiter", path[0] if path else None
     if host == "jobs.lever.co":
         return "lever", path[0] if path else None
-    if re.fullmatch(r"[a-z0-9-]+\.wd\d+\.myworkdayjobs\.com", host):
+    if re.fullmatch(r"[a-z0-9_-]+\.wd\d+\.myworkdayjobs\.com", host):
         paths = path[1:] if path and re.fullmatch(r"[a-z]{2}-[A-Z]{2}", path[0]) else path
         return "workday", f"{host}|{host.split('.')[0]}|{paths[0]}" if paths else None
     if re.fullmatch(r"wd\d+\.myworkdaysite\.com", host):
@@ -60,13 +60,20 @@ def recognize_apply_url(url: str) -> tuple[str, str | None]:
         return "jazzhr", host
     if host.endswith(".icims.com"):
         return "icims", host
+    if path and path[0] == "jobs" and parse_qs(parts.query).get("icims") == ["1"]:
+        return "icims", host
     if host.endswith(".oraclecloud.com") or host.endswith(".fa.oraclecloud.com"):
         if "sites" in path and path.index("sites") + 1 < len(path):
             return "oracle", f"{host}|{path[path.index('sites') + 1]}"
         return "oracle", None
     if host.endswith(".pinpointhq.com"):
         return "pinpoint", host
+    if re.fullmatch(r"[a-z0-9-]+\.bamboohr\.com", host) and path and path[0] == "careers":
+        return "bamboohr", host
     if host.endswith(".eightfold.ai"):
+        return "eightfold", host
+    if (host.startswith("careers.") and path[:2] == ["careers", "job"]
+            and parse_qs(parts.query).get("domain") == [host.removeprefix("careers.")]):
         return "eightfold", host
     return "unknown", None
 
