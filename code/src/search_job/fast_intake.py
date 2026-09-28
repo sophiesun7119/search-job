@@ -59,7 +59,7 @@ def _check(lead: dict) -> dict:
     url = lead["sample_apply_url"] or ""
     provider, board = recognize_apply_url(url)
     sample_probe = None
-    if provider == "unknown" or not board:
+    if provider == "unknown" or not board or (lead["source_year"] or 0) < 2026:
         final_url, status, error = _probe_sample(url)
         sample_probe = (final_url, status, error)
         redirected_provider, redirected_board = recognize_apply_url(final_url or "")

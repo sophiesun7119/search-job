@@ -366,10 +366,10 @@ class CollectorTest(unittest.TestCase):
                 source.executescript("""CREATE TABLE companies(id INTEGER,name TEXT,best_apply_url TEXT,
                   best_year INTEGER,status TEXT,canonical_domain TEXT); CREATE TABLE observations(id INTEGER,company_id INTEGER,
                   source_year INTEGER,apply_url TEXT,profile_url TEXT,source_url TEXT,title TEXT,location TEXT);""")
-                for id_ in (1, 2, 3):
+                for id_ in (1, 2, 3, 4):
                     url = f"https://jobs.ashbyhq.com/company{id_}/job"
                     source.execute("INSERT INTO companies VALUES (?,?,?,?,?,?)",
-                                   (id_, f"Company {id_}", url, 2026, "pending",
+                                   (id_, " company 2 " if id_ == 4 else f"Company {id_}", url, 2026, "pending",
                                     "company1.example" if id_ == 1 else None))
                     source.execute("INSERT INTO observations VALUES (?,?,?,?,?,?,?,?)",
                                    (id_, id_, 2026, url, f"https://simplify.jobs/c/company-{id_}",

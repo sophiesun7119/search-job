@@ -105,7 +105,8 @@ def import_simplify_catalog(db: sqlite3.Connection, catalog_path: Path, *,
         raise ValueError("Invalid Simplify batch selection")
     source = sqlite3.connect(f"file:{catalog_path.resolve()}?mode=ro", uri=True)
     source.row_factory = sqlite3.Row
-    known_names = {row[0].casefold() for row in db.execute("SELECT name FROM companies")}
+    known_names = {row[0].strip().casefold() for row in db.execute("SELECT name FROM companies")}
+    known_names.update(row[0].strip().casefold() for row in db.execute("SELECT name FROM source_leads"))
     known_ids = {row[0] for row in db.execute("SELECT source_id FROM source_leads WHERE source_name='simplify'")}
     selected = []
     try:
@@ -125,9 +126,11 @@ def import_simplify_catalog(db: sqlite3.Connection, catalog_path: Path, *,
           FROM companies c WHERE c.status='pending' AND c.best_year=?
             AND c.best_apply_url IS NOT NULL ORDER BY c.id""", (year,))
         for row in rows:
-            if str(row["id"]) in known_ids or row["name"].casefold() in known_names:
+            normalized_name = row["name"].strip().casefold()
+            if str(row["id"]) in known_ids or normalized_name in known_names:
                 continue
             selected.append(row)
+            known_names.add(normalized_name)
             if len(selected) == limit:
                 break
     finally:
