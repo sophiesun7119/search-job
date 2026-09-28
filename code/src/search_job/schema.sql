@@ -47,6 +47,26 @@ CREATE TABLE IF NOT EXISTS provider_capabilities (
   adapter_key TEXT NOT NULL,
   support_status TEXT NOT NULL CHECK (support_status IN ('planned','tested','active'))
 );
+CREATE TABLE IF NOT EXISTS fast_intake_checks (
+  lead_key TEXT PRIMARY KEY REFERENCES source_leads(lead_key),
+  batch_id TEXT NOT NULL,
+  outcome TEXT NOT NULL CHECK (outcome IN
+    ('ats_unknown','adapter_missing','official_domain_missing','official_route_missing',
+     'official_adapter_missing','board_probe_failed','board_verified')),
+  detail TEXT,
+  provider TEXT,
+  board_token TEXT,
+  listing_count INTEGER,
+  checked_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS fast_intake_checks_batch ON fast_intake_checks(batch_id,outcome);
+CREATE TABLE IF NOT EXISTS fast_intake_queue (
+  lead_key TEXT PRIMARY KEY REFERENCES source_leads(lead_key),
+  batch_id TEXT NOT NULL,
+  queued_at TEXT NOT NULL,
+  finished_at TEXT
+);
+CREATE INDEX IF NOT EXISTS fast_intake_queue_batch ON fast_intake_queue(batch_id,finished_at);
 CREATE TABLE IF NOT EXISTS boards (
   board_key TEXT PRIMARY KEY,
   provider TEXT NOT NULL,

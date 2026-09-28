@@ -11,6 +11,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from search_job.collectors import _read, collect
 from search_job.core import SCHEMA, connect
+from search_job.fast_intake import run as fast_intake_run
 from search_job.intake import import_seed
 from search_job.leads import (_official_route, confirm_official_route, import_simplify_catalog,
                               mark_ai_review, probe_saved_samples, recognize_apply_url,
@@ -20,6 +21,23 @@ from search_job.scan import scan_registered
 
 
 class CollectorTest(unittest.TestCase):
+    def test_fast_intake_resumes_saved_batch_without_importing_more(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with connect(Path(directory) / "jobs.sqlite3") as db:
+                db.execute("""INSERT INTO source_leads(lead_key,source_name,source_id,name,
+                  source_year,sample_apply_url,stage) VALUES
+                  ('simplify:7','simplify','7','Acme',2026,
+                   'https://example.com/job/7','route_pending')""")
+                db.execute("""INSERT INTO fast_intake_queue(lead_key,batch_id,queued_at)
+                  VALUES ('simplify:7','batch-1','2026-09-27T00:00:00+00:00')""")
+                with patch("search_job.fast_intake._check", return_value={
+                        "outcome": "ats_unknown", "provider": "unknown", "board": None,
+                        "detail": "No ATS"}):
+                    result = fast_intake_run(db, Path(directory) / "missing-catalog.sqlite3", limit=1)
+                self.assertEqual((result["batch_id"], result["selected"]), ("batch-1", 1))
+                self.assertIsNotNone(db.execute(
+                    "SELECT finished_at FROM fast_intake_queue WHERE lead_key='simplify:7'").fetchone()[0])
+
     def test_jobsyn_uses_source_date_and_complete_count(self):
         response = {"pagination": {"total": 1, "page_size": 10, "offset": "0"},
                     "jobs": [{"buid": 57625, "guid": "A" * 32,
@@ -366,6 +384,11 @@ class CollectorTest(unittest.TestCase):
                                  "https://company1.example/")
                 self.assertEqual(import_simplify_catalog(db, catalog, limit=2)["selected"], 0)
         self.assertEqual(recognize_apply_url("https://jobs.lever.co/acme/123"), ("lever", "acme"))
+        self.assertEqual(recognize_apply_url("https://jobs.eu.lever.co/cirrus/123"), ("lever_eu", "cirrus"))
+        self.assertEqual(recognize_apply_url("https://recruiting.paylocity.com/Recruiting/Jobs/Details/123"),
+                         ("paylocity", None))
+        self.assertEqual(recognize_apply_url("https://example.com/careers?gh_jid=123"),
+                         ("greenhouse", None))
         self.assertEqual(recognize_apply_url("https://app.careerpuck.com/job-board/color-health/job/123"),
                          ("careerpuck", "color-health"))
         self.assertEqual(recognize_apply_url("https://boards-api.greenhouse.io/v1/boards/ixllearning/jobs/123"),

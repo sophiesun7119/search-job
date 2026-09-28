@@ -50,6 +50,12 @@ def recognize_apply_url(url: str) -> tuple[str, str | None]:
         return "vizirecruiter", path[0] if path else None
     if host == "jobs.lever.co":
         return "lever", path[0] if path else None
+    if host == "jobs.eu.lever.co":
+        return "lever_eu", path[0] if path else None
+    if host == "recruiting.paylocity.com" and path[:3] == ["Recruiting", "Jobs", "Details"]:
+        return "paylocity", None
+    if host and parse_qs(parts.query).get("gh_jid", [""])[0].isdigit():
+        return "greenhouse", None
     if re.fullmatch(r"[a-z0-9_-]+\.wd\d+\.myworkdayjobs\.com", host):
         paths = path[1:] if path and re.fullmatch(r"[a-z]{2}-[A-Z]{2}", path[0]) else path
         return "workday", f"{host}|{host.split('.')[0]}|{paths[0]}" if paths else None
