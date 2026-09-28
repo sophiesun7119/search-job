@@ -246,12 +246,13 @@ def refresh_all_tags(db: sqlite3.Connection) -> int:
 
 def record_scan(db: sqlite3.Connection, board_key: str, scan_key: str, started_at: str,
                 finished_at: str, outcome: str, observed_keys: set[str],
-                close_after_complete_misses: int = 2) -> None:
+                close_after_complete_misses: int = 2, error: str | None = None) -> None:
     """Update absence only after a complete scan; partial/failed reads are inert."""
     if outcome not in {"complete", "partial", "failed"}:
         raise ValueError("Unknown scan outcome")
-    db.execute("INSERT INTO scan_runs VALUES (?,?,?,?,?,NULL)",
-               (scan_key, board_key, started_at, finished_at, outcome))
+    db.execute("""INSERT INTO scan_runs(scan_key,board_key,started_at,finished_at,outcome,error)
+                  VALUES (?,?,?,?,?,?)""",
+               (scan_key, board_key, started_at, finished_at, outcome, error))
     if outcome != "complete":
         return
     db.execute("UPDATE boards SET last_complete_scan_at=? WHERE board_key=?", (finished_at, board_key))

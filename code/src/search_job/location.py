@@ -13,6 +13,7 @@ STATE_NAMES = frozenset("""Alabama|Alaska|Arizona|Arkansas|California|Colorado|C
 # Bare city labels occur in ATS feeds. Keep this list small and unambiguous.
 US_CITIES = frozenset({"san francisco", "sunnyvale", "new york city", "new york", "palo alto", "mountain view", "seattle", "boston", "chicago", "austin", "denver", "atlanta", "washington dc"})
 FOREIGN_COUNTRIES = frozenset("""Australia|Austria|Belgium|Brazil|Canada|China|Colombia|Denmark|Estonia|France|Germany|India|Ireland|Israel|Italy|Japan|Mexico|Netherlands|New Zealand|Poland|Portugal|Singapore|South Korea|Spain|Sweden|Switzerland|United Kingdom|UK""".split("|"))
+COUNTRY_CODES = frozenset("""AU AT BE BR CA CN CO DK EE FR DE IN IE IL IT JP MX NL NZ PL PT SG KR ES SE CH GB UK US""".split())
 
 
 def is_us_location(location: str) -> bool:
@@ -26,8 +27,12 @@ def _segment_is_us(value: str) -> bool:
     # A three-part ATS location commonly ends in an ISO country code. Treat it
     # as country evidence before interpreting IN/CA/DE/etc. as US state codes.
     components = [part.strip() for part in value.split(",")]
-    if len(components) >= 3 and re.fullmatch(r"[A-Z]{2}", components[-1]):
-        return components[-1] == "US"
+    if len(components) >= 3:
+        # Some ATS labels append a postal code or "+N more" after the country.
+        # A country code after the city/state outweighs a state-like middle code.
+        for component in components[2:]:
+            if component in COUNTRY_CODES:
+                return component == "US"
     if re.search(r"\b(?:united states(?: of america)?|usa|u\.s\.a?\.|us)\b", value, re.I):
         return True
     if re.search(r"remote\s*\(any state\)", value, re.I):

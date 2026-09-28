@@ -102,7 +102,8 @@ def scan_registered(db: sqlite3.Connection, *, provider: str | None = None,
                                    [(key, location, url) for location, url in sorted(variants)])
                 complete = getattr(jobs, "complete", True)
                 record_scan(db, board, uuid.uuid4().hex, started, utc_now(),
-                            "complete" if complete else "partial", observed)
+                            "complete" if complete else "partial", observed,
+                            error=None if complete else "Collector reported an incomplete board listing")
                 if complete:
                     db.execute("UPDATE boards SET route_status='active' WHERE board_key=?", (board,))
                     db.execute("""UPDATE company_boards SET status='verified',checked_at=?
@@ -126,7 +127,8 @@ def scan_registered(db: sqlite3.Connection, *, provider: str | None = None,
                     "reason": "Oracle public listing count exceeds the matching visible IDs in two sorts"})
         except Exception as error:
             with db:
-                record_scan(db, board, uuid.uuid4().hex, started, utc_now(), "failed", set())
+                record_scan(db, board, uuid.uuid4().hex, started, utc_now(), "failed", set(),
+                            error=f"{type(error).__name__}: {error}"[:300])
                 db.execute("""UPDATE source_leads SET last_error=?,checked_at=?,
                   review_state='ai_pending',review_updated_at=?
                   WHERE company_key=? AND stage='scan_pending'""",

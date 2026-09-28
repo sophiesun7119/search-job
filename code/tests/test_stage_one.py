@@ -123,7 +123,8 @@ class StageOneTest(unittest.TestCase):
 
     def test_complete_scan_only_closes_after_two_misses(self):
         key = self.add()
-        record_scan(self.db, "greenhouse:a", "x1", "2026-09-25T11:00:00Z", "2026-09-25T11:01:00Z", "failed", set())
+        record_scan(self.db, "greenhouse:a", "x1", "2026-09-25T11:00:00Z", "2026-09-25T11:01:00Z", "failed", set(), error="HTTP 503")
+        self.assertEqual(self.db.execute("SELECT error FROM scan_runs WHERE scan_key='x1'").fetchone()[0], "HTTP 503")
         self.assertEqual(self.db.execute("SELECT open_state FROM openings").fetchone()[0], "open")
         record_scan(self.db, "greenhouse:a", "x2", "2026-09-25T11:02:00Z", "2026-09-25T11:03:00Z", "complete", set())
         self.assertEqual(self.db.execute("SELECT open_state FROM openings").fetchone()[0], "open")
@@ -169,6 +170,8 @@ class StageOneTest(unittest.TestCase):
         self.assertFalse(is_us_location("Madrid, MD, Spain"))
         self.assertFalse(is_us_location("Bengaluru, KA, IN"))
         self.assertFalse(is_us_location("Toronto, ON, CA"))
+        self.assertFalse(is_us_location("Krakow, MA, PL, 30-701 +1 more"))
+        self.assertTrue(is_us_location("Cranberry Township, PA, US, 16066"))
         self.assertTrue(is_us_location("Billerica, MA, US"))
         self.assertTrue(is_us_location("London, UK; San Francisco, CA"))
 
