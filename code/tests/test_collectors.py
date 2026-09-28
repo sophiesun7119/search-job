@@ -56,6 +56,19 @@ class CollectorTest(unittest.TestCase):
             "https://boards.greenhouse.io/embed/job_board/js?for=studycareers"),
             ("greenhouse", "studycareers"))
 
+    def test_careers_page_precedes_generic_site_search(self):
+        with patch("search_job.leads._site_page", side_effect=[
+                ("https://corp.example.com/", ["https://www.example.com/search",
+                  "https://corp.example.com/corp/careers"], ""),
+                ("https://corp.example.com/corp/careers",
+                 ["https://boards.greenhouse.io/example"], ""),
+                ("https://www.example.com/search", [], "")]) as read:
+            route = _official_route({"official_url": "https://corp.example.com/",
+                                     "provider_hint": "greenhouse", "board_hint": "example"})
+        self.assertEqual(route["board"], "example")
+        self.assertEqual(read.call_args_list[1].args[0],
+                         "https://corp.example.com/corp/careers")
+
     def test_avature_complete_listing_preserves_date_and_location(self):
         listing = ('''<span>1</span> of 1 results <article class="article article--result">'''
                    '''<a class="link" href="https://careers.acme.com/en_US/careers/JobDetail/Engineer/123">'''
@@ -113,6 +126,8 @@ class CollectorTest(unittest.TestCase):
         with patch("search_job.collectors._read", side_effect=[listing, detail]) as read:
             jobs = collect("bamboohr", "acme.bamboohr.com")
         self.assertEqual(recognize_apply_url("https://acme.bamboohr.com/careers/62"),
+                         ("bamboohr", "acme.bamboohr.com"))
+        self.assertEqual(recognize_apply_url("https://acme.bamboohr.com/js/embed.js"),
                          ("bamboohr", "acme.bamboohr.com"))
         self.assertEqual(read.call_args_list[0].args[0], "https://acme.bamboohr.com/careers/list")
         self.assertEqual(jobs[0]["published"], "2026-09-25")

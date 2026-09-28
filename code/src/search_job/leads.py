@@ -75,7 +75,8 @@ def recognize_apply_url(url: str) -> tuple[str, str | None]:
         return "oracle", None
     if host.endswith(".pinpointhq.com"):
         return "pinpoint", host
-    if re.fullmatch(r"[a-z0-9-]+\.bamboohr\.com", host) and path and path[0] == "careers":
+    if (re.fullmatch(r"[a-z0-9-]+\.bamboohr\.com", host)
+            and (path and path[0] == "careers" or path == ["js", "embed.js"])):
         return "bamboohr", host
     if parse_qs(parts.query).get("ats") == ["successfactors"]:
         return "successfactors", host
@@ -369,9 +370,11 @@ def _official_route(lead: dict) -> dict:
                 urlsplit(final_url).path.rstrip("/").endswith("/careers/SearchJobs") and
                 'article article--result' in body and 'list-item-posted' in body):
             routes.setdefault(("avature", current_host), (final_url, final_url))
-        # Search forms often appear after long navigation menus. Visit their
-        # listings before generic career pages under the bounded page cap.
-        ordered_links = sorted(links, key=lambda link: 0 if urlsplit(link).path.rstrip("/") == "/search" else 1)
+        # Visit explicit company career pages before search forms. Generic
+        # site search links can otherwise exhaust the bounded page cap.
+        ordered_links = sorted(links, key=lambda link: (
+            0 if re.search(r"career|join-us|work-with-us", urlsplit(link).path, re.I)
+            else 1 if urlsplit(link).path.rstrip("/") == "/search" else 2))
         for link in [final_url, *ordered_links]:
             try:
                 parts = urlsplit(link)

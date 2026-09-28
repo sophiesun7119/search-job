@@ -9,6 +9,8 @@ Use this skill when the user explicitly starts/resumes a Search Job run, supplie
 
 Choose one bounded unit and its saved cursor: a refresh of verified boards, a batch from a user-named list such as Simplify, a set of supplied links, or a requested AI company-discovery batch. Reuse known companies, routes, boards and adapters. Do not restart the entire source or widen to unrequested companies. Keep the input compact and one platform or batch at a time.
 
+For future large-list expansion, prioritize source links that hint at providers with tested adapters. Keep unsupported providers in an adapter-development queue, and group board failures by reusable cause. The current importer still advances in source-ID order, so do not describe provider-priority selection as implemented; see `code/STAGE.md`. A recurring verified-board scan should be script-only, with a dated run and issue history. Later successful retries or recorded AI fixes should resolve matching issues; the scheduled runner and issue lifecycle are also still planned.
+
 Route work by what is missing:
 
 | Need | Use |
