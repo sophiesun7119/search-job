@@ -25,8 +25,8 @@ except ImportError:  # system trust store remains usable
 ACTIVE_COLLECTORS = frozenset({"greenhouse", "ashby", "smartrecruiters", "gem", "oracle",
                                "rippling", "vizirecruiter", "eightfold", "lever",
                                "workday", "workable", "jazzhr", "careerpuck", "icims", "pinpoint",
-                               "bamboohr"})
-PLANNED_COLLECTORS = frozenset()
+                               "bamboohr", "successfactors", "avature", "jobsyn"})
+PLANNED_COLLECTORS = frozenset({"clinch"})
 
 
 class JobList(list):
@@ -37,10 +37,13 @@ class JobList(list):
         self.source_count_gap = source_count_gap
 
 
-def _read(url: str, payload: dict | None = None, *, host_header: str | None = None) -> dict | list | str:
+def _read(url: str, payload: dict | None = None, *, host_header: str | None = None,
+          origin_header: str | None = None) -> dict | list | str:
     headers = {"User-Agent": "SearchJob/1.0", "Accept": "application/json"}
     if host_header:
         headers["Host"] = host_header
+    if origin_header:
+        headers["X-Origin"] = origin_header
     body = None
     if payload is not None:
         body = json.dumps(payload).encode()
@@ -253,8 +256,157 @@ def _bamboohr(host: str) -> list[dict]:
     return jobs
 
 
+def _successfactors(host: str) -> JobList:
+    base = f"https://{host}/search/"
+    first = _read_html(base)
+    def page(body: str) -> tuple[int, list[dict]]:
+        if 'id="searchresults"' not in body:
+            raise ValueError("SuccessFactors listing markup changed")
+        count = re.search(r'class="paginationLabel"[^>]*>Results\s*<b>[^<]+</b>\s*of\s*<b>([\d,]+)</b>', body)
+        if not count:
+            raise ValueError("SuccessFactors total count is missing")
+        total = int(count.group(1).replace(",", ""))
+        jobs = []
+        for row in re.findall(r'<tr class="data-row">(.*?)</tr>', body, re.S):
+            link = re.search(r'<a href="([^" ]+/(\d+)/)" class="jobTitle-link">(.*?)</a>', row, re.S)
+            location = re.search(r'<span class="jobLocation">(.*?)</span>', row, re.S)
+            date = re.search(r'<span class="jobDate">(.*?)</span>', row, re.S)
+            if not link or not location:
+                raise ValueError("SuccessFactors job row shape changed")
+            path, job_id, title = link.groups()
+            posted = (datetime.strptime(re.sub(r"\s+", " ", date.group(1)).strip(),
+                                        "%b %d, %Y").date().isoformat() if date else None)
+            clean = lambda value: html.unescape(re.sub(r'<[^>]+>', ' ', value)).strip()
+            jobs.append(_job(job_id, f"https://{host}{html.unescape(path)}", clean(title),
+                             clean(location.group(1)), published=posted,
+                             date_field="jobDate" if posted else None))
+        return total, jobs
+
+    total, jobs = page(first)
+    if total > 10000:
+        raise ValueError("SuccessFactors listing exceeds safety cap")
+    offsets = list(range(25, total, 25))
+    def read_page(offset: int) -> tuple[int, list[dict]]:
+        url = f"{base}?q=&sortColumn=referencedate&sortDirection=desc&startrow={offset}"
+        return page(_read_html(url))
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        for count, batch in pool.map(read_page, offsets):
+            if count != total:
+                return JobList(jobs, complete=False)
+            jobs.extend(batch)
+    def detail_date(job: dict) -> str:
+        detail = _read_html(job["url"])
+        found = re.search(r'<meta itemprop="datePosted" content="([^"]+)"', detail)
+        if not found:
+            raise ValueError("SuccessFactors detail has no datePosted")
+        return datetime.strptime(found.group(1), "%a %b %d %H:%M:%S UTC %Y").date().isoformat()
+    missing = [job for job in jobs if not job["published"]]
+    if missing:
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            for job, posted in zip(missing, pool.map(detail_date, missing)):
+                job["published"] = posted
+                job["date_field"] = "datePosted"
+    ids = {job["id"] for job in jobs}
+    return JobList(jobs, complete=len(jobs) == total and len(ids) == total)
+
+
+def _avature(host: str) -> JobList:
+    base = f"https://{host}/en_US/careers/SearchJobs/"
+    def page(body: str) -> tuple[int, list[dict]]:
+        count = re.search(r'</span>\s*of\s*(\d+)\s*results', body)
+        if not count:
+            raise ValueError("Avature result total is missing")
+        total = int(count.group(1))
+        jobs = []
+        for article in re.findall(r'<article class="article article--result[^>]*>.*?</article>', body, re.S):
+            link = re.search(r'<a class="link" href="([^"]+/JobDetail/[^" ]+/(\d+))">(.*?)</a>', article, re.S)
+            location = re.search(r'<span class="list-item-location">Location:\s*(.*?)</span>', article, re.S)
+            remote = re.search(r'<span class="list-item-remote type">Remote Type:\s*(.*?)</span>', article, re.S)
+            date = re.search(r'<span class="list-item-posted">Posted Date:\s*(.*?)</span>', article, re.S)
+            if not link or not date:
+                raise ValueError("Avature job row shape changed")
+            url, job_id, title = link.groups()
+            if (urlsplit(url).hostname or "").lower() != host:
+                raise ValueError("Avature job URL is outside the verified board")
+            clean = lambda s: html.unescape(re.sub(r'<[^>]+>', ' ', s)).strip()
+            posted = datetime.strptime(clean(date.group(1)), "%m/%d/%Y").date().isoformat()
+            place = clean(location.group(1)) if location else clean(remote.group(1)) if remote else "Unknown"
+            jobs.append(_job(job_id, url, clean(title), place,
+                             published=posted, date_field="Posted Date"))
+        return total, jobs
+    total, jobs = page(_read_html(base))
+    if total > 10000:
+        raise ValueError("Avature listing exceeds safety cap")
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        offsets = range(6, total, 6)
+        for count, batch in pool.map(lambda n: page(_read_html(f"{base}?jobOffset={n}&jobRecordsPerPage=6")), offsets):
+            if count != total:
+                return JobList(jobs, complete=False)
+            jobs.extend(batch)
+    return JobList(jobs, complete=len(jobs) == total and len({job["id"] for job in jobs}) == total)
+
+
+def _jobsyn(host: str) -> JobList:
+    endpoint = "https://prod-search-api.jobsyn.org/api/v1/solr/search"
+    def page(offset: int) -> dict:
+        data = _read(f"{endpoint}?offset={offset}&sort=date", origin_header=host)
+        if not isinstance(data, dict) or not isinstance(data.get("jobs"), list):
+            raise ValueError("JobSyn search response changed")
+        return data
+
+    first = page(0)
+    pagination = first.get("pagination") or {}
+    total = pagination.get("total")
+    size = pagination.get("page_size")
+    if not isinstance(total, int) or not isinstance(size, int) or size < 1 or total > 10000:
+        raise ValueError("JobSyn search total or page size is invalid")
+    pages = [first]
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        pages.extend(pool.map(page, range(size, total, size)))
+    jobs = []
+    seen = set()
+    for offset, data in zip(range(0, total, size), pages):
+        paging = data.get("pagination") or {}
+        batch = data["jobs"]
+        if (paging.get("total") != total or int(paging.get("offset", -1)) != offset or
+                len(batch) != min(size, total - offset)):
+            return JobList(jobs, complete=False)
+        for item in batch:
+            if not isinstance(item, dict) or item.get("buid") != 57625:
+                raise ValueError("JobSyn response contains a different company")
+            job_id = item.get("guid")
+            if not isinstance(job_id, str) or not re.fullmatch(r"[A-F0-9]{32}", job_id) or job_id in seen:
+                raise ValueError("JobSyn job ID missing or repeated")
+            seen.add(job_id)
+            posted = item.get("date_new")
+            if not isinstance(posted, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}T[^ ]+Z", posted):
+                raise ValueError("JobSyn job has no source publication timestamp")
+            location = item.get("location_exact") or ""
+            country = item.get("country_exact") or ""
+            if not location or not country:
+                raise ValueError("JobSyn job has no explicit location")
+            jobs.append(_job(job_id, f"https://{host}/-/-/{job_id}/job/",
+                             item.get("title_exact") or "", f"{location}; {country}",
+                             published=posted, date_field="date_new"))
+    return JobList(jobs, complete=len(jobs) == total)
+
+
 def collect(provider: str, token: str, domain: str | None = None) -> list[dict]:
     safe = quote(token, safe="")
+    if provider == "jobsyn":
+        if not domain or token != f"careers.{domain}":
+            raise ValueError("JobSyn board must match the verified company careers domain")
+        return _jobsyn(token)
+    if provider == "avature":
+        if not re.fullmatch(r"[a-z0-9.-]+", token) or not domain or not (
+                token == domain or token.endswith("." + domain)):
+            raise ValueError("Avature board must be on the verified company domain")
+        return _avature(token)
+    if provider == "successfactors":
+        if not domain or not re.fullmatch(r"[a-z0-9.-]+", domain) or not (
+                token == domain or token.endswith("." + domain)):
+            raise ValueError("SuccessFactors board must be on the verified company domain")
+        return _successfactors(token)
     if provider == "bamboohr":
         if not re.fullmatch(r"[a-z0-9-]+\.bamboohr\.com", token):
             raise ValueError("Invalid BambooHR board host")

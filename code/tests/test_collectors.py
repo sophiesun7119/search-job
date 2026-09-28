@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from search_job.collectors import _read, collect
 from search_job.core import SCHEMA, connect
 from search_job.intake import import_seed
-from search_job.leads import (confirm_official_route, import_simplify_catalog,
+from search_job.leads import (_official_route, confirm_official_route, import_simplify_catalog,
                               mark_ai_review, probe_saved_samples, recognize_apply_url,
                               verify_official_routes)
 from search_job.review_dashboard import write_review_dashboard
@@ -20,6 +20,78 @@ from search_job.scan import scan_registered
 
 
 class CollectorTest(unittest.TestCase):
+    def test_jobsyn_uses_source_date_and_complete_count(self):
+        response = {"pagination": {"total": 1, "page_size": 10, "offset": "0"},
+                    "jobs": [{"buid": 57625, "guid": "A" * 32,
+                              "title_exact": "Software Engineer", "location_exact": "Austin, TX",
+                              "country_exact": "United States", "date_new": "2026-09-26T14:00:00Z"}]}
+        with patch("search_job.collectors._read", return_value=response) as read:
+            jobs = collect("jobsyn", "careers.textron.com", "textron.com")
+        self.assertTrue(jobs.complete)
+        self.assertEqual(jobs[0]["date_field"], "date_new")
+        self.assertEqual(jobs[0]["location"], "Austin, TX; United States")
+        self.assertEqual(jobs[0]["url"],
+                         "https://careers.textron.com/-/-/" + "A" * 32 + "/job/")
+        self.assertEqual(read.call_args.kwargs["origin_header"], "careers.textron.com")
+
+    def test_jazzhr_official_widget_identifies_board(self):
+        self.assertEqual(recognize_apply_url(
+            "https://app.jazz.co/widgets/basic/create/wonderbotz"),
+            ("jazzhr", "wonderbotz.applytojob.com"))
+        with patch("search_job.leads._site_page", side_effect=[
+                ("https://wonderbotz.com/", ["https://wonderbotz.com/careers/"], ""),
+                ("https://wonderbotz.com/careers/",
+                 ["https://app.jazz.co/widgets/basic/create/wonderbotz"], "")]):
+            route = _official_route({"official_url": "https://wonderbotz.com/",
+                                     "provider_hint": "jazzhr",
+                                     "board_hint": "wonderbotz.applytojob.com"})
+        self.assertEqual(route["provider"], "jazzhr")
+        self.assertEqual(route["board"], "wonderbotz.applytojob.com")
+
+    def test_greenhouse_embedded_application_identifies_real_board(self):
+        self.assertEqual(recognize_apply_url(
+            "https://job-boards.greenhouse.io/embed/job_app?for=studycareers&token=5429313008"),
+            ("greenhouse", "studycareers"))
+        self.assertEqual(recognize_apply_url(
+            "https://boards.greenhouse.io/embed/job_board/js?for=studycareers"),
+            ("greenhouse", "studycareers"))
+
+    def test_avature_complete_listing_preserves_date_and_location(self):
+        listing = ('''<span>1</span> of 1 results <article class="article article--result">'''
+                   '''<a class="link" href="https://careers.acme.com/en_US/careers/JobDetail/Engineer/123">'''
+                   '''Engineer</a><span class="list-item-location">Location: Chicago, IL, US</span>'''
+                   '''<span class="list-item-posted">Posted Date: 09/26/2026</span></article>''')
+        with patch("search_job.collectors._read_html", return_value=listing):
+            jobs = collect("avature", "careers.acme.com", "acme.com")
+        self.assertTrue(jobs.complete)
+        self.assertEqual(len(jobs), 1)
+        self.assertEqual(jobs[0]["published"], "2026-09-26")
+        self.assertEqual(jobs[0]["location"], "Chicago, IL, US")
+
+    def test_successfactors_official_page_and_dated_listing(self):
+        listing = ('''<body class="coreCSB search-page body"><span class="paginationLabel">'''
+                   '''Results <b>1 – 1</b> of <b>1</b></span><table id="searchresults">'''
+                   '''<tr class="data-row"><a href="/job/Chicago-Engineer-IL/123/" '''
+                   '''class="jobTitle-link">Engineer</a><span class="jobLocation">'''
+                   '''Chicago, IL, US</span><span class="jobDate">Sep 26, 2026</span>'''
+                   '''</tr></table></body>''')
+        self.assertEqual(recognize_apply_url(
+            "https://careers.acme.com/job/Chicago-Engineer-IL/123/?ats=successfactors"),
+            ("successfactors", "careers.acme.com"))
+        with patch("search_job.collectors._read_html", return_value=listing):
+            jobs = collect("successfactors", "careers.acme.com", "acme.com")
+        self.assertTrue(jobs.complete)
+        self.assertEqual(jobs[0]["published"], "2026-09-26")
+        self.assertEqual(jobs[0]["location"], "Chicago, IL, US")
+        with patch("search_job.leads._site_page", side_effect=[
+                ("https://acme.com/careers", ["https://careers.acme.com/"], ""),
+                ("https://careers.acme.com/", ["https://careers.acme.com/search/"], ""),
+                ("https://careers.acme.com/search/", [], listing)]):
+            route = _official_route({"official_url": "https://acme.com/careers",
+                                     "provider_hint": "unknown", "board_hint": None})
+        self.assertEqual(route["provider"], "successfactors")
+        self.assertEqual(route["board"], "careers.acme.com")
+
     def test_eightfold_company_domain_uses_explicit_country_location(self):
         listing = {"data": {"count": 1, "positions": [{"id": 123, "name": "Engineer",
             "postedTs": 1790294400, "locations": ["Billerica,MA"],
@@ -358,7 +430,8 @@ class CollectorTest(unittest.TestCase):
                 self.assertEqual(import_seed(db, seed)["boards"], 1)
                 sample = [{"id": "1", "url": "https://job-boards.greenhouse.io/acme/jobs/1",
                            "title": "Senior Software Engineer", "location": "Chicago",
-                           "published": "2026-09-24T10:00:00Z", "date_field": "first_published"}]
+                           "published": (datetime.now(timezone.utc) - timedelta(hours=12)).isoformat(),
+                           "date_field": "first_published"}]
                 with patch("search_job.scan.collect", return_value=sample):
                     self.assertEqual(scan_registered(db)["new"], 1)
                     self.assertEqual(scan_registered(db)["new"], 0)

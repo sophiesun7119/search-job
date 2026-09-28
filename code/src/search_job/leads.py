@@ -30,6 +30,9 @@ def recognize_apply_url(url: str) -> tuple[str, str | None]:
     host = (parts.hostname or "").lower()
     path = [unquote(part) for part in parts.path.split("/") if part]
     if host in {"boards.greenhouse.io", "job-boards.greenhouse.io"}:
+        if path and path[0] == "embed":
+            token = parse_qs(parts.query).get("for", [None])[0]
+            return "greenhouse", token if token and re.fullmatch(r"[A-Za-z0-9_-]+", token) else None
         return "greenhouse", path[0] if path else None
     if host == "boards-api.greenhouse.io" and len(path) >= 4 and path[:2] == ["v1", "boards"] and path[3] == "jobs":
         return "greenhouse", path[2]
@@ -58,6 +61,10 @@ def recognize_apply_url(url: str) -> tuple[str, str | None]:
         return "careerpuck", path[1]
     if host.endswith(".applytojob.com"):
         return "jazzhr", host
+    if host == "careers.textron.com" and path and path[0] == "jobs":
+        return "jobsyn", host
+    if host == "app.jazz.co" and path[:3] == ["widgets", "basic", "create"] and len(path) == 4:
+        return "jazzhr", f"{path[3]}.applytojob.com"
     if host.endswith(".icims.com"):
         return "icims", host
     if path and path[0] == "jobs" and parse_qs(parts.query).get("icims") == ["1"]:
@@ -70,6 +77,8 @@ def recognize_apply_url(url: str) -> tuple[str, str | None]:
         return "pinpoint", host
     if re.fullmatch(r"[a-z0-9-]+\.bamboohr\.com", host) and path and path[0] == "careers":
         return "bamboohr", host
+    if parse_qs(parts.query).get("ats") == ["successfactors"]:
+        return "successfactors", host
     if host.endswith(".eightfold.ai"):
         return "eightfold", host
     if (host.startswith("careers.") and path[:2] == ["careers", "job"]
@@ -296,14 +305,14 @@ class _PageLinks(HTMLParser):
         self.urls: list[str] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        if tag in {"a", "iframe", "form"}:
+        if tag in {"a", "iframe", "form", "script"}:
             values = dict(attrs)
             url = values.get("href") or values.get("src") or values.get("action")
             if url:
                 self.urls.append(url)
 
 
-def _site_page(url: str) -> tuple[str, list[str]]:
+def _site_page(url: str) -> tuple[str, list[str], str]:
     request = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "text/html"})
     context = ssl.create_default_context(cafile=certifi.where()) if certifi else ssl.create_default_context()
     with urllib.request.urlopen(request, timeout=15, context=context) as response:
@@ -312,7 +321,8 @@ def _site_page(url: str) -> tuple[str, list[str]]:
     parser = _PageLinks()
     parser.feed(body)
     # Some company sites embed job links in JSON rather than anchors.
-    raw_urls = parser.urls + re.findall(r'https?://[^\s"\'<>\\]+', body.replace("\\/", "/"))
+    searchable = html.unescape(body).replace("\\/", "/")
+    raw_urls = parser.urls + re.findall(r'https?://[^\s"\'<>\\]+', searchable)
     ashby_variable = re.search(r"(?:const|let)\s+ashbyCompany\s*=\s*['\"]([A-Za-z0-9_-]+)['\"]", body)
     if ashby_variable and "api.ashbyhq.com/posting-api/job-board/${ashbyCompany}" in body:
         raw_urls.append("https://api.ashbyhq.com/posting-api/job-board/" + ashby_variable.group(1))
@@ -323,7 +333,7 @@ def _site_page(url: str) -> tuple[str, list[str]]:
                 links.append(urljoin(final_url, html.unescape(value)))
         except ValueError:
             continue
-    return final_url, links
+    return final_url, links, body
 
 
 def _official_route(lead: dict) -> dict:
@@ -340,11 +350,29 @@ def _official_route(lead: dict) -> dict:
             continue
         visited.add(page)
         try:
-            final_url, links = _site_page(page)
+            final_url, links, body = _site_page(page)
         except Exception as exc:
             errors.append(f"{page}: {type(exc).__name__}: {exc}"[:180])
             continue
-        for link in [final_url, *links]:
+        current_host = (urlsplit(final_url).hostname or "").lower()
+        if (current_host == host or current_host.endswith("." + base_domain)) and (
+                'id="searchresults"' in body and 'class="paginationLabel"' in body
+                and 'class="coreCSB search-page' in body):
+            routes.setdefault(("successfactors", current_host),
+                              (final_url, final_url))
+        if (current_host == host or current_host.endswith("." + base_domain)) and (
+                urlsplit(final_url).path.rstrip("/") == "/jobs/search" and
+                'class="job-search-results' in body and 'data-job-url=' in body and
+                'Displaying <b>' in body):
+            routes.setdefault(("clinch", current_host), (final_url, final_url))
+        if (current_host == host or current_host.endswith("." + base_domain)) and (
+                urlsplit(final_url).path.rstrip("/").endswith("/careers/SearchJobs") and
+                'article article--result' in body and 'list-item-posted' in body):
+            routes.setdefault(("avature", current_host), (final_url, final_url))
+        # Search forms often appear after long navigation menus. Visit their
+        # listings before generic career pages under the bounded page cap.
+        ordered_links = sorted(links, key=lambda link: 0 if urlsplit(link).path.rstrip("/") == "/search" else 1)
+        for link in [final_url, *ordered_links]:
             try:
                 parts = urlsplit(link)
             except ValueError:
@@ -356,7 +384,8 @@ def _official_route(lead: dict) -> dict:
                 routes.setdefault((provider, board), (final_url, link))
             elif (parts.hostname == host or parts.hostname.endswith("." + base_domain) or
                   parts.hostname == base_domain):
-                if re.search(r"career|/jobs?(?:/|$)|opportunit|join-us|work-with-us", parts.path, re.I):
+                if (re.search(r"career|/jobs?(?:/|$)|/search(?:/|$)|opportunit|join-us|work-with-us", parts.path, re.I)
+                        or parts.hostname != host and parts.hostname.startswith("careers.")):
                     if link not in visited and link not in todo and len(todo) < 8:
                         todo.append(link)
         if len(visited) == 1 and not todo:
@@ -516,6 +545,22 @@ def confirm_official_route(db: sqlite3.Connection, lead_key: str, *,
             not (evidence_host == official_host or evidence_host.endswith("." + official_host))):
         raise ValueError("Evidence page must be on the candidate official company domain")
     provider, board = recognize_apply_url(board_url)
+    if provider == "unknown" and urlsplit(board_url).hostname and (
+            (urlsplit(board_url).hostname or "").removeprefix("www.").endswith(official_host)
+            and urlsplit(board_url).path.rstrip("/") == "/search"):
+        final_url, _, listing = _site_page(board_url)
+        if (urlsplit(final_url).hostname == urlsplit(board_url).hostname and
+                'id="searchresults"' in listing and 'class="paginationLabel"' in listing and
+                'class="coreCSB search-page' in listing):
+            provider, board = "successfactors", urlsplit(board_url).hostname
+    if provider == "unknown" and urlsplit(board_url).hostname and (
+            (urlsplit(board_url).hostname or "").removeprefix("www.").endswith(official_host)
+            and urlsplit(board_url).path.rstrip("/") == "/jobs/search"):
+        final_url, _, listing = _site_page(board_url)
+        if (urlsplit(final_url).hostname == urlsplit(board_url).hostname and
+                'class="job-search-results' in listing and 'data-job-url=' in listing and
+                'Displaying <b>' in listing):
+            provider, board = "clinch", urlsplit(board_url).hostname
     if urlsplit(board_url).scheme != "https" or provider == "unknown" or not board:
         raise ValueError("Board URL must identify a supported or planned ATS route")
     stage = "scan_pending" if provider in ACTIVE_COLLECTORS else "adapter_pending"
